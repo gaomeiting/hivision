@@ -1,0 +1,41 @@
+<template>
+<ul class="lanren">
+	<li>red <span id="title">0</span>
+		<div class="scale_panel">
+			<span class="r">100</span>0
+			<div class="scale" id="bar">
+				<div></div>
+				<span id="btn"></span>
+			</div>
+		</div>
+	</li>
+</ul>
+</template>
+
+<script type="text/ecmascript-6">
+
+export default {
+props: {
+	
+},
+created() {
+},
+watch : {
+	
+},
+methods: {
+	
+}
+}
+</script>
+
+<style scoped lang="scss" rel="stylesheet/css">
+  @import "~assets/scss/variable";
+ul.lanren{width:300px;margin:100px auto;}
+.scale_panel{color:#999;width:200px;position:absolute;line-height:18px;left:60px;top:-0px;}
+.scale_panel .r{float:right;}
+.scale span{background:url(~assets/img/scroll.gif) no-repeat;width:8px;height:16px;position:absolute;left:-2px;top:-5px;cursor:pointer;}
+.scale{ background-repeat: repeat-x; background-position: 0 100%; background-color: #E4E4E4; border-left: 1px #83BBD9 solid;  width: 200px; height: 3px; position: relative; font-size: 0px; border-radius: 3px; }
+.scale div{ background-repeat: repeat-x; background-color: #3BE3FF; width: 0px; position: absolute; height: 3px; width: 0; left: 0; bottom: 0; }
+.lanren li{font-size:12px;line-height:50px;position:relative;height:50px;list-style:none;}
+</style>
