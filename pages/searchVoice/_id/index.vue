@@ -38,7 +38,7 @@ export default {
   },
   created() {
     this.userId = this.$route.params.id;
-    this._getUserInfo('/api/getUserInfo/081e3967-f916-4ccf-9878-f2a0173d4083');
+    this._getUserInfo('/api/getUserInfo/getUserInfo/472812ec-7d87-4109-9b90-3a6cc7ff58cc');
   },
   methods: {
     _getUserInfo(url) {

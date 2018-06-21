@@ -28,7 +28,16 @@ export default {
 			default() {
 				return []
 			}
+		},
+		keywords: {
+			type: String,
+			default: ''
 		}
+	},
+	created() {
+		/*this.$watch('keywords', (newValue, oldValue)=> {
+			if(newValue) this.clear();
+		})*/
 	},
 	data() {
 		return {
@@ -48,8 +57,15 @@ export default {
 		}
 	},
 	watch: {
+		keywords(newValue, oldValue) {
+			if(newValue) {
+				this.clear()
+				this.$emit('clearLabels')
+			};
+		},
 		labels(newValue, oldValue) {
-			this.$emit('switchLabels', this.jsonLabels)
+			/*if(this.keywords) return;*/
+			//this.$emit('switchLabels', this.jsonLabels)
 		}
 	},
 	methods: {
@@ -90,6 +106,7 @@ export default {
 				})
 			}
 			if(i >= 0) this.tipList = []
+			this.$emit('switchLabels', this.jsonLabels)
 		},
 		deleteLabel(index) {
 			this.$confirm('此操作将删除分类, 是否继续?', '提示', {
@@ -103,6 +120,7 @@ export default {
 	        	let i = this._findIndex(values, this.labels[index]);
 	        	this.jsonLabels[keys[i]] = '';
 	        	this.labels.splice(index, 1);
+	        	this.$emit('switchLabels', this.jsonLabels)
 	        	//console.log(values, keys, this.lables, index)
 	        	//console.log(this.labels, this.jsonLabels, "123456")
 
@@ -123,12 +141,8 @@ export default {
 	          cancelButtonText: '取消',
 	          type: 'warning'
 	        }).then(() => {
-	        	this.labels = [];
-	        	this.jsonLabels = {
-					languages: '',
-					gender: '',
-					styles: ''
-				}
+	        	this.clear();
+	        	this.$emit('switchLabels', this.jsonLabels)
 	          this.$message({
 	            type: 'success',
 	            message: '删除成功!'
@@ -139,6 +153,14 @@ export default {
 	            message: '已取消删除'
 	          });          
 	        })
+		},
+		clear() {
+			this.labels = [];
+        	this.jsonLabels = {
+				languages: '',
+				gender: '',
+				styles: ''
+			}
 		},
 		_normalJsonLabels(index) {
 			switch(index) {

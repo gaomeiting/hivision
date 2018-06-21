@@ -10,13 +10,13 @@
       </div>
       <div class="normal-wrap">
         <div class="search-wrap">
-          <search-box placeholder="请输入关键字搜索" @queryChange="queryChange"></search-box>
+          <search-box ref="searchBox" placeholder="请输入关键字搜索" @queryChange="queryChange"></search-box>
         </div>
         <div v-if="catagory">
-          <label-panel :catagory="catagory" @switchLabels="switchLabels"></label-panel>
+          <label-panel :keywords="keywords" :catagory="catagory" @switchLabels="switchLabels" @clearLabels="clearLabels"></label-panel>
         </div>
         <div class="voice-list-wrap" v-if="list">
-          <voice-list :loading="loading" :list="list" :currentSongIndex="currentSongIndex" @switchAudio="togglePlaying" @more="more" :percent="percent" @setSongProgress="setSongProgress"></voice-list>
+          <voice-list ref="voiceList" :loading="loading" :list="list" :currentSongIndex="currentSongIndex" @switchAudio="togglePlaying" @more="more" :percent="percent" @setSongProgress="setSongProgress"></voice-list>
           <audio :src="currentSong" ref="audio" @play="ready" @error="error" @timeupdate="updateTime" @ended="end"></audio>
         </div>
         <div class="pagination-wrap">
@@ -104,25 +104,35 @@ export default {
 
   },
   methods: {
+    clearLabels() {
+      this.labels = {
+        languages: '',
+        gender: '',
+        styles: ''
+      }
+    },
     more(item) {
       let id = item.narrator.userId;
       this.$router.push(`/searchVoice/${id}`)
     },
     queryChange(val) {
+      if(!val) return;
       this.loading = true;
       this.keywords = val;
       this.currentPage = 1;
       let keywords = val;
-      let { languages, gender, styles } = this.labels;
-      this._getData('/api/audio/search', {languages, gender, styles, keywords});
+      console.log(this.keywords, "queryChange")
+      this._getData('/api/audio/search', {keywords});
     },
     switchLabels(labels) {
+      console.log("labels switchLabels")
+      this.keywords = '';
+      this.$refs.searchBox.clear()
       this.loading = true;
       this.labels = labels;
       this.currentPage = 1;
       let { languages, gender, styles } = labels;
-      let keywords = this.keywords;
-      this._getData('/api/audio/search', {languages, gender, styles, keywords});
+      this._getData('/api/audio/search', {languages, gender, styles});
     },
     _getData(url, params) {
       GetData(url, {
