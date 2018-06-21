@@ -24,17 +24,30 @@
 
 <script>
 import VoiceList from '~/components/voice-list-l/voice-list-l'
+import { GetData } from '~/api/api'
 export default {
   head: {
     title: '个人主页'
   },
   data() {
     return {
+      userId: '',
+      userInfo: '',
+      audios: []
     }
   },
-  
+  created() {
+    this.userId = this.$route.params.id;
+    this._getUserInfo('/api/getUserInfo/081e3967-f916-4ccf-9878-f2a0173d4083');
+  },
   methods: {
-    
+    _getUserInfo(url) {
+      GetData(url).then(res => {
+        console.log(res)
+      }).catch(err => {
+        console.log(err)
+      })
+    }
   },
   components: {
   	VoiceList

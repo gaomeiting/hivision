@@ -1,42 +1,164 @@
 <template>
 <div class="label-panel">
 		<ul>
-			<li>
-				<strong>语言类别</strong>
-				<span class="active">普通话</span>
-				<span>外语小语种</span>
-				<span>方言/民族语</span>
+			<li v-for="(item, index) in catagory" :key="index">
+				<strong>{{ item.name }}</strong>
+				<span v-for="(subItem, i) in item.subCategories" :key="i" @mouseover.stop.prevent="showPopover(subItem,i)" @click.stop.prevent="selectLabel(subItem, -1, index)">
+					{{ subItem.name }} 
+				</span>
 			</li>
-			<li>
-				<strong>性别</strong>
-				<span>男声</span>
-				<span>女声</span>
-			</li>
-			<li>
-				<strong>性别</strong>
-				<span>男声</span>
-				<span>女声</span>
-				<span>女声</span>
-				<span>女声</span>
-				<span>女声</span>
-				<span>女声</span>
-				<span>女声</span>
-				<span>女声</span>
+			<li v-if="tipList.length != 0" class="tip-wrap">
+				<span v-for="(tip, tipIndex) in tipList" :key="tipIndex" @click.stop.prevent="selectLabel(tip, tipIndex, 0)">{{ tip.name }}</span>
 			</li>
 		</ul>
-		<p class="select-result">
+		<p class="select-result" v-if="labels.length != 0">
 			<strong>当前条件：</strong>
-			<span>普通话<i class="iconfont icon-chahao"></i></span>
-			<span>女生<i class="iconfont icon-chahao"></i></span>
-			<em> <i class="iconfont icon-lajitong"></i>清空全部</em>
-
+			<span v-for="(label, index) in labels" :key="index" @click.stop.prevent="deleteLabel(index)">{{label}}<i class="iconfont icon-chahao"></i></span>
+			<em @click.stop.prevent="deleteAllLabel"> <i class="iconfont icon-lajitong"></i>清空全部</em>
 		</p>
 </div>
 </template>
 
 <script type="text/ecmascript-6">
+import Tip from '~/components/tip/tip'
 export default {
-	
+	props: {
+		catagory: {
+			type: Array,
+			default() {
+				return []
+			}
+		}
+	},
+	data() {
+		return {
+			tipList: [],
+			labels: [],
+			jsonLabels: {
+				languages: '',
+				gender: '',
+				styles: ''
+			}
+			/*jsonLabels: {
+				languages: [],
+				gender: [],
+				styles: []
+				多选
+			}*/
+		}
+	},
+	watch: {
+		labels(newValue, oldValue) {
+			this.$emit('switchLabels', this.jsonLabels)
+		}
+	},
+	methods: {
+		showPopover(item) {
+			if(!item.subCategories) {
+				if(this.tipList.length) this.tipList = []
+				return;
+			};
+			this.tipList = item.subCategories;
+		},
+		hidePopover() {
+			this.tipList = []
+		},
+		selectLabel(item, i, j) {
+			if(item.subCategories) return;
+			let index = this._findIndex(this.labels, item.name)
+			if(index === -1) {
+
+				let key = this._normalJsonLabels(j)
+				let val = this.jsonLabels[key]
+				if(val) {
+					let labelIndex = this._findIndex(this.labels,val)
+					this.labels.splice(labelIndex,1)
+				}
+				this.jsonLabels[key] = item.name
+				this.labels.push(item.name)
+				/*
+				多选逻辑
+				this.labels.push(item.name)
+				let key = this._normalJsonLabels(j)
+				this.jsonLabels[key].push(item.name)*/
+			}
+			else {
+				//您已经选择了这个类别
+				this.$alert('您已经选择了这个类别', '',{
+					confirmButtonText: '确定',
+					type: 'warning '
+				})
+			}
+			if(i >= 0) this.tipList = []
+		},
+		deleteLabel(index) {
+			this.$confirm('此操作将删除分类, 是否继续?', '提示', {
+	          confirmButtonText: '确定',
+	          cancelButtonText: '取消',
+	          type: 'warning'
+	        }).then(() => {
+	        	console.log(123)
+	        	let values = Object.values(this.jsonLabels)
+	        	let keys = Object.keys(this.jsonLabels)
+	        	let i = this._findIndex(values, this.labels[index]);
+	        	this.jsonLabels[keys[i]] = '';
+	        	this.labels.splice(index, 1);
+	        	//console.log(values, keys, this.lables, index)
+	        	//console.log(this.labels, this.jsonLabels, "123456")
+
+	          this.$message({
+	            type: 'success',
+	            message: '删除成功!'
+	          });
+	        }).catch(() => {
+	          this.$message({
+	            type: 'info',
+	            message: '已取消删除'
+	          });          
+	        })
+		},
+		deleteAllLabel() {
+			this.$confirm('此操作将删除分类, 是否继续?', '提示', {
+	          confirmButtonText: '确定',
+	          cancelButtonText: '取消',
+	          type: 'warning'
+	        }).then(() => {
+	        	this.labels = [];
+	        	this.jsonLabels = {
+					languages: '',
+					gender: '',
+					styles: ''
+				}
+	          this.$message({
+	            type: 'success',
+	            message: '删除成功!'
+	          });
+	        }).catch(() => {
+	          this.$message({
+	            type: 'info',
+	            message: '已取消删除'
+	          });          
+	        })
+		},
+		_normalJsonLabels(index) {
+			switch(index) {
+				case 0:
+				return 'languages';
+				case 1:
+				return 'gender';
+				case 2:
+				return 'styles';
+			}
+		},
+		_findIndex(list, val) {
+			return list.findIndex(item => {
+				return item === val
+			})
+		}
+	},
+	components: {
+		Tip
+	}
 }
 </script>
 
@@ -51,6 +173,19 @@ export default {
 			display: flex;
 			height: 40px;
 			line-height: 40px;
+			&.tip-wrap {
+				width: 100%;
+				display: flex;
+				justify-content: space-between;
+				box-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+				padding: 0 1em;
+				position: absolute;
+				top: 50px;
+				background: #fff;
+				span {
+					width: auto;
+				}
+			}
 			strong {
 				display: block;
 				width: 6em;
@@ -64,7 +199,8 @@ export default {
 				text-align: center;
 				box-sizing: content-box;
 				padding-right: 20px;
-				&.active {
+				cursor: pointer;
+				&.active, &:hover {
 					color: #ffa302;
 				}
 

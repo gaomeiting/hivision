@@ -10,7 +10,7 @@
             <!-- <i class="iconfont icon-bofang"></i> -->
             <p>123456</p>
             <div class="progress-bar">
-              <progress-bar  :percent="percent" @triggerPercent="setSongProgress"></progress-bar>
+              <progress-bar :percent="percent" @triggerPercent="setSongProgress"></progress-bar>
             </div>
             
             <i class="iconfont icon-shoucang"></i>
@@ -19,7 +19,7 @@
         </li>
       </ul>
 
-      <audio src="http://dl.stream.qqmusic.qq.com/C400003zt5jO0Rm8rW.m4a?vkey=BF4386018D32707F3A80B123AA969E868D8F5BF385CE4977F7FAF1DAC2AE7491CCDF0EEAD080ED02DE33EA06F74DDFB77031F42ECDC406F5&guid=8182525974&uin=2856584467&fromtag=66" @timeupdate="updateTime" ref="audio"></audio>
+      <audio ref="audio" src="http://www.ddpeiyin.com/Public/uploadfile/2015-09-21/KtteoqueBCHFG.mp3" @error="error" @timeupdate="updateTime" @ended="end"></audio>
     </div>
 </template>
 <script type="text/ecmascript-6">
@@ -27,6 +27,7 @@ import ProgressBar from '~/components/progress-bar/progress-bar'
 export default {
   data() {
     return {
+      songReady: false,
       percent: 0,
       playing: false,
       currentSong: {
@@ -45,11 +46,14 @@ export default {
   },
   methods: {
     setSongProgress(percent, flag) {
-      //console.log(this.$refs.audio.duration, "duration")
+      if(!this.songReady) {
+        return;
+      }
       const audio = this.$refs.audio;
       if(audio.currentTime==percent*audio.duration){
         return;
       }
+      console.log(percent,audio, audio.duration)
       audio.currentTime=percent*audio.duration
       this.percent = percent;
       if(!flag) {
@@ -66,10 +70,20 @@ export default {
      
     },
     updateTime(e) {
+      console.log(this.$refs.audio)
       let currentTime=e.target.currentTime | 0;
       let totalTime=this.$refs.audio.duration;
       this.currentTime= this.format(currentTime);
       this.percent= currentTime / totalTime ;
+    },
+    ready() {
+      this.songReady= true;
+    },
+    error() {
+      this.songReady= true;
+    },
+    end() {
+      console.log("结束")
     },
     format(n) {
       let m=0;

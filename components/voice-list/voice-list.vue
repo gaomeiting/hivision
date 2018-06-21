@@ -1,38 +1,98 @@
 <template>
     <div class="voice-list">
-      <ul>
-        <li v-for="(item, index) in 18" :key="index">
-          <h3>兼职-英飞腾-男1-003-中音-节奏-科技</h3>
-          <p><strong>测试姓名</strong><em>个性标签</em></p>
+      <ul v-if="list.length > 0">
+        <li v-for="(item, index) in list" :key="index">
+          <h3>{{ item.title }}</h3>
+          <p><strong>{{ item.narrator.nickname }} </strong><em>{{ item.metaData.styles }}</em></p>
           <div class="voice">
-            <i class="iconfont icon-play_icon"></i>
+            <i class="iconfont" :class=" !item.playing ? 'icon-play_icon' : 'icon-bofang' " @click.stop.prevent="switchAudio(index)"></i>
             &nbsp;
             <!-- <i class="iconfont icon-bofang"></i> -->
             
-            <p>123456789</p>
+            <!-- <p>123456789</p> -->
             <div class="progress-bar">
-              <progress-bar></progress-bar>
+              <progress-bar :percent="percents[index]" @triggerPercent="setSongProgress(arguments, index)"></progress-bar>
             </div>
             
-            <i class="iconfont icon-shoucang"></i>
+           <!-- <i class="iconfont icon-shoucang"></i> -->
             <i style="font-weight: bolder" class="iconfont icon-iconfontadd"></i>
           </div>
-          <p class="pos">更多样音</p>
+          <p class="pos" @click.stop.prevent="more(item)">更多样音</p>
         </li>
       </ul>
+      <div class="loading-wrap" v-if="list.length == 0">
+        <loading v-if="loading"></loading>
+        <no-result v-else title="空空如也~~"></no-result>
+      </div>
     </div>
 </template>
 <script type="text/ecmascript-6">
 import ProgressBar from '~/components/progress-bar/progress-bar'
+import Loading from '~/components/load/load'
+import NoResult from '~/components/no-result/no-result'
 export default {
+  props: {
+    list: {
+      type: Array,
+      default() {
+        return []
+      }
+    },
+    loading: {
+      type: Boolean,
+      default: true
+    },
+    currentSongIndex: {
+      type: Number,
+      default: 0
+    },
+    percent: {
+      type: Number,
+      default: 0
+    },
+    time: {
+      type: String,
+      default: '00:00'
+    }
+  }, 
+  computed: {
+    percents() {
+      let res = [];
+      let len = this.list.length;
+      for(let i = 0; i < len; i++) {
+        res.push(0)
+      }
+      console.log(this.percent, "voice-list")
+      res[this.currentSongIndex] = this.percent;
+      return res;
+    }
+  },
+  methods: {
+    switchAudio(index) {
+      this.$emit('switchAudio', index)
+    },
+    setSongProgress() {
+      let [percent, flag] = arguments[0]
+      let index = arguments[1]
+      this.$emit('setSongProgress', percent, flag, index)
+    },
+    more(item) {
+      this.$emit('more', item)
+    }
+  },
   components: {
-    ProgressBar
+    ProgressBar,
+    Loading,
+    NoResult
   }
 }
 </script>
 <style lang="scss" scoped>
 @import "~assets/scss/variable";
 .voice-list {
+  .loading-wrap {
+    padding: 100px 0;
+  }
   ul {
     padding-top: 30px;
     display: flex;

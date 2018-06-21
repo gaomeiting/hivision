@@ -2,7 +2,7 @@
 <div class="progress-bar" ref="progressBar">
 	<div class="bar-inner" @click.stop.prevent="setProgressPos">
 		<div class="progress" ref="progress"></div>
-		<div class="progress-btn-wrapper" ref="progressBtn" @mousedown.prevent="progressTouchstart" @mousemove.prevent="progressTouchmove" @mouseup.prevent="progressTouchend" @mouseout.prevent="progressTouchend">
+		<div class="progress-btn-wrapper" ref="progressBtn" @click.stop.prevent @mousedown.stop.prevent="progressTouchstart" @mousemove.stop.prevent="progressTouchmove" @mouseup.stop.prevent="progressTouchend" @mouseout.stop.prevent="progressTouchend">
 			<div class="progress-btn"></div>
 		</div>
 	</div>
@@ -24,6 +24,7 @@ created() {
 watch : {
 	percent(newPercent) {
 		this._initProgress(newPercent)
+		console.log(newPercent, "newPercent")
 	}
 },
 methods: {
@@ -43,6 +44,7 @@ methods: {
 		if(this.touch.offsetLeft !== width){
 			this.triggerPercent(this.touch.offsetLeft, false)
 		}
+		this.triggerPercent(this.touch.offsetLeft, true)
 	},
 	progressTouchend() {
 		if(!this.touch.flag) return;

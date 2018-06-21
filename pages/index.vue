@@ -221,7 +221,7 @@
 
 import FloatWindow from '~/components/float-window/float-window'
 import AppHeader from '~/components/app-header/app-header'
-import { Post } from '~/api/api'
+import { PostData } from '~/api/api'
 export default {
   head: {
     title: '首页'
@@ -239,7 +239,7 @@ export default {
   created() {
   },
   methods: {
-    postForm() {
+    postDataForm() {
         if(this._checkForm()) return;
         Post("/api/v1/client/account/myDemand", {
             name: this.name,
