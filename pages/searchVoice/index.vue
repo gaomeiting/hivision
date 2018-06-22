@@ -69,12 +69,6 @@ export default {
   computed: {
     currentSong() {
       return this.list[this.currentSongIndex] && this.list[this.currentSongIndex]['audioUrl']
-    },
-    currentPageIndex() {
-
-      let page = this.currentPage
-      let index = page + 1
-      return index
     }
   },
   created() {

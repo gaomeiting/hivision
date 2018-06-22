@@ -1,118 +1,101 @@
 <template>
     <div class="voice-list">
-      <ul>
-        <li v-for="(item, index) in 4" :key="index">
-          <h3>兼职-英飞腾-男1-003-中音-节奏-科技</h3>
-          <p><strong>测试姓名</strong><em>个性标签</em></p>
+      <ul v-if="list.length > 0">
+        <li v-for="(item, index) in list" :key="index">
+          <h3>{{ item.title }}</h3>
+          <p>
+            <!-- <strong>{{ item.narrator.nickname }} </strong> -->
+            <em v-for="(tag, tagIndex) in item.tags" :key="tagIndex">{{ tag }}</em>
+          </p>
           <div class="voice">
-            <i class="iconfont" :class="playing ? 'icon-bofang' : 'icon-play_icon'" @click.stop="togglePlaying"></i>
+            <i class="iconfont" :class=" !item.playing ? 'icon-play_icon' : 'icon-bofang' " @click.stop.prevent="switchAudio(index)"></i>
             &nbsp;
             <!-- <i class="iconfont icon-bofang"></i> -->
-            <p>123456</p>
+            
+            <!-- <p>123456789</p> -->
             <div class="progress-bar">
-              <progress-bar :percent="percent" @triggerPercent="setSongProgress"></progress-bar>
+              <progress-bar :percent="percents[index]" @triggerPercent="setSongProgress(arguments, index)"></progress-bar>
             </div>
             
-            <i class="iconfont icon-shoucang"></i>
+           <!-- <i class="iconfont icon-shoucang"></i> -->
             <i style="font-weight: bolder" class="iconfont icon-iconfontadd"></i>
           </div>
+          <!-- <p class="pos" @click.stop.prevent="more(item)">更多样音</p> -->
         </li>
       </ul>
-
-      <audio ref="audio" src="http://www.ddpeiyin.com/Public/uploadfile/2015-09-21/KtteoqueBCHFG.mp3" @error="error" @timeupdate="updateTime" @ended="end"></audio>
+      <div class="loading-wrap" v-if="list.length == 0">
+        <loading v-if="loading"></loading>
+        <no-result v-else title="空空如也~~"></no-result>
+      </div>
     </div>
 </template>
 <script type="text/ecmascript-6">
 import ProgressBar from '~/components/progress-bar/progress-bar'
+import Loading from '~/components/load/load'
+import NoResult from '~/components/no-result/no-result'
 export default {
-  data() {
-    return {
-      songReady: false,
-      percent: 0,
-      playing: false,
-      currentSong: {
-        duration: 240000
+  props: {
+    list: {
+      type: Array,
+      default() {
+        return []
       }
-
+    },
+    loading: {
+      type: Boolean,
+      default: true
+    },
+    currentSongIndex: {
+      type: Number,
+      default: 0
+    },
+    percent: {
+      type: Number,
+      default: 0
+    },
+    time: {
+      type: String,
+      default: '00:00'
     }
-  },
-  watch: {
-    playing(newPlaying) {
-      this.$nextTick(()=> {
-        const audio=this.$refs.audio;
-        newPlaying ? audio.play() : audio.pause()
-      })
+  }, 
+  computed: {
+    percents() {
+      let res = [];
+      let len = this.list.length;
+      for(let i = 0; i < len; i++) {
+        res.push(0)
+      }
+      console.log(this.percent, "voice-list")
+      res[this.currentSongIndex] = this.percent;
+      return res;
     }
   },
   methods: {
-    setSongProgress(percent, flag) {
-      if(!this.songReady) {
-        return;
-      }
-      const audio = this.$refs.audio;
-      if(audio.currentTime==percent*audio.duration){
-        return;
-      }
-      console.log(percent,audio, audio.duration)
-      audio.currentTime=percent*audio.duration
-      this.percent = percent;
-      if(!flag) {
-        this.setPlaying(flag)
-      }
-      else{
-        if(!this.playing) {
-          this.togglePlaying()
-        }
-      }
+    switchAudio(index) {
+      this.$emit('switchAudio', index)
     },
-    togglePlaying() {
-      this.playing = !this.playing;
-     
+    setSongProgress() {
+      let [percent, flag] = arguments[0]
+      let index = arguments[1]
+      this.$emit('setSongProgress', percent, flag, index)
     },
-    updateTime(e) {
-      console.log(this.$refs.audio)
-      let currentTime=e.target.currentTime | 0;
-      let totalTime=this.$refs.audio.duration;
-      this.currentTime= this.format(currentTime);
-      this.percent= currentTime / totalTime ;
-    },
-    ready() {
-      this.songReady= true;
-    },
-    error() {
-      this.songReady= true;
-    },
-    end() {
-      console.log("结束")
-    },
-    format(n) {
-      let m=0;
-      let s=0;
-      m= n / 60 | 0;
-      s= n % 60;
-      let padS=this._pad(s)
-      return `${m}:${padS}`
-    },
-    setPlaying(flag) {
-      this.playing = flag
-    },
-    _pad(num,n=2){
-      let len=num.toString().length
-      while(len<n) {
-        num='0' +num
-        len++
-      }
-      return num
+    more(item) {
+      this.$emit('more', item)
     }
   },
   components: {
-    ProgressBar
+    ProgressBar,
+    Loading,
+    NoResult
   }
 }
 </script>
 <style lang="scss" scoped>
 @import "~assets/scss/variable";
 .voice-list {
+  .loading-wrap {
+    padding: 100px 0;
+  }
   ul {
     width: 100%;
     padding-top: 30px;
@@ -133,6 +116,7 @@ export default {
             background: #ffa302;
             color: #fff;
             padding: 2px 5px;
+            margin-right: 6px;
           }
         }
 
