@@ -174,6 +174,26 @@ export default {
 section {
   
     width: 100%;
+    nav {
+        
+        /deep/ .nuxt-link-exact-active {
+            color: #f90;
+        }
+        /deep/ .nuxt-link-active {
+            color: #f90;
+        }
+        /deep/ a {
+            color: #555;
+        }
+        /deep/ a:hover {
+            color: #f90;
+        }
+        /deep/ ol {
+            a {
+                color: #f90;
+            }
+        }
+    }
     .pagination-wrap {
       text-align: center;
     }
@@ -181,6 +201,7 @@ section {
       width: 100%;
       height: 66px;
       background: #fff;
+      color: #555;
       /* box-shadow: 2px 2px 6px rgba(0,0,0,0.1); */
       position: relative;
     }

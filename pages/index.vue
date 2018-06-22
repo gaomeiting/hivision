@@ -1,7 +1,7 @@
 <template>
     <section class="container">
         <section class="banner">
-            <app-header></app-header>
+            <app-header class="nav-wrapper"></app-header>
             <div>
                 <h2>用声音为您的内容赋能</h2>
                 <p>成立于2000年 至今服务过上百个国内国际知名品牌！</p>
@@ -197,7 +197,7 @@
                         </p>
                     </div>
                 </div>
-                <p class="btn" @click.stop="postForm">发送</p>
+                <p class="btn" @click.stop="postDataForm">发送</p>
                 <div class="line">
                     <img src="~assets/img/line.png">
                 </div>
@@ -241,7 +241,7 @@ export default {
   methods: {
     postDataForm() {
         if(this._checkForm()) return;
-        Post("/api/v1/client/account/myDemand", {
+        PostData("/api/v1/client/account/myDemand", {
             name: this.name,
             company: this.company,
             email: this.company,
@@ -313,7 +313,27 @@ export default {
     right: 10px;
 }
 section {
-
+    nav {
+        
+        /deep/ .nuxt-link-exact-active {
+            color: #f90;
+        }
+        /deep/ .nuxt-link-active {
+            color: #f90;
+        }
+        /deep/ a {
+            color: #fff;
+        }
+        /deep/ a:hover {
+            color: #f90;
+        }
+        /deep/ ol {
+            a {
+                color: #f90;
+            }
+        }
+    }
+    
     width: 100%;
 }
 section > div {

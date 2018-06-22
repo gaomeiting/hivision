@@ -48,13 +48,33 @@ export default {
 <style lang="scss" scoped>
 
 section {
-	
+	 
     width: 100%;
+
     .nav-wrap {
     	width: 100%;
     	height: 66px;
-    	background: rgba(0,0,0,0.2);
     	position: relative;
+      nav {
+          
+          /deep/ .nuxt-link-exact-active {
+              color: #f90;
+          }
+          /deep/ .nuxt-link-active {
+              color: #f90;
+          }
+          /deep/ a {
+              color: #555;
+          }
+          /deep/ a:hover {
+              color: #f90;
+          }
+          /deep/ ol {
+              a {
+                  color: #f90;
+              }
+          }
+      }
     }
     & > div {
         width: 1170px;

@@ -36,16 +36,11 @@ module.exports = {
   //loading: { color: '#3B8070' },
   loading: '~/components/loading/loading.vue',
   css: [{
-    src: 'iview/dist/styles/iview.css'
-  }, {
     src: '~assets/scss/index.scss'
   }, {
     src: 'element-ui/lib/theme-chalk/index.css'
   }],
   plugins: [{
-    src: '~plugins/iview.js',
-    ssr: false
-  }, {
     src: '@/plugins/element-ui'
   }, {
     src: '~/plugins/axios'
@@ -76,6 +71,7 @@ module.exports = {
     /*
      ** Run ESLint on save
      */
+    publicPath: '/st/',
     extend(config, {
       isDev,
       isClient
