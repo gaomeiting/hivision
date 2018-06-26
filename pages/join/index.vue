@@ -1,5 +1,10 @@
 <template>
   <section>
+      <top-tip ref="topTip">
+          <div class="nav-wrap">
+            <app-header></app-header>
+          </div>
+      </top-tip>
   		<div class="nav-wrap">
   			<app-header></app-header>
   		</div>
@@ -7,15 +12,15 @@
         <div class="normal-wrap">
           <div class="left">
               <h2>
-                成为特赞设计师 <br>
-                开始自由设计生活
+                让每个美好声音 <br>
+                都有价值
               </h2>
               <p>海边、露营、沙发里、咖啡馆，想更自由的做设计？ <br>
                  现在就可以！ <br>
                  在特赞，安心做设计， <br>
                  把其他的麻烦事交给我们。
               </p>
-              <a href="javascript:;" class="btn">设计师入驻</a>
+              <a href="/user/login" class="btn">配音员入驻</a>
           </div>
           <div class="right">
             <img src="~assets/img/coverstory.png" alt="">
@@ -54,7 +59,7 @@
             </li>
           </ul>
           <h2>按下这个按钮，重启一下生活</h2>
-          <a href="javascript:;" class="btn">设计师入驻</a>
+          <a href="/user/login" class="btn">配音员入驻</a>
         </div>
       </div>
   </section>
@@ -63,12 +68,34 @@
 
 <script>
 import AppHeader from '~/components/app-header/app-header'
+import TopTip from '~/components/top-tip/top-tip'
 export default {
   head: {
     title: '服务介绍'
   },
+  data() {
+    return {
+      navFlag: true,
+    }
+  },
+  mounted() {
+    //设置滚动
+     window.addEventListener('scroll', () => {
+        this.navFlag = document.documentElement.scrollTop > 100 ? false : true;
+        if(!this.navFlag) {
+          this.$refs.topTip && this.$refs.topTip.show()
+        }
+        else {
+          this.$refs.topTip && this.$refs.topTip.hide()
+        }
+        
+        
+     });
+
+  },
   components: {
-  	AppHeader
+  	AppHeader,
+    TopTip
   }
   
 }
@@ -110,8 +137,8 @@ section {
       height: 40px;
       line-height: 40px;
       text-align: center;
-      background: #3ccbb4;
-      color: #f8f8f8;
+      background: #f90;
+      color: #fff;
     }
     .banner-wrap {
       padding: 60px 0;
@@ -129,6 +156,7 @@ section {
             font-size: 18px;
             line-height: 1.8;
             margin-bottom: 40px;
+            color: #f8f8f8;
           }
           
         }

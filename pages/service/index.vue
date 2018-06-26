@@ -1,5 +1,10 @@
 <template>
   <section>
+      <top-tip ref="topTip">
+          <div class="nav-wrap">
+            <app-header></app-header>
+          </div>
+      </top-tip>
   		<div class="nav-wrap">
   			<app-header></app-header>
   		</div>
@@ -20,9 +25,9 @@
       		<h3>常见问题与解答</h3>
       		<p>根据你的情况，配置适用的主播，享受更优惠的价格</p>
       		<ol>
-      			<li v-for="(item,index) in 4" :key="index">
-      				<h4>Q1.升级版本和充值套餐的区别？</h4>
-      				<p>在基础功能之外，版本升级为满足更高要求而设计，如：音频增加背景音乐，多账号管理，收藏及指定主播进行优先服务（每个主播每天的配合服务次数有限，合作资源配置为你的需求倾斜）；充值套餐是主播服务的酬劳，充值相应额度不仅价格较为优惠，并且将能够自动获得版本升级，越多越划算。</p>
+      			<li v-for="(item,index) in data" :key="index">
+      				<h4>{{item.title}}</h4>
+      				<p>{{item.content}}</p>
       			</li>
       		</ol>
       		<h4>有更多的疑问</h4>
@@ -34,12 +39,41 @@
 
 <script>
 import AppHeader from '~/components/app-header/app-header'
+import TopTip from '~/components/top-tip/top-tip'
 export default {
   head: {
     title: '服务介绍'
   },
+  data() {
+    return {
+      navFlag: true,
+      data: [
+        {title: 'Q1.升级版本和充值套餐的区别？', content: '在基础功能之外，版本升级为满足更高要求而设计，如：音频增加背景音乐，多账号管理，收藏及指定主播进行优先服务（每个主播每天的配合服务次数有限，合作资源配置为你的需求倾斜）；充值套餐是主播服务的酬劳，充值相应额度不仅价格较为优惠，并且将能够自动获得版本升级，越多越划算'},
+        {title: 'Q2.如何与主播展开合作？', content: '在你需要服务的时候可以登录叮当配进行下单操作，实时待命的主播将匹配你的需求进行接单，且只有信用及历史评价最高的主播能成功为你服务；如果你需要稳定而且长期合作的主播服务，（高级版）可以收藏服务过的主播，（企业版）可以从主播库存里选择2-5名主播进行签约播报。'},
+        {title: 'Q3.企业如何支付及开具发票？', content: '我们支持微信、支付宝扫码支付、对公转账多种付款方式，在订单生效后可开具发票并邮寄。购买高级版及企业版支持付款 30 天无理由全额退款，可放心购买。'},
+        {title: 'Q4.音频的使用范围？', content: '这完全取决于你，你可以 查阅使用案例 ；下单后你可以直接分享至社交网络平台供收听，也可以下载用于在多个平台发布，包括APP及微信公众号等等。'},
+      ]
+    }
+  },
+  mounted() {
+    //设置滚动
+     window.addEventListener('scroll', () => {
+        this.navFlag = document.documentElement.scrollTop > 100 ? false : true;
+        console.log(!this.navFlag)
+        if(!this.navFlag) {
+          this.$refs.topTip && this.$refs.topTip.show()
+        }
+        else {
+          this.$refs.topTip && this.$refs.topTip.hide()
+        }
+        
+        
+     });
+
+  },
   components: {
-  	AppHeader
+  	AppHeader,
+    TopTip
   }
   
 }
@@ -104,6 +138,10 @@ section {
     			width: 274px;
     			border: 1px solid #f8f8f8;
     			padding: 0 20px 20px;
+          cursor: pointer;
+          &:hover h4 {
+            background: #f90;
+          }
     			h4 {
     				width: 70%;
     				height: 32px;

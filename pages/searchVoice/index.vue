@@ -55,7 +55,7 @@ export default {
     return {
       songReady: false,
       navFlag: true,
-      currentSize: 1,
+      currentSize: 6,
       loading: false,
       currentPage: 1,
       list: [],
@@ -109,7 +109,8 @@ export default {
     },
     more(item) {
       let id = item.narrator.userId;
-      this.$router.push(`/searchVoice/${id}`)
+      let audioId = item.showId
+      this.$router.push(`/searchVoice/${id}?id=${audioId}`)
     },
     queryChange(val) {
       if(!val) return;

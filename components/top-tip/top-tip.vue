@@ -11,7 +11,7 @@ export default {
 props: {
 	delay: {
 		type: Number,
-		default: 2000
+		default: 3000
 	}
 },
 data() {
@@ -40,10 +40,13 @@ methods: {
 	background: #fff;
 	box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
 	&.drop-enter-active, &.drop-leave-active {
-	  transition: all 0.3s;
+	  transition: all 0.2s line;
 	}
 	&.drop-enter, &.drop-leave-to {
 	  transform: translate3d(0, -100%, 0);
+	}
+	 &.drop-enter {
+		transition: all 0s;
 	}
 }
 </style>

@@ -123,4 +123,26 @@ export const handlePage = {
 			})
 		},
 	}
+};
+
+export const isLogin = {
+
+	methods: {
+		hasLogin() {
+			let data = window.localStorage.data;
+			//console.log(JSON.parse(data).timestamp)
+			//console.log(JSON.parse(data).timestamp >= new Date().getTime(), new Date(JSON.parse(data).timestamp))
+			if (!data) {
+				return null;
+			} else if (JSON.parse(data).timestamp >= new Date().getTime()) {
+				return data;
+			} else {
+				window.localStorage.data = '';
+				return null;
+			}
+		},
+		isLoginRoute(login) {
+			if (!login) this.$router.back();
+		}
+	}
 }

@@ -20,10 +20,9 @@
 <style lang="scss">
 
 .float-window ul  {}
-.float-window li  { width: 60px; height: 60px; line-height: 60px; text-align: center; color: #ff9900; border: 1px solid #f9f9f9; box-sizing: border-box; margin-bottom: 4px; }
-.float-window li p { display: none; }
+.float-window li  { width: 60px; height: 60px; line-height: 60px; text-align: center; color: #ff9900; border: 1px solid #f9f9f9; box-sizing: border-box; margin-bottom: 4px; background: rgba(255, 255, 255, 0.4); overflow: hidden; }
+.float-window li p { opacity: 0; }
 .float-window li:hover p {
-    display: block;
     line-height: 1.2;
     font-size: 18px;
     width: 60px;
@@ -32,11 +31,16 @@
     color: #fff;
     box-sizing: border-box;
     padding-top: 8px;
+    transition: 0.3s ease-in;
+    opacity: 1;
 }
 .float-window li:hover i {
     display: none;
 }
-.float-window li:hover { cursor: pointer; }
+.float-window li:hover { 
+    cursor: pointer;
+}
+
 .float-window li i {
     display: block;
      font-size: 40px;

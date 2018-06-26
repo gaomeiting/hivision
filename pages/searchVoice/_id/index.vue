@@ -46,16 +46,18 @@ export default {
   data() {
     return {
       userId: '',
+      audioId: '',
       userInfo: '',
       
     }
   },
   created() {
     let res = [];
-    console.log(res.length)
+    //console.log()
+    this.audioId = this.$route.query.id;
     this.userId = this.$route.params.id;
-    this._getUserInfo('/api/v1/client/voice/getUserInfo/f8b41ede-3fb0-4355-b69f-9bd567f17cc1');
-    this._getVoiceList('/api/v1/client/voice/getVoiceList')
+    this._getUserInfo(`/api/v1/client/voice/getUserInfo/${this.userId}`);
+    this._getVoiceList(`/api/v1/client/voice/getVoiceList/${this.audioId}`)
   },
   computed: {
     tags() {
