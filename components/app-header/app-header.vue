@@ -10,7 +10,7 @@
                 <li><nuxt-link to="/service">服务介绍</nuxt-link></li>
                 <li><nuxt-link to="/building"> 客户案例 </nuxt-link></li>
                 <li><nuxt-link to="/searchVoice">寻找声音</nuxt-link></li>
-                <li><nuxt-link to="/building">价格估算</nuxt-link></li>
+                <li><nuxt-link to="/computedPrice">价格估算</nuxt-link></li>
             </ul>
             <ol v-if="!loginData">
                 <li><nuxt-link to="/join">配音员入驻</nuxt-link></li>

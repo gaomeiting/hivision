@@ -5,34 +5,128 @@
             <app-header></app-header>
           </div>
       </top-tip>
-  		<div class="nav-wrap">
+  		<div class="nav-wrap" style="background: #edf0ef;">
   			<app-header></app-header>
   		</div>
-      	<div class="group-wrap">
-      		<h3>购买优惠套餐</h3>
-      		<p>根据你的情况，配置适用的主播，享受更优惠的价格</p>
-      		<ul>
-      			<li v-for="(item,index) in 4" :key="index">
-      				<h4>限购一次</h4>
-      				<h2>一万字</h2>
-      				<p>¥200元</p>
-      				<p>2.0元/百字</p>
-      				<p class="btn">购买</p>
-      			</li>
-      		</ul>
-      	</div>
-      	<div class="group-wrap">
-      		<h3>常见问题与解答</h3>
-      		<p>根据你的情况，配置适用的主播，享受更优惠的价格</p>
-      		<ol>
-      			<li v-for="(item,index) in data" :key="index">
-      				<h4>{{item.title}}</h4>
-      				<p>{{item.content}}</p>
-      			</li>
-      		</ol>
-      		<h4>有更多的疑问</h4>
-      		<p>请联系我们</p>
-      	</div>
+      <div class="banner-wrap">
+        <div class="normal-wrap">
+          <div class="left">
+              <h2>
+                1分了解叮当配
+              </h2>
+              <p>
+                专属顾问1 对1服务，全程沟通监理 ，提供专业配音策略建议，将配音需求进行标准化转译，全程质量监管
+              </p>
+          </div>
+          <div class="right">
+            <img src="~assets/img/cartoon.png" alt="">
+          </div>
+        </div>
+      </div>
+      <div class="normal-wrap">
+        <sub-nav :currentIndex="currentIndex" @selectItem="selectItem"></sub-nav>
+        <!-- <div class="sub-nav">
+          <ul>
+            <li class="active">流程介绍</li>
+            <li>关于我们</li>
+          </ul>
+          <div class="t_arrow_top t_tab_arrow" :class="'active_'+currentIndex"></div>
+        </div> -->
+      </div>
+      <div class="icons-wrap">
+        <transition name="fade" mode="out-in">
+          <div class="normal-wrapper"  v-if="currentIndex == 0" :key="0">
+            <ul>
+              <li>
+                <div class="left">
+                  <h2>发布需求</h2>
+                  <p>依据内容原型，进行需求分析，定义用户，针对分析确定产品架构，表现形式等</p>
+                </div>
+                <div class="right">
+                  <img src="http://statics.techuangyi.com/statics/images/bootstrap/new_website_1/process/process_1.jpg">
+                </div>
+              </li>
+              <li>
+
+                <div class="right">
+                  <img src="./process_2.jpg">
+                </div>
+                <div class="left">
+                  <h2>配音员选择</h2>
+                  <p>智能匹配合适的配音员，多种录制风格尝试，剪辑音乐音效精品制作</p>
+                </div>
+              </li>
+              <li>
+                <div class="left">
+                  <h2>严格质量把关</h2>
+                  <p>95%正确率远高于电台节目主持人标准</p>
+                </div>
+                <div class="right">
+                  <img src="http://statics.techuangyi.com/statics/images/bootstrap/new_website_1/process/process_3.jpg">
+                </div>
+              </li>
+              <li>
+
+                <div class="right">
+                  <img src="http://statics.techuangyi.com/statics/images/bootstrap/new_website_1/process/process_3.jpg">
+                </div>
+                <div class="left">
+                  <h2>版权分发</h2>
+                  <p>多家网络电台深度合作，联合主推，增加品牌曝光度</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div class="normal-wrapper me" v-if="currentIndex == 1" :key="1">
+            <ul>
+              <li>
+
+                <div class="right">
+                  <img src="http://statics.techuangyi.com/statics/images/bootstrap/new_website_1/aboutus/about_platform0_1.jpg">
+                </div>
+                <div class="left">
+                  <h2>互联网化的超级配音公司</h2>
+                  <p>叮当配不断倾听和满足客户需求，用专业引导并超越用户需求，用声音为客户创造最大价值。通过不断发现好声音，创造好产品，推动有声行业的价值提升和健康发展，与合作伙伴共同创造好产品，提升产品价值。</p>
+                </div>
+              </li>
+              <li>
+                
+                <div class="right">
+                  <img src="http://statics.techuangyi.com/statics/images/bootstrap/new_website_1/aboutus/about_platform0_1.jpg">
+                </div>
+                
+                <div class="left">
+                  <h2>拥有836+配音员和配音团队的超级组织</h2>
+                  <p>叮当配长期合作的配音员和配音工作室等超过了800多人，在河北、辽宁、浙江、山西等地建立了分公司或合伙人，与多所高校建立了声咖社团，通过互联网将分散的配音团队组合起来，集录制、创作、发行、经纪于一体，已经为上万家客户提供过专业服务。</p>
+                </div>
+              </li>
+              <li>
+                
+                <div class="right">
+                  <img src="http://statics.techuangyi.com/statics/images/bootstrap/new_website_1/aboutus/about_platform0_1.jpg">
+                </div>
+                
+                <div class="left">
+                  <h2>让人们听见更美好的声音</h2>
+                  <p>充分发掘声音梦想者的声音价值，让人们听到这些美好的声音，提升声音梦想者的价值和社会地位。</p>
+                  <p>使美好的声音和有声产业相关工作者，更快捷更容易的把产品输出给每个人，让每个美好的声音都有价值。</p>
+                </div>
+              </li>
+              <li>
+                
+                <div class="right">
+                  <img src="http://statics.techuangyi.com/statics/images/bootstrap/new_website_1/aboutus/about_platform0_1.jpg">
+                </div>
+                
+                <div class="left">
+                  <h2>让声音为内容赋能</h2>
+                  <p>声音的价值是体现在内容之上的。叮当配依赖多年的行业经验以及对声音的热爱，对客户的需求不断研究探索，找出最适合的声音表达方式来为内容赋能。</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </transition>
+      </div>
   </section>
   
 </template>
@@ -40,6 +134,7 @@
 <script>
 import AppHeader from '~/components/app-header/app-header'
 import TopTip from '~/components/top-tip/top-tip'
+import SubNav from '~/components/sub-nav/sub-nav'
 export default {
   head: {
     title: '服务介绍'
@@ -47,19 +142,13 @@ export default {
   data() {
     return {
       navFlag: true,
-      data: [
-        {title: 'Q1.升级版本和充值套餐的区别？', content: '在基础功能之外，版本升级为满足更高要求而设计，如：音频增加背景音乐，多账号管理，收藏及指定主播进行优先服务（每个主播每天的配合服务次数有限，合作资源配置为你的需求倾斜）；充值套餐是主播服务的酬劳，充值相应额度不仅价格较为优惠，并且将能够自动获得版本升级，越多越划算'},
-        {title: 'Q2.如何与主播展开合作？', content: '在你需要服务的时候可以登录叮当配进行下单操作，实时待命的主播将匹配你的需求进行接单，且只有信用及历史评价最高的主播能成功为你服务；如果你需要稳定而且长期合作的主播服务，（高级版）可以收藏服务过的主播，（企业版）可以从主播库存里选择2-5名主播进行签约播报。'},
-        {title: 'Q3.企业如何支付及开具发票？', content: '我们支持微信、支付宝扫码支付、对公转账多种付款方式，在订单生效后可开具发票并邮寄。购买高级版及企业版支持付款 30 天无理由全额退款，可放心购买。'},
-        {title: 'Q4.音频的使用范围？', content: '这完全取决于你，你可以 查阅使用案例 ；下单后你可以直接分享至社交网络平台供收听，也可以下载用于在多个平台发布，包括APP及微信公众号等等。'},
-      ]
+      currentIndex: 0
     }
   },
   mounted() {
     //设置滚动
      window.addEventListener('scroll', () => {
         this.navFlag = document.documentElement.scrollTop > 100 ? false : true;
-        console.log(!this.navFlag)
         if(!this.navFlag) {
           this.$refs.topTip && this.$refs.topTip.show()
         }
@@ -71,20 +160,25 @@ export default {
      });
 
   },
+  methods: {
+    selectItem(index) {
+      this.currentIndex = index;
+    }
+  },
   components: {
   	AppHeader,
-    TopTip
+    TopTip,
+    SubNav
   }
   
 }
 </script>
 
 <style lang="scss" scoped>
-
+@import "~assets/scss/variable";
 section {
-	 
+	
     width: 100%;
-
     .nav-wrap {
     	width: 100%;
     	height: 66px;
@@ -110,99 +204,116 @@ section {
           }
       }
     }
-    & > div {
+    .banner-wrap {
+      padding: 60px 0;
+      background: #edf0ef;
+      > div {
+        display: flex;
+        align-items: center;
+        .left {
+          flex: 0 0 1;
+          h2 {
+            font-size: 38px;
+            line-height: 62px;
+            letter-spacing: 3px;
+            margin-bottom: 26px;
+          }
+          p {
+            font-size: 16px;
+            line-height: 24px;
+            margin-bottom: 40px;
+            padding-right: 2em;
+          }
+          
+        }
+        .right {
+          flex: 0 0 1;
+          img {
+            width: 585px;
+          }
+        }
+      }
+    }
+    .icons-wrap {
+      padding-bottom: 60px;
+      background: #fff;
+      .me {
+        li {
+          padding: 60px 0;
+          border-bottom: 1px solid #f8f8f8;
+          align-items: flex-start;
+          .left {
+            h2 {
+              font-size: 32px;
+            }
+            p {
+              font-size: 14px;
+            }
+          }
+          
+          &:last-child {
+            border-bottom: none;
+          }
+
+        }
+        .right {
+          width: 300px;
+          height: 200px;
+          img {
+            min-height: 200px;
+          }
+        }
+      }
+      ul {
+        div:nth-of-type(2n-1) {
+          h2, p {
+            padding-right: 70px;
+          }
+        }
+        div:nth-of-type(2n) {
+          h2, p {
+            padding-left: 70px;
+          }
+        }
+        li {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 80px 0;
+
+          .left {
+            flex: 1;
+            h2 {
+              font-size: 38px;
+              line-height: 54px;
+              padding-bottom: 24px;
+            }
+            p {
+              font-size: 16px;
+              line-height: 1.8;
+            }
+          }
+          .right {
+              width: 536px;
+              img {
+                width: 100%;
+              }
+          }
+        }
+      }
+      
+    }
+    .normal-wrap {
         width: 1170px;
         margin:  0 auto;
+        overflow: hidden;
     }
-    .group-wrap {
-    	text-align: center;
-    	padding-top: 50px;
-    	margin-bottom: 40px;
-    	> h3 {
-    		font-size: 28px;
-
-    	}
-    	> p {
-    		font-size: 20px;
-    		padding-top: 20px;
-    		margin-bottom: 80px;
-    		&:last-of-type {
-    			font-size: 12px;
-    		}
-    	}
-    	> ul {
-    		display: flex;
-    		justify-content:space-between;
-    		li {
-    			flex: 0 0 274px;
-    			width: 274px;
-    			border: 1px solid #f8f8f8;
-    			padding: 0 20px 20px;
-          cursor: pointer;
-          &:hover h4 {
-            background: #f90;
-          }
-    			h4 {
-    				width: 70%;
-    				height: 32px;
-    				line-height: 32px;
-    				border-radius: 0 0 8px 8px;
-    				border: 1px solid #f8f8f8;
-    				border-top: none;
-    				background: #343434;
-    				color: #fff;
-    				margin-bottom: 34px;
-    				margin-left: 15%;
-    			}
-    			h2 {
-    				font-size: 26px;
-    				padding-bottom: 8px;
-    				margin-bottom: 8px;
-    				border-bottom: 1px solid #f8f8f8;
-    			}
-    			p {
-    				font-size: 16px;
-    				&:first-of-type {
-						font-size: 22px;
-						padding-bottom: 68px;
-    				}
-    				&:nth-of-type(2) {
-    					color: #c43b3a;
-    					margin-bottom: 14px;
-    				}
-    				&.btn {
-						line-height: 40px;
-						height: 40px;
-						width: 90%;
-						border: 1px solid #f8f8f8;
-						font-size: 18px;
-						border-radius: 4px;
-						margin-left: 5%;
-    				}
-    			}
-    		}
-    	}
-    	> ol {
-    		display: flex;
-    		flex-wrap: wrap;
-    		li {
-    			flex: 0 0 585px;
-    			border-bottom:  1px solid #f8f8f8;
-    			padding-right: 78px;
-    			margin-bottom: 30px;
-    			h4 {
-    				text-align: left;
-    				font-size: 22px;
-    				padding-bottom: 1em;
-    			}
-    			p {
-    				text-align: left;
-    				line-height: 1.8;
-    				padding-bottom: 1.5em;
-    			}
-    		}
-    	}
+    .normal-wrapper {
+        width: 970px;
+        margin:  0 auto;
+        overflow: hidden;
     }
+    
 }
 
 

@@ -118,11 +118,11 @@ export default {
       this.keywords = val;
       this.currentPage = 1;
       let keywords = val;
-      console.log(this.keywords, "queryChange")
+      //console.log(this.keywords, "queryChange")
       this._getData('/api/audio/search', {keywords});
     },
     switchLabels(labels) {
-      console.log("labels switchLabels")
+     //console.log("labels switchLabels")
       this.keywords = '';
       this.$refs.searchBox.clear()
       this.loading = true;

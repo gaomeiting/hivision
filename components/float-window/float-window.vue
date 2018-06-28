@@ -10,8 +10,10 @@
                 <p>在 线 <br>客 服</p>
             </li>
             <li>
+                <a href="/computedPrice">
                 <i class="iconfont icon-jisuanqi"></i>
                 <p>价 格 <br>计 算</p>
+                </a>
             </li>
         </ul>
     </section>
@@ -21,6 +23,7 @@
 
 .float-window ul  {}
 .float-window li  { width: 60px; height: 60px; line-height: 60px; text-align: center; color: #ff9900; border: 1px solid #f9f9f9; box-sizing: border-box; margin-bottom: 4px; background: rgba(255, 255, 255, 0.4); overflow: hidden; }
+.float-window li a { color: #f90; }
 .float-window li p { opacity: 0; }
 .float-window li:hover p {
     line-height: 1.2;

@@ -6,7 +6,8 @@ export const audioHandles = {
 	data() {
 		return {
 			currentSongIndex: 0,
-			percent: 0
+			percent: 0,
+			currentSongChange: true
 		}
 	},
 	computed: {
@@ -27,24 +28,31 @@ export const audioHandles = {
 			this.percent = 0;
 		},
 		togglePlaying(index = this.currentSongIndex) {
+			if (this.currentSongIndex === index) {
+				this.currentSongChange = false;
+			} else {
+				this.percent = 0;
+			}
 			this.currentSongIndex = index;
 			if (!this.list[index].playing) {
 				this._normalData(this.list);
 				setTimeout(() => {
-					const audio = this.$refs.audiome;
-					if (audio.currentTime) audio.currentTime = 0;
+					const audio = this.$refs.audio;
+					if (audio.currentTime && this.currentSongChange) {
+						audio.currentTime = 0;
+					}
 					audio.play()
 					//设置时间
 				}, 30)
 			} else {
-				this.$refs.audiome.pause()
+				this.$refs.audio.pause()
 			}
 			this.list[index].playing = !this.list[index].playing
 		},
 		setSongProgress(percent, flag, index) {
 			this.currentSongIndex = index;
-			//console.log(this.$refs.audiome.duration, "duration")
-			const audio = this.$refs.audiome;
+			//console.log(this.$refs.audio.duration, "duration")
+			const audio = this.$refs.audio;
 			if (audio.currentTime == percent * audio.duration) {
 				return;
 			}
@@ -57,17 +65,16 @@ export const audioHandles = {
 
 				if (!this.list[this.currentSongIndex]['playing']) {
 					this.togglePlaying()
-					console.log(audio.currentTime, audio.duration, this.percent, "setSongProgress")
 				}
 			}
 		},
 		updateTime(e) {
 			if (!this.songReady) return;
 			let currentTime = e.target.currentTime | 0;
-			let totalTime = this.$refs.audiome.duration;
+			let totalTime = this.$refs.audio.duration;
 			this.currentTime = this.format(currentTime);
 			this.percent = currentTime / totalTime;
-			console.log(this.percent, e.target.currentTime, totalTime, "updateTime")
+			//console.log(this.percent, e.target.currentTime, totalTime, "updateTime")
 		},
 		format(n) {
 			let m = 0;
@@ -88,6 +95,14 @@ export const audioHandles = {
 				res.push(item)
 			})
 			return res;
+		},
+		_pad(num, n = 2) {
+			let len = num.toString().length
+			while (len < n) {
+				num = '0' + num
+				len++
+			}
+			return num
 		}
 	}
 };
@@ -130,6 +145,7 @@ export const isLogin = {
 	methods: {
 		hasLogin() {
 			let data = window.localStorage.data;
+			console.log(data, "localStorage")
 			//console.log(JSON.parse(data).timestamp)
 			//console.log(JSON.parse(data).timestamp >= new Date().getTime(), new Date(JSON.parse(data).timestamp))
 			if (!data) {
@@ -137,6 +153,7 @@ export const isLogin = {
 			} else if (JSON.parse(data).timestamp >= new Date().getTime()) {
 				return data;
 			} else {
+				console.log("过期", JSON.parse(data).timestamp, new Date().getTime())
 				window.localStorage.data = '';
 				return null;
 			}

@@ -24,7 +24,7 @@ created() {
 watch : {
 	percent(newPercent) {
 		this._initProgress(newPercent)
-		console.log(newPercent, "newPercent")
+		//console.log(newPercent, "newPercent")
 	}
 },
 methods: {

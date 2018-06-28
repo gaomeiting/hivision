@@ -14,7 +14,7 @@
         </div>
         <div class="list-wrap">
           <voice-list :list="list" :loading="loading" :currentSongIndex="currentSongIndex" @switchAudio="togglePlaying" :percent="percent" @setSongProgress="setSongProgress"></voice-list>
-          <audio :src="currentSong" ref="audiome" @play="ready" @error="error" @timeupdate="updateTime" @ended="end"></audio>
+          <audio :src="currentSong" ref="audio" @play="ready" @error="error" @timeupdate="updateTime" @ended="end"></audio>
           <div class="pagination-wrap">
               <div class="page-wrap" v-if="list.length != 0">
                 <el-pagination
@@ -89,14 +89,6 @@ export default {
       })
       console.log(res, "array")
       return res;
-    },
-    _pad(num,n=2){
-      let len=num.toString().length
-      while(len<n) {
-        num='0' +num
-        len++
-      }
-      return num
     }
   },
   components: {

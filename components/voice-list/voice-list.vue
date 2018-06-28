@@ -62,7 +62,7 @@ export default {
       for(let i = 0; i < len; i++) {
         res.push(0)
       }
-      console.log(this.percent, "voice-list")
+      //console.log(this.percent, "voice-list")
       res[this.currentSongIndex] = this.percent;
       return res;
     }
