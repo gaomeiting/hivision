@@ -48,7 +48,7 @@ export default function(num, type, language, level) {
 		console.log(time, minMoney, maxMoney);
 	} else if (num > 100 && num < 500) {
 		let X = Math.ceil((num - baseCountTime) / 100);
-		time = time + price * X;
+		time = time + 2 * X;
 		minMoney = money * (1 - rate) * (1 - discount);
 		maxMoney = money * (1 + rate) * (1 + discount);
 		console.log(time, minMoney, maxMoney);
