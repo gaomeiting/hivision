@@ -30,11 +30,15 @@
         </div>
         
       </div>
+      <div class="float-window-wrap">
+            <float-window></float-window>
+      </div>
   </section>
   
 </template>
 
 <script>
+import FloatWindow from '~/components/float-window/float-window'
 import VoiceList from '~/components/voice-list-l/voice-list-l'
 import { audioHandles, handlePage } from '~/assets/js/mixin'
 import { GetData } from '~/api/api'
@@ -92,7 +96,8 @@ export default {
     }
   },
   components: {
-  	VoiceList
+  	VoiceList,
+    FloatWindow
   }
   
 }
@@ -100,6 +105,12 @@ export default {
 
 <style lang="scss" scoped>
 @import "~assets/scss/variable";
+.float-window-wrap {
+    position: fixed;
+    bottom: 100px;
+    width: 60px;
+    right: 10px;
+}
 section {
 	width: 100%;
   .pagination-wrap {

@@ -33,12 +33,15 @@
 
     </div>
       </div>
-      
+    <div class="float-window-wrap">
+        <float-window></float-window>
+    </div>  
   </section>
   
 </template>
 
 <script>
+import FloatWindow from '~/components/float-window/float-window'
 import AppHeader from '~/components/app-header/app-header'
 import SearchBox from '~/components/search-box/search-box'
 import LabelPanel from '~/components/label-panel/label-panel'
@@ -164,7 +167,8 @@ export default {
     SearchBox,
     LabelPanel,
     VoiceList,
-    TopTip
+    TopTip,
+    FloatWindow
   }
   
 }
@@ -172,6 +176,12 @@ export default {
 
 <style lang="scss" scoped>
 @import "~assets/scss/variable";
+.float-window-wrap {
+    position: fixed;
+    bottom: 100px;
+    width: 60px;
+    right: 10px;
+}
 section {
   
     width: 100%;

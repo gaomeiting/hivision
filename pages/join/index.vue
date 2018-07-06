@@ -62,11 +62,15 @@
           <a href="/user/login" class="btn">配音员入驻</a>
         </div>
       </div>
+      <div class="float-window-wrap">
+            <float-window></float-window>
+      </div>
   </section>
   
 </template>
 
 <script>
+import FloatWindow from '~/components/float-window/float-window'
 import AppHeader from '~/components/app-header/app-header'
 import TopTip from '~/components/top-tip/top-tip'
 export default {
@@ -95,7 +99,8 @@ export default {
   },
   components: {
   	AppHeader,
-    TopTip
+    TopTip,
+    FloatWindow
   }
   
 }
@@ -103,6 +108,12 @@ export default {
 
 <style lang="scss" scoped>
 @import "~assets/scss/variable";
+.float-window-wrap {
+    position: fixed;
+    bottom: 100px;
+    width: 60px;
+    right: 10px;
+}
 section {
 	
     width: 100%;

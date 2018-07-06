@@ -10,8 +10,8 @@
   </div> 
   <div class="normal-wrapper">
     <div class="title">
-      <h3>Good Design Is Good Business</h3>
-      <p>— IBM 前 CEO 小沃森（Thomas J. Watson Jr.）</p>
+      <h3>Connecting people to global information</h3>
+      <p>through spoken audio</p>
     </div>
     <div class="content">
       <div class="left">

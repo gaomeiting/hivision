@@ -12,14 +12,17 @@
         <div class="normal-wrap">
           <div class="left">
               <h2>
-                1分了解叮当配
+                1分钟了解叮当配
               </h2>
               <p>
-                专属顾问1 对1服务，全程沟通监理 ，提供专业配音策略建议，将配音需求进行标准化转译，全程质量监管
+                专属顾问1 对1服务<br>
+                全程沟通监理<br>
+                提供专业配音策略建议<br>
+                将配音需求进行标准化转译，全程质量监管
               </p>
           </div>
           <div class="right">
-            <img src="~assets/img/cartoon.png" alt="">
+            <img src="~assets/img/20151016105520279.png" alt="">
           </div>
         </div>
       </div>
@@ -82,7 +85,7 @@
               <li>
 
                 <div class="right">
-                  <img src="http://statics.techuangyi.com/statics/images/bootstrap/new_website_1/aboutus/about_platform0_1.jpg">
+                  <img src="~assets/img/20151020231213361.png">
                 </div>
                 <div class="left">
                   <h2>互联网化的超级配音公司</h2>
@@ -92,7 +95,7 @@
               <li>
                 
                 <div class="right">
-                  <img src="http://statics.techuangyi.com/statics/images/bootstrap/new_website_1/aboutus/about_platform0_1.jpg">
+                  <img src="~assets/img/141A6685.jpg">
                 </div>
                 
                 <div class="left">
@@ -127,11 +130,15 @@
           </div>
         </transition>
       </div>
+      <div class="float-window-wrap">
+            <float-window></float-window>
+      </div>
   </section>
   
 </template>
 
 <script>
+import FloatWindow from '~/components/float-window/float-window'
 import AppHeader from '~/components/app-header/app-header'
 import TopTip from '~/components/top-tip/top-tip'
 import SubNav from '~/components/sub-nav/sub-nav'
@@ -168,7 +175,8 @@ export default {
   components: {
   	AppHeader,
     TopTip,
-    SubNav
+    SubNav,
+    FloatWindow
   }
   
 }
@@ -176,6 +184,12 @@ export default {
 
 <style lang="scss" scoped>
 @import "~assets/scss/variable";
+.float-window-wrap {
+    position: fixed;
+    bottom: 100px;
+    width: 60px;
+    right: 10px;
+}
 section {
 	
     width: 100%;
@@ -211,7 +225,7 @@ section {
         display: flex;
         align-items: center;
         .left {
-          flex: 0 0 1;
+          flex: 1;
           h2 {
             font-size: 38px;
             line-height: 62px;
@@ -220,16 +234,16 @@ section {
           }
           p {
             font-size: 16px;
-            line-height: 24px;
+            line-height: 2;
             margin-bottom: 40px;
             padding-right: 2em;
           }
           
         }
         .right {
-          flex: 0 0 1;
+          flex: 0 0 600px;
           img {
-            width: 585px;
+            width: 600px;
           }
         }
       }
@@ -307,11 +321,13 @@ section {
         width: 1170px;
         margin:  0 auto;
         overflow: hidden;
+        
     }
     .normal-wrapper {
         width: 970px;
         margin:  0 auto;
         overflow: hidden;
+
     }
     
 }

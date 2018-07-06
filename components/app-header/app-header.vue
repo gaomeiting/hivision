@@ -13,7 +13,7 @@
                 <li><nuxt-link to="/computedPrice">价格估算</nuxt-link></li>
             </ul>
             <ol v-if="!loginData">
-                <li><nuxt-link to="/join">配音员入驻</nuxt-link></li>
+                <li><a href="/join">配音员入驻</a></li>
                 <li><a href="/user/regist">注册</a></li>
                 <li><a href="/user/login">登录</a></li>
             </ol>
@@ -28,7 +28,6 @@
                 <li><nuxt-link to="/podcast/">我的订单</nuxt-link></li>
                 <li class="img-wrap">
                     <img :src="loginData.userInfo.avatar">
-                     
                 </li>
             </ol>
             <!-- <ol>
@@ -75,6 +74,7 @@ nav {
         margin:  0 auto;
         padding-top: 16px;
         display: flex;
+        aligin-items: center;
         figure { 
             width: 128px;
             height: 40px;
@@ -86,17 +86,28 @@ nav {
         }
         ol, ul {
             display: flex;
+            font-size: 16px;
         }
         ol { 
             width: 300px;
+            aligin-items: flex-start;
+            a {
+                font-size: 14px;
+                line-height: 1em;
+            }
             li {
                 &:first-child { 
-                    border: 1px solid #ff9900;
-                    padding:  0 0.5em;
-                    line-height: 24px;
-                    height: 24px;
-                    border-radius: 2px;
-                    margin-top: 6px;
+                    
+                    a {
+                        display: inline-block;
+                        padding: 0.4em 0.5em;
+                        border: 1px solid #ff9900;
+                        border-radius: 2px;
+                        &:hover {
+                            background-color: rgb(255, 153, 0);
+                            color: #eee;
+                        }
+                    }
                 }
                 &.img-wrap {
                     width: 32px;

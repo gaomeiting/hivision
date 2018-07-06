@@ -15,14 +15,45 @@
                 <p>价 格 <br>计 算</p>
                 </a>
             </li>
+            <transition name="fade" mode="out-in">
+            <li v-if="flag" @click.stop.prevent="scrollTop" :key="0">
+                <a href="/computedPrice">
+                <i class="iconfont icon-huidaodingbu"></i>
+                <p>回 到 <br>顶 部</p>
+                </a>
+            </li>
+            <li v-else style="opacity: 0" :key="1">
+                <p>回 到 <br>顶 部</p>
+            </li>
+            </transition>
         </ul>
     </section>
 </template>
+<script type="text/ecmascript-6">
+    export default {
+        data() {
+            return {
+                flag: false
+            }
+        },
+        mounted() {
+            //设置滚动
+             window.addEventListener('scroll', () => {
+                this.flag = document.documentElement.scrollTop > 400 ? true : false;
+              });
 
+        },
+        methods: {
+            scrollTop() {
+                document.documentElement.scrollTop = 0;
+            }
+        }
+    }
+</script>
 <style lang="scss">
 
 .float-window ul  {}
-.float-window li  { width: 60px; height: 60px; line-height: 60px; text-align: center; color: #ff9900; border: 1px solid #f9f9f9; box-sizing: border-box; margin-bottom: 4px; background: rgba(255, 255, 255, 0.4); overflow: hidden; }
+.float-window li  { width: 60px; height: 60px; line-height: 60px; text-align: center; color: #ff9900; border: 1px solid rgba(255,153,0,.4); box-sizing: border-box; margin-bottom: 4px; background: rgb(255, 255, 255); overflow: hidden; }
 .float-window li a { color: #f90; }
 .float-window li p { opacity: 0; }
 .float-window li:hover p {

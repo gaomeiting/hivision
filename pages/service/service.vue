@@ -33,6 +33,9 @@
       		<h4>有更多的疑问</h4>
       		<p>请联系我们</p>
       	</div>
+        <div class="float-window-wrap">
+              <float-window></float-window>
+        </div>
   </section>
   
 </template>
@@ -40,6 +43,7 @@
 <script>
 import AppHeader from '~/components/app-header/app-header'
 import TopTip from '~/components/top-tip/top-tip'
+import FloatWindow from '~/components/float-window/float-window'
 export default {
   head: {
     title: '服务介绍'
@@ -73,14 +77,20 @@ export default {
   },
   components: {
   	AppHeader,
-    TopTip
+    TopTip,
+    FloatWindow
   }
   
 }
 </script>
 
 <style lang="scss" scoped>
-
+.float-window-wrap {
+    position: fixed;
+    bottom: 100px;
+    width: 60px;
+    right: 10px;
+}
 section {
 	 
     width: 100%;
