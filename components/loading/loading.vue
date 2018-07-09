@@ -1,34 +1,30 @@
 <template>
-    <div class="loading-page" v-if="loading"><p>Loading...</p></div>
+  <div class="loading">
+    <img width="24" height="24" src="./loading.gif">
+    <p class="desc">{{title}}</p>
+  </div>
 </template>
-
-<style scoped>
-.loading-page {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(255, 255, 255, 0.8);
-  text-align: center;
-  padding-top: 200px;
-  font-size: 30px;
-  font-family: sans-serif;
-}
-</style>
-
-<script>
-export default {
-  data: () => ({
-    loading: false
-  }),
-  methods: {
-    start () {
-      this.loading = true
-    },
-    finish () {
-      this.loading = false
+<script type="text/ecmascript-6">
+  export default {
+    props: {
+      title: {
+        type: String,
+        default: '正在载入...'
+      }
     }
   }
-}
 </script>
+<style scoped lang="scss" rel="stylesheet/scss">
+  @import "~assets/scss/variable";
+
+.loading {
+	width: 100%;
+ 	text-align: center;
+	 .desc {
+		line-height: 20px;
+	    	font-size: $font-size-small;
+	    	color: $color-text-l;
+	}
+}
+    
+</style>

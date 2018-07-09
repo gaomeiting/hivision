@@ -16,6 +16,6 @@ export default () => {
 		mutations,
 		state,
 		strict: debug,
-		plugins: debug ? [ createLogger() ] : []
+		plugins: debug ? [createLogger()] : []
 	})
 }

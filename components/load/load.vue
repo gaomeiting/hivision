@@ -1,5 +1,5 @@
 <template>
-  <div class="loading">
+  <div class="loading" v-if="0">
     <img width="24" height="24" src="./loading.gif">
     <p class="desc">{{title}}</p>
   </div>

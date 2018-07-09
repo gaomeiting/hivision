@@ -1,5 +1,7 @@
-const state= {
+const state = {
 	token: null,
-	expiresIn: 0
+	city: {
+		NAME: '选择城市'
+	}
 }
 export default state;

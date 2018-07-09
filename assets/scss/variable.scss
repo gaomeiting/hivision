@@ -1,15 +1,15 @@
 // 颜色定义规范
-$color-background : rgba(0,0,0,.1);
-$color-background-d : #24292e;
+$color-background : #f8f8f8;
+$color-background-d : #fff;
 $color-highlight-background : #0366de;
 $color-dialog-background : #666;
-$color-theme : #3cc8b4;
-$color-theme-d : rgba(255, 205, 49, 0.5);
-$color-sub-theme : #d93f30;
-$color-text : #aaa;
-$color-text-d : #666;
-$color-text-l : rgba(0, 0, 0, 0.5);
-$color-text-ll : rgba(0, 0, 0, 0.8);
+$color-theme : #FFB63C;
+$color-theme-d : #F2F2F2;
+$color-sub-theme : #6AD2FF;
+$color-text : #999;
+$color-text-d : #333;
+$color-text-l : #666;
+$color-text-ll : #ccc;
 
 //字体定义规范
 $font-size-small-s : 10px;
@@ -18,4 +18,3 @@ $font-size-medium : 14px;
 $font-size-medium-x : 16px;
 $font-size-large : 18px;
 $font-size-large-x : 22px;
-$font-size-large-xx : 36px;

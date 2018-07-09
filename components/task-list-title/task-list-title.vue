@@ -1,0 +1,113 @@
+<template>
+<transition name="drop">
+<div class="list-wrap">
+	<ul>
+		<li @click.stop.prevent="goNext(123)">
+			<div class="title">
+				<figure>
+					<img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1530695406815&di=df1b14bcc63249b1f2a4f03da398fded&imgtype=0&src=http%3A%2F%2Fc.hiphotos.baidu.com%2Fimage%2Fpic%2Fitem%2Fcefc1e178a82b901e004bbc17f8da9773812ef93.jpg" alt="">
+				</figure>
+				<p>小猫小狗小小猫</p>
+				<p>1小时前发布</p>
+				<p class="active">进行中</p>
+				
+			</div>
+			<p class="content">男生，专题XXXXXXXXXXXXXXXXXXXXXXXXXXX语速正常，不要太慢太缓。</p>
+			<div class="foot">
+				<p>
+					<span>普通话</span>
+					<span>男性</span>
+					<span>标准语速</span>
+				</p>
+				<p>18人已参与</p>
+			</div>
+		</li>
+		
+	</ul>
+</div>
+</transition>
+</template>
+
+<script type="text/ecmascript-6">
+export default {
+props: {
+	list: {
+		type: Array,
+		default() {
+			return []
+		}
+	}
+},
+methods: {
+	goNext(id) {
+		this.$router.push(`/task/${id}`)
+	}
+}
+}
+</script>
+
+<style scoped lang="scss" rel="stylesheet/scss">
+@import "~assets/scss/variable";
+.list-wrap {
+	ul {
+		li {
+			border-bottom: 1px solid $color-text-ll;
+			border-radius: 4px;
+			background: $color-background-d;
+			padding: 10px;
+			margin-bottom: 10px;
+			&:last-child {
+				margin-bottom: 0;
+			}
+			.title {
+				display: flex;
+				align-items: center;
+				flex-wrap: wrap;
+				figure {
+					width: 22px;
+					height: 22px;
+					overflow: hidden;
+					border-radius: 25px;
+					img {
+						width: 100%;
+						min-height: 100%;
+					}
+				}
+				p {
+					padding-left: 0.4em;
+					white-space: nowrap;
+					&:nth-child(3) {
+						flex: 1;
+						text-align: right;
+					}
+					&.active {
+						color: $color-theme;
+					}
+				}
+			}
+			.content {
+				line-height: 1.5;
+				color: $color-text-d;
+				padding: 8px 0 16px;
+
+			}
+			.foot {
+				display: flex;
+				align-items: center;
+				p {
+					span {
+						border: 1px solid $color-text-ll;
+						border-radius: 4px;
+						padding: 0 0.5em;
+					}
+					&:last-child {
+						flex: 1;
+						text-align: right;
+					}
+				}
+			}
+		}
+	}
+}
+
+</style>

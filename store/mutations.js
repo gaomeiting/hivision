@@ -2,13 +2,15 @@ import * as types from "./mutation-types";
 
 const mutations = {
 	[types.SET_LOGIN](state, data) {
-		localStorage.token = data.token;
-		localStorage.expiresIn = data.expiresIn;
-		state.token=data;
+		localStorage.token = data;
+		state.token = data;
 	},
-    [types.SET_LOGOUT](state) {
-        localStorage.removeItem('token');
-        state.token = null
-    }
+	[types.SET_LOGOUT](state) {
+		localStorage.removeItem('token');
+		state.token = null
+	},
+	[types.SET_CITY](state, city) {
+		state.city = city
+	}
 }
 export default mutations

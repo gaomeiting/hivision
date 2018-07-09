@@ -2,12 +2,12 @@
 <div class="search-box">
 	<i class="iconfont icon-sousuo icon-search"></i>
 	<input ref="query" class="box" v-model="query" :placeholder="placeholder"/>
-	<i v-show="query" @click.stop.prevent="clear" class="iconfont icon-chahao"></i>	
+	<i v-show="query" @click.stop.prevet="clear" class="iconfont icon-shanchu_ icon-dismiss"></i>	
 </div>
 </template>
 
 <script type="text/ecmascript-6">
-import { debounce } from "~/assets/js/until";
+import { debounce } from "common/js/until";
 export default {
 	props: {
 		placeholder: {

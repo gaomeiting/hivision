@@ -34,7 +34,7 @@ module.exports = {
    ** Customize the progress bar color
    */
   //loading: { color: '#3B8070' },
-  loading: '~/components/loading/loading.vue',
+  loading: '~/components/load/load.vue',
   css: [{
     src: '~assets/scss/index.scss'
   }, {
@@ -44,6 +44,12 @@ module.exports = {
     src: '@/plugins/element-ui'
   }, {
     src: '~/plugins/axios'
+  }, {
+    src: '~plugins/scroll.js',
+    ssr: false
+  }, {
+    src: '~plugins/weixin-js-sdk.js',
+    ssr: false
   }],
   modules: [
     '@nuxtjs/axios'
@@ -55,7 +61,7 @@ module.exports = {
   },
   proxy: {
     "/api": {
-      target: "http://192.168.100.210:8080/api",
+      target: "http://192.168.100.59:8080/api",
       pathRewrite: {
         "^/api": ""
       }

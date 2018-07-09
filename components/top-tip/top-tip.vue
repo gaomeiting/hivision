@@ -1,4 +1,4 @@
-d<template>
+<template>
 <transition name="drop">
 <div class="top-tip" v-if="flag">
 	<slot></slot>
@@ -11,7 +11,7 @@ export default {
 props: {
 	delay: {
 		type: Number,
-		default: 3000
+		default: 2000
 	}
 },
 data() {
@@ -22,7 +22,10 @@ data() {
 methods: {
 	show() {
 		this.flag=true;
-		
+		clearTimeout(this.timer)
+		this.timer=setTimeout(()=>{
+			this.flag=false
+		}, this.delay)
 	},
 	hide() {
 		this.flag=false;
@@ -32,21 +35,20 @@ methods: {
 </script>
 
 <style scoped lang="scss" rel="stylesheet/scss">
+@import "~assets/scss/variable";
+
 .top-tip {
 	position: fixed;
 	top: 0;
-	width: 100%;
+	left: 0;
+	right: 0;
 	z-index: 500;
-	background: #fff;
-	box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
+	background: $color-theme;
 	&.drop-enter-active, &.drop-leave-active {
-	  transition: all 0.2s line;
-	  opacity: 1;
+	  transition: all 0.3s;
 	}
 	&.drop-enter, &.drop-leave-to {
 	  transform: translate3d(0, -100%, 0);
-	  opacity: 0;
 	}
-	
 }
 </style>

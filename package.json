@@ -7,7 +7,7 @@
   "config": {
     "nuxt": {
       "host": "0.0.0.0",
-      "port": "3003"
+      "port": "8080"
     }
   },
   "scripts": {
@@ -22,12 +22,12 @@
     "@nuxtjs/axios": "^5.3.1",
     "ajv": "^6.5.0",
     "element-ui": "^2.4.1",
-    "iview": "^2.14.1",
     "nuxt": "^1.4.0",
-    "qs": "^6.5.2",
-    "vue-antd-ui": "^0.5.4"
+    "qs": "^6.5.2"
   },
   "devDependencies": {
+    "weixin-js-sdk": "^1.2.0",
+    "better-scroll": "^0.4.0",
     "babel-eslint": "^8.2.1",
     "babel-plugin-component": "^1.1.1",
     "eslint": "^4.15.0",
