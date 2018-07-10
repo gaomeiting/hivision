@@ -14,7 +14,7 @@
 				</p>
 				<p class="item">身份证号</p>
 				<p class="item">
-					<input type="text" v-model="form.identity" placeholder="请输入身份证号">
+					<input type="text" v-model="form.identity" placeholder="请输入身份证号" @blur="settingStylesTags(form.identity)">
 				</p>
 				<p class="item">选择城市</p>
 				<p class="item">
@@ -46,7 +46,7 @@ import { mapGetters } from 'vuex'
 import SubTitle from '~/components/htitle/htitle'
 import TopTip from '~/components/top-tip/top-tip'
 import { Message } from 'element-ui'
-import { postData } from '~/api/api'
+import { getData, postData } from '~/api/api'
 	export default {
 		data() {
 			return {
@@ -74,7 +74,7 @@ import { postData } from '~/api/api'
 					{ val: '0.5 ~ 1.0 小时' },
 					{ val: '1.0 ~ 2.0 小时' },
 					{ val: '2.0 ~ 4.0 小时' },
-					{ val: '4.0 ~ <8 class="0"></8> 小时' },
+					{ val: '4.0 ~ 8.0 小时' },
 				],
 				indexs: {
 					times: null,
@@ -84,7 +84,13 @@ import { postData } from '~/api/api'
 				
 			}
 		},
-		
+		created() {
+			getData('/api/wechat/userinfo.json').then(res => {
+				console.log(res)
+			}).catch(err => {
+				console.log(err)
+			})
+		},
 		computed: {
 			...mapGetters(['city'])
 		},
@@ -147,12 +153,57 @@ import { postData } from '~/api/api'
 					  record_time: this.form.time,
 					  styles: this.form.styles.join(',')
 					}).then(res => {
-						console.log(res)
+						this._switchPage(res)
 					}).catch(err => {
 						console.log(err)
 					})
 				}
 				console.log(this.form.time, this.error)
+			},
+			testIndentity(indentity) {
+				let isIDCard=/^[1-9]\d{5}(18|19|20)\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/
+				if(isIDCard.test(indentity) == false) {
+					this.error = '身份证号格式不正确'
+					this.$refs.topTip.show()
+					return false
+				}
+				else {
+					return true
+				}
+			},
+			settingStylesTags(indentity) {
+				let flag = this.testIndentity(indentity);
+				if(flag) {
+					if(!(indentity.substr(-2, 1) % 2)) {
+						this.tags = [
+							{ val: '新闻播报' },
+							{ val: '大气稳重' },
+							{ val: '家常聊天' },
+							{ val: '激昂气势' },
+							{ val: '悠扬抒情' },
+							{ val: '动感活力' },
+							{ val: '冷淡感性' },
+							{ val: '走心煽情' },
+							{ val: '浑厚沧桑' },
+							{ val: '甜美可爱' }
+						]
+					}
+					else {
+						this.tags = [
+							{ val: '新闻播报' },
+							{ val: '大气稳重' },
+							{ val: '家常聊天' },
+							{ val: '激昂气势' },
+							{ val: '悠扬抒情' },
+							{ val: '动感活力' },
+							{ val: '庄重威严' },
+							{ val: '冷淡感性' },
+							{ val: '走心煽情' },
+							{ val: '浑厚沧桑' }
+						]
+					}
+				}
+
 			},
 			setTimeTag(index) {
 				this.indexs.times = index;
@@ -201,7 +252,15 @@ import { postData } from '~/api/api'
 				return  list.findIndex(item => {
 					return item === obj;
 				})
-			}
+			},
+			_switchPage(id) {
+	        	if(!id) {
+	        		this.$router.push('/bind')
+	        	}
+	        	else {
+	        		this.$router.push('/demand')
+	        	}
+	        }
 
 		},
 		components: {

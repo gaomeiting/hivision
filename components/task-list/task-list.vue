@@ -1,32 +1,44 @@
 <template>
 <div class="list-wrap">
-	<ul>
-		<li @click.stop.prevent="goNext(123)">
+	<ul v-if="list.length > 0">
+		<li v-for="(item, index) in list" :key="index" @click.stop.prevent="goNext(item.id)">
 			<div class="title">
 				<figure>
 					<img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1530695406815&di=df1b14bcc63249b1f2a4f03da398fded&imgtype=0&src=http%3A%2F%2Fc.hiphotos.baidu.com%2Fimage%2Fpic%2Fitem%2Fcefc1e178a82b901e004bbc17f8da9773812ef93.jpg" alt="">
 				</figure>
-				<p>小猫小狗小小猫</p>
-				<p>1小时前发布</p>
-				<p class="active">进行中</p>
+				<p>{{item.client.clientName}}</p>
+				<p>{{item.createOn}}<!-- 1小时前发布 --></p>
+				<p :class="{active: item.status === '进行中'}">{{item.status}}</p>
 				
 			</div>
-			<p class="content">男生，专题XXXXXXXXXXXXXXXXXXXXXXXXXXX语速正常，不要太慢太缓。</p>
+			<p class="content">{{item.content}}</p>
 			<div class="foot">
 				<p>
-					<span>普通话</span>
-					<span>男性</span>
-					<span>标准语速</span>
+					<span>{{item.requirements.gender}}</span> &nbsp;
+					<span>{{item.requirements.speed}}</span> &nbsp;
+					<span>{{item.requirements.styles}}</span>
 				</p>
-				<p>18人已参与</p>
+				<p v-if="item.stat.responseCnt">{{item.stat.responseCnt}}人已参与</p>
+				<p v-else>&nbsp;</p>
 			</div>
 		</li>
 		
 	</ul>
+	<div v-if="list.length > 0">
+		<loading v-if="hasMore"></loading>
+		<p class="text-center" v-else>我是有底线的~~</p>
+	</div>
+	<div v-else class="pre-wrap">
+		<no-result v-if="!loading"></no-result>
+		<loading v-else></loading>
+	</div>
 </div>
 </template>
 
 <script type="text/ecmascript-6">
+
+import NoResult from '~/components/no-result/no-result';
+import Loading from '~/components/loading/loading';
 export default {
 props: {
 	list: {
@@ -34,12 +46,24 @@ props: {
 		default() {
 			return []
 		}
+	},
+	loading: {
+		type: Boolean,
+		default: true
+	},
+	hasMore: {
+		type: Boolean,
+		default: true
 	}
 },
 methods: {
 	goNext(id) {
-		this.$router.push(`/task/${id}`)
+		this.$router.push(`/demand/${id}`)
 	}
+},
+components: {
+	NoResult,
+	Loading
 }
 }
 </script>
@@ -47,6 +71,10 @@ methods: {
 <style scoped lang="scss" rel="stylesheet/scss">
 @import "~assets/scss/variable";
 .list-wrap {
+	.text-center {
+		text-align: center;
+		line-height: 1.8;
+	}
 	ul {
 		li {
 			border: 1px solid $color-text-ll;
@@ -97,6 +125,7 @@ methods: {
 						border: 1px solid $color-text-ll;
 						border-radius: 4px;
 						padding: 0 0.5em;
+						font-size: $font-size-small;
 					}
 					&:last-child {
 						flex: 1;

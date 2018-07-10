@@ -3,10 +3,10 @@
 	<scroll class="page">
 		<div class="form-wrap">
 			<div class="task-list-wrap">
-				<task-title></task-title>
+				<task-title :list="list"></task-title>
 			</div>
-			<part title="试音内容" paragraph="如需发送更清晰的音频样音，请发邮箱到XXXXX，发送时请注明你的姓名、手机号。"></part>
-			<submit-btns :num="num"></submit-btns>
+			<part v-if="list[0] && list[0].status=='进行中'" title="试音内容" paragraph="如需发送更清晰的音频样音，请发邮箱到XXXXX，发送时请注明你的姓名、手机号。"></part>
+			<submit-btns v-if="list[0] && list[0].status=='进行中'" :num="num"></submit-btns>
 			<dome-list></dome-list>
 		</div>
 	</scroll>
@@ -18,27 +18,34 @@ import TaskTitle from '~/components/task-list-title/task-list-title'
 import Part from '~/components/part/part'
 import SubmitBtns from '~/components/submit-dome-btns/submit-dome-btns'
 import DomeList from '~/components/dome-list/dome-list'
+import { getData } from '~/api/api'
 	export default {
 		data() {
 			return {
-				switches: [
-					{ name: '全部'},
-					{ name: '年龄性别'},
-					{ name: '语言风格'}
-				],
-				num: 20
+				list: [],
+				num: 20,
+				id: 0
 			}
 		},
 		created() {
+			this.id = this.$route.params.id;
 			if(!this.$route.params.id) {
 				return;
 			}
+			this._getTaskDetail(this.id);
 		},
 		mounted() {
 			 
 		},
 		methods: {
-			
+			_getTaskDetail(id) {
+				let url = `/api/demand/${id}.json`;
+				getData(url).then(res => {
+					this.list.push(res)
+				}).catch(err => {
+					console.log(err)
+				})
+			}
 
 		},
 		components: {

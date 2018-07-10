@@ -21,6 +21,7 @@
 </transition>
 </template>
 <script type="text/ecmascript-6">
+
 import { postData } from '~/api/api'
 	export default {
 		props: {
@@ -38,23 +39,30 @@ import { postData } from '~/api/api'
 		data() {
 			return {
 				voice: null,
-				flag: true
+				flag: true,
+				timer: null
 			}
 		},
-		created() {
-			//window.wx
-			/*window.wx.onVoiceRecordEnd({
-			// 录音时间超过一分钟没有停止的时候会执行 complete 回调
-			complete: function (res) {
-				console.log("自动停止")
-			//var localId = res.localId;
-			}
-			});*/
+		mounted() {
+			//this.voiceRecordEnd()
 		},
 		methods: {
+			voiceRecordEnd() {
+				console.log("VoiceRecordEnd")
+				let _this = this;
+				window.wx.onVoiceRecordEnd({
+				// 录音时间超过一分钟没有停止的时候会执行 complete 回调
+				complete: function (res) {
+					console.log("自动停止")
+					_this.localId = res.localId;
+					this.flag = true;
+				}
+				})
+			},
 			// 4.2 开始录音
 		  startRecord () {
 		  	let _this = this
+		  	this._timer()
 		    window.wx.startRecord({
 		      cancel: function () {
 		        alert('用户拒绝授权录音');
@@ -65,6 +73,7 @@ import { postData } from '~/api/api'
 		    });
 		  },
 		  stopRecord() {
+		  	if(this.timer) clearInterval(this.timer)
 		  	let _this = this;
 		  	this.flag = true
 		  	window.wx.stopRecord({
@@ -107,7 +116,26 @@ import { postData } from '~/api/api'
 		  	}).catch(err => {
 		  		console.log(err)
 		  	})
-		  }
+		  },
+		  _timer() {
+	            let time = 60;
+	            clearInterval(this.timer);
+	            this.timer = setInterval(() => {
+	                if(time<= 0) {
+	                    time = 0;
+	                    if(this.timer) clearInterval(this.timer);
+	                    return;
+	                }
+	                time--;
+	                console.log(time, "timer")
+	                if(time < 1) {
+	                    clearInterval(this.timer)
+	                    //this.tip="获取验证码"
+	                    this.stopRecord()
+	                    this.flag=true;
+	                }
+	            },1000)
+	        }
 		}
 		
 	}

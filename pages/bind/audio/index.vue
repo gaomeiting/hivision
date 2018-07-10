@@ -38,7 +38,7 @@ import { getData } from '~/api/api'
 			      jsApiList: [
 			        'startRecord',
 			        'stopRecord',
-			        'onRecordEnd',
+			        'onVoiceRecordEnd',
 			        'playVoice',
 			        'pauseVoice',
 			        'stopVoice',

@@ -39,6 +39,7 @@ import { postData } from '~/api/api'
 	            flag: true,
 			}
 		},
+
 		mounted() {
 			 
 		},
@@ -64,8 +65,8 @@ import { postData } from '~/api/api'
 	                    mobile: this.form.tel,
   						vcode: this.form.code
 	                }).then(res => {
-	                	console.log(res)
-	                    //this._switchPage()
+	                	//console.log(res)
+	                    this._switchPage(res)
 	                }).catch(err => {
 	                    console.log(123)
 	                })
@@ -99,24 +100,13 @@ import { postData } from '~/api/api'
 	                }).catch(err => {
 	                	console.log(err)
 	                })
-	                /*this._regist('/api/user/regist/vcode', {
-	                    mobile: this.form.tel
-	                }).then(res => {
-	                    console.log(res)
-	                }).catch(err => {
-	                    console.log(err)
-	                    if(this.timer) {
-	                        clearInterval(timer)
-	                        this.tip="获取验证码"
-	                        this.flag=true;
-	                    }
-	                })*/
+	                
 	            }
 	        },
 	        _timer() {
 	            let time = 5;
 	            clearInterval(this.timer);
-	            setInterval(() => {
+	            this.timer = setInterval(() => {
 	                if(time<= 0) {
 	                    time = 0;
 	                    if(this.timer) clearInterval(this.timer);
@@ -131,8 +121,13 @@ import { postData } from '~/api/api'
 	                }
 	            },1000)
 	        },
-	        _switchPage() {
-	        	this.$router.push('/addForm')
+	        _switchPage(id) {
+	        	if(!id) {
+	        		this.$router.push('/bind/profile')
+	        	}
+	        	else {
+	        		this.$router.push('/demand')
+	        	}
 	        }
 
 		},
