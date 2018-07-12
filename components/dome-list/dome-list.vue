@@ -2,20 +2,22 @@
 <div class="list-wrap">
 	<ul>
 		
-		<li>
+		<li v-for="(item, index) in list" :key="index">
 			<figure>
-				<img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1530695406815&di=df1b14bcc63249b1f2a4f03da398fded&imgtype=0&src=http%3A%2F%2Fc.hiphotos.baidu.com%2Fimage%2Fpic%2Fitem%2Fcefc1e178a82b901e004bbc17f8da9773812ef93.jpg" alt="">
+				<img :src="item.narrator.avatar" alt="">
 			</figure>
 			<div class="content">
 				<p>
-					<strong>用户名称用户名称用户名称</strong>
-					<i class="iconfont icon-nan"></i>
-					<i class="iconfont icon-nan"></i>
-					<small>3</small>
+					<strong>{{item.narrator.nickname}}</strong>
+					<i v-if="item.narrator.gender==='男'" class="iconfont icon-nan"></i>
+					<i v-if="item.narrator.gender==='女'" class="iconfont icon-nv"></i>
+					<!-- <i class="iconfont icon-nan"></i> -->
+					<i v-if="item.narrator.grade" class="iconfont icon-nan"></i>
+					<small v-if="item.narrator.grade">{{item.narrator.grade}}</small>
 				</p>
-				 <p class="dialog" v-if="!type">
-					<i class="iconfont icon-nan"></i>
-					<strong>00:30</strong>
+				 <p class="dialog" v-if="!type" @click.stop.prevent="settingCurrentSong(index)">
+					<i class="iconfont icon-shengyin" :class="{'active': index === currentSongIndex && flag}"></i>
+					<strong>{{ currentSongIndex >= 0 && index === currentSongIndex ? currentTime : totalTime}}</strong>
 					<span class="triangle-left"></span>
 				</p>
 				<p class="tags" v-if="type">
@@ -26,6 +28,7 @@
 			</div>
 		</li>
 	</ul>
+	<audio :src="list[currentSongIndex] && list[currentSongIndex].url" ref="audio" @timeupdate="updateTime" @play="ready"></audio> 
 </div>
 </template>
 
@@ -43,8 +46,69 @@ props: {
 		default: 0
 	}
 },
+data() {
+	return {
+		currentSongIndex: -1,
+		flag: false,
+		currentTime: '',
+		totalTime: '- 00:00',
+		songReady: false
+	}
+},
+watch: {
+	/*currentSongIndex(newIndex, oldIndex) {
+		
+		setTimeout(() => {
+			this.$refs.audio.play();
+			window.alert(this.$refs.audio.paused+","+this.songReady)
+			this.flag = true;
+		}, 30)
+	}*/
+},
 methods: {
-	
+	settingCurrentSong(index) {
+		if(index === this.currentSongIndex) {
+			//歌曲切换
+			this.flag = !this.flag;
+			this.flag ?  this.$refs.audio.play() :  this.$refs.audio.pause()
+		}
+		else {
+			this.currentSongIndex = index
+			setTimeout(() => {
+				this.$refs.audio.play();
+			}, 30)
+			this.flag = true;
+
+		}
+		console.log(this.list[this.currentSongIndex].url)
+	},
+	ready() {
+		this.songReady= true;
+	},
+	updateTime(e) {
+		//window.alert(e.target.currentTime)
+		let currentTime = e.target.currentTime | 0;
+		let totalTime = this.$refs.audio.duration | 0;
+		let diff = totalTime*1-currentTime*1
+		this.currentTime = "- " + this.format(diff);
+		//console.log(this.percent, e.target.currentTime, totalTime, "updateTime")
+	},
+	format(n) {
+		let m = 0;
+		let s = 0;
+		m = n / 60 | 0;
+		s = n % 60;
+		let padS = this._pad(s)
+		return `${m}:${padS}`
+	},
+	_pad(num, n = 2) {
+		let len = num.toString().length
+		while (len < n) {
+			num = '0' + num
+			len++
+		}
+		return num
+	}
 }
 }
 </script>
@@ -105,12 +169,6 @@ methods: {
 							position: absolute;
 							top: 50%;
 							@include triangle( 12px, 6px, $color-theme, -90deg)
-							/* width: 0;
-							height: 0;
-							border-left: 6px solid transparent;
-							border-right: 6px solid transparent;
-							border-bottom: 12px solid red;
-							transform: translate3d(-80%, 0, 0) rotate(-90deg); */
 						}
 						strong {
 							display: block;
@@ -125,6 +183,10 @@ methods: {
 							line-height: 30px;
 							padding-left: 0.4em;
 							padding-right: 0;
+							color: $color-dialog-background;
+							&.active {
+								color: $color-background-d;
+							}
 						}
 					}
 					strong {

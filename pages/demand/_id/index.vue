@@ -1,13 +1,13 @@
 <template>
 <transition name="fade" mode="out-in">
-	<scroll class="page">
+	<scroll class="page" :data="data">
 		<div class="form-wrap">
 			<div class="task-list-wrap">
 				<task-title :list="list"></task-title>
 			</div>
 			<part v-if="list[0] && list[0].status=='进行中'" title="试音内容" paragraph="如需发送更清晰的音频样音，请发邮箱到XXXXX，发送时请注明你的姓名、手机号。"></part>
 			<submit-btns v-if="list[0] && list[0].status=='进行中'" :num="num"></submit-btns>
-			<dome-list></dome-list>
+			<dome-list :list="audioList"></dome-list>
 		</div>
 	</scroll>
 </transition>
@@ -24,7 +24,9 @@ import { getData } from '~/api/api'
 			return {
 				list: [],
 				num: 20,
-				id: 0
+				id: 0,
+				audioList: [],
+				data: []
 			}
 		},
 		created() {
@@ -34,14 +36,25 @@ import { getData } from '~/api/api'
 			}
 			this._getTaskDetail(this.id);
 		},
-		mounted() {
-			 
-		},
 		methods: {
 			_getTaskDetail(id) {
-				let url = `/api/demand/${id}.json`;
-				getData(url).then(res => {
+				let urlDemand = `/api/demand/${id}.json`;
+				let urlAudio = `/api/audio/${id}/list.json`;
+				let demandList = getData(urlDemand).then(res => {
 					this.list.push(res)
+					this.num = res.stat.responseCnt;
+					return this.list;
+				}).catch(err => {
+					console.log(err)
+				})
+				let audioList = getData(urlAudio, {status: 'show'}).then(res => {
+					this.audioList = res;
+					return this.audioList;
+				}).catch(err => {
+					console.log(err)
+				})
+				Promise.all([demandList, audioList]).then((res) => {
+					this.data = res;
 				}).catch(err => {
 					console.log(err)
 				})
@@ -62,7 +75,7 @@ import { getData } from '~/api/api'
 @import "~assets/scss/variable";
 @import "~assets/scss/mixin";
 .page {
-	padding: 16px;
+	padding: 0 16px;
 	background: $color-background-d;
 }
 .task-list-wrap {

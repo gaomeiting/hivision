@@ -64,7 +64,7 @@ methods: {
 	top: 0;
 	bottom: 0;
 	z-index: 998;
-	background-color: $color-background-d;
+	background-color: rgba(0,0,0,0.3);
 	&.confirm-fade-enter-active {
 		animation: confirm-fadein 0.3s;
 		.confirm-content {
@@ -83,27 +83,27 @@ methods: {
 		.confirm-content {
 			width: 270px;
 			border-radius: 13px;
-			background: $color-highlight-background;
+			background: $color-background-d;
 			.text {
 				padding: 19px 15px;
 				line-height: 22px;
 				text-align: center;
-				font-size: $font-size-large;
+				font-size: $font-size-medium;
 				color: $color-text-l;
 			}
 			.operate {
 				display: flex;
 				align-items: center;
 				text-align: center;
-				font-size: $font-size-large;
+				font-size: $font-size-medium-x;
 				.operate-btn {
 					flex: 1;
 					line-height: 22px;
 					padding: 10px 0;
-					border-top: 1px solid $color-background-d;
+					border-top: 1px solid $color-background;
 					color: $color-text-d;
 					&.left {
-						border-right: 1px solid $color-background-d;
+						border-right: 1px solid $color-background;
 					}
 				}
 			}

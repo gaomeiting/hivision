@@ -12,12 +12,44 @@ axios.defaults.timeout = 5000;
 /*axios.defaults.baseURL = 'https://api.github.com';*/
 
 // http request 拦截器
-let loadingInstance;
+
+let loading
+
+function startLoading() {
+    loading = Loading.service({
+        lock: true,
+        text: '拼命加载中',
+        background: 'rgba(0, 0, 0, 0.7)'
+    })
+}
+
+function endLoading() {
+    loading.close()
+}
+
+let needLoadingRequestCount = 0
+
+export function showFullScreenLoading() {
+    if (needLoadingRequestCount === 0) {
+        startLoading()
+    }
+    needLoadingRequestCount++
+}
+
+export function tryHideFullScreenLoading() {
+    if (needLoadingRequestCount <= 0) return
+    needLoadingRequestCount--
+    if (needLoadingRequestCount === 0) {
+        endLoading()
+    }
+}
+
 axios.interceptors.request.use(
     config => {
-        loadingInstance = Loading.service({
-            fullscreen: true
-        })
+        console.log(config.showLoading)
+        if (config.showLoading) {
+            showFullScreenLoading()
+        }
         return config;
     },
     err => {
@@ -28,13 +60,13 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
 
     response => {
-        loadingInstance.close();
+        if (response.config.showLoading) {
+            tryHideFullScreenLoading()
+        }
         return response;
     },
     error => {
-        loadingInstance.close();
-
-        return Promise.reject(error.response.data)
+        return Promise.reject(error)
     });
 
 export default axios;

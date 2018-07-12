@@ -2,19 +2,19 @@
 <transition name="fade" mode="out-in">
 	<div class="form-content">
 		<p class="item" v-if="voice === null">
-			<a v-if="flag"  class="btn btn-all" href="javascript:;" @click.stop.prevent="startRecord"><i class="iconfont icon-nan"></i>点击开始录音</a>
+			<a v-if="flag"  class="btn btn-all" href="javascript:;" @click.stop.prevent="startRecord"><i class="iconfont icon-huatong"></i>点击开始录音</a>
 			<a v-else class="btn btn-all active" href="javascript:;" @click.stop.prevent="stopRecord"><i class="iconfont icon-nan"></i>停止录音</a>
 			
 		</p>
 		<p class="item" v-else>
-			<a v-if="flag"  class="btn btn-all" href="javascript:;" @click.stop.prevent="startRecord"><i class="iconfont icon-nan"></i>重新录音</a>
-			<a v-else class="btn btn-all active" href="javascript:;" @click.stop.prevent="stopRecord"><i class="iconfont icon-nan"></i>停止录音</a>
+			<a v-if="flag"  class="btn btn-all" href="javascript:;" @click.stop.prevent="startRecord"><i class="iconfont icon-shuaxin"></i>重新录音</a>
+			<a v-else class="btn btn-all active" href="javascript:;" @click.stop.prevent="stopRecord"><i class="iconfont icon-weibiaoti519"></i>停止录音</a>
 
 			
 		</p>
 		<p class="item">
-			<a href="javascript:;" v-if="voice && voice.localId" class="btn btn-blue" @click.stop.prevent="uploadVoice" style="margin-right: 12px;"> <i class="iconfont icon-nan"></i> 提交</a>
-			<a href="javascript:;" v-if="voice && voice.localId" class="btn btn-blue" @click.stop.prevent="playVoice"> <i class="iconfont icon-nan"></i> 试听</a>
+			<a href="javascript:;" v-if="voice && voice.localId" class="btn btn-blue" @click.stop.prevent="uploadVoice" style="margin-right: 12px;"> <i class="iconfont icon-tijiao"></i> 提交</a>
+			<a href="javascript:;" v-if="voice && voice.localId" class="btn btn-blue" @click.stop.prevent="playVoice"> <i class="iconfont icon-bofang"></i> 试听</a>
 		</p>
 		<p v-if="num" class="total">已有{{num}}人已参与该主题试音</p>
 	</div>

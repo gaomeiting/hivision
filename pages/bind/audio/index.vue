@@ -30,7 +30,7 @@ import { getData } from '~/api/api'
 			getData('/api/wechat/sdkconfig.json').then(res => {
 				this.config = res;
 				window.wx.config({
-			      debug: false,
+			      debug: true,
 			      appId: res.appId,
 			      timestamp: res.timestamp,
 			      nonceStr: res.nonceStr,

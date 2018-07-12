@@ -40,9 +40,7 @@ import { postData } from '~/api/api'
 			}
 		},
 
-		mounted() {
-			 
-		},
+		
 		methods: {
 			handleSubmit () {
 	            if(/^1[34578]\d{9}$/.test(this.form.tel) == false){
@@ -126,7 +124,7 @@ import { postData } from '~/api/api'
 	        		this.$router.push('/bind/profile')
 	        	}
 	        	else {
-	        		this.$router.push('/demand')
+	        		this.$router.push('/home')
 	        	}
 	        }
 

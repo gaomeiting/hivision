@@ -38,12 +38,14 @@
 			</top-tip>
 			
 		</div>
+		<confirm ref="confirm" :text="text" @confirm="confirm"></confirm>
 	</div>
 </transition>
 </template>
 <script type="text/ecmascript-6">
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 import SubTitle from '~/components/htitle/htitle'
+import Confirm from '~/components/confirm/confirm'
 import TopTip from '~/components/top-tip/top-tip'
 import { Message } from 'element-ui'
 import { getData, postData } from '~/api/api'
@@ -51,9 +53,9 @@ import { getData, postData } from '~/api/api'
 		data() {
 			return {
 				form: {
-					title: '中户',
-					name: '高山',
-					identity: '130633199301230654',
+					title: '',
+					name: '',
+					identity: '',
 					time: '',
 					styles: []
 				},
@@ -80,19 +82,22 @@ import { getData, postData } from '~/api/api'
 					times: null,
 					styles: []
 				},
-				error: ''
+				error: '',
+				text: ''
 				
 			}
 		},
 		created() {
 			getData('/api/wechat/userinfo.json').then(res => {
-				console.log(res)
+				this.setWxuser(res);
+				this.form.title = this.wxuser.nickname
+				this.setCity({NAME: this.wxuser.city})
 			}).catch(err => {
 				console.log(err)
 			})
 		},
 		computed: {
-			...mapGetters(['city'])
+			...mapGetters(['city', 'wxuser'])
 		},
 
 		methods: {
@@ -150,15 +155,23 @@ import { getData, postData } from '~/api/api'
 					  location: this.city.NAME,
 					  nickname: this.form.title,
 					  realname: this.form.name,
-					  record_time: this.form.time,
-					  styles: this.form.styles.join(',')
+					  record_time: this.form.time.slice(0, -2),
+					  styles: this.form.styles.join(','),
+					  avatar: this.wxuser.headimgurl
 					}).then(res => {
 						this._switchPage(res)
 					}).catch(err => {
-						console.log(err)
+						if(err === 2) {
+							this.text = '您还没有绑定手机号,请先绑定手机号'
+							this.$refs.confirm.show()
+							//
+						}
 					})
 				}
 				console.log(this.form.time, this.error)
+			},
+			confirm() {
+				this.$router.push('/bind')
 			},
 			testIndentity(indentity) {
 				let isIDCard=/^[1-9]\d{5}(18|19|20)\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/
@@ -255,17 +268,22 @@ import { getData, postData } from '~/api/api'
 			},
 			_switchPage(id) {
 	        	if(!id) {
-	        		this.$router.push('/bind')
+	        		this.$router.push('/bind/audio')
 	        	}
 	        	else {
-	        		this.$router.push('/demand')
+	        		this.$router.push('/home')
 	        	}
-	        }
+	        },
+	        ...mapMutations({
+	        	'setWxuser' : 'SET_WXUSER',
+	        	'setCity' : 'SET_CITY'
+	        })
 
 		},
 		components: {
 			SubTitle,
-			TopTip
+			TopTip,
+			Confirm
 		}
 	}
 </script>

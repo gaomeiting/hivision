@@ -1,35 +1,29 @@
 <template>
 <transition name="fade" mode="out-in">
-	<scroll class="page">
+	<scroll class="page" :data="list">
 		<div class="form-wrap">
 			<div class="dome-list-wrap">
-				<dome-list :type="type"></dome-list>
+				<dome-list :list="list"></dome-list>
 			</div>
 			<div class="list-wrapper">
-				<p> <i class="iconfont icon-nan"></i> <span>个人设置</span> </p>
-				<p> <i class="iconfont icon-nan"></i> <span>等级认证</span> </p>
-				<p> <i class="iconfont icon-nan"></i> <span>合同签约</span> </p>
-				<p> <i class="iconfont icon-nan"></i> <span>联系客服</span> </p>
+				<p> <i class="iconfont icon-settings"></i> <span>个人设置</span> </p>
+				<p> <i class="iconfont icon-msnui-v"></i> <span>等级认证</span> </p>
+				<p> <i class="iconfont icon-hetong"></i> <span>合同签约</span> </p>
+				<p> <i class="iconfont icon-kefu"></i> <span>联系客服</span> </p>
 			</div>
 		</div>
 	</scroll>
 </transition>
 </template>
 <script type="text/ecmascript-6">
+
 import Scroll from '~/components/scroll/scroll'
-import TaskTitle from '~/components/task-list-title/task-list-title'
-import Part from '~/components/part/part'
-import SubmitBtns from '~/components/submit-dome-btns/submit-dome-btns'
-import DomeList from '~/components/dome-list/dome-list'
+import DomeList from '~/components/dome-list-title/dome-list-title'
 import { getData } from '~/api/api'
 	export default {
 		data() {
 			return {
-				switches: [
-					{ name: '全部'},
-					{ name: '年龄性别'},
-					{ name: '语言风格'}
-				],
+				list: [],
 				num: 20,
 				type: 1
 			}
@@ -37,21 +31,20 @@ import { getData } from '~/api/api'
 		
 		created() {
 			getData('/api/user/profile.json').then(res => {
-				console.log(res)
+				this.list.push(res)
 			}).catch(err => {
 				console.log(err.error)
 			})
 		},
 		mounted() {
+			 
 		},
 		methods: {
 			
 
 		},
 		components: {
-			TaskTitle,
-			Part,
-			SubmitBtns,
+			
 			DomeList,
 			Scroll
 		}
@@ -76,6 +69,9 @@ import { getData } from '~/api/api'
 	padding: 0 16px;
 	p {
 		@include border-1px($color-text-ll);
+		i {
+			margin-right: 12px;
+		}
 	}
 }
 </style>

@@ -43,8 +43,6 @@ module.exports = {
   plugins: [{
     src: '@/plugins/element-ui'
   }, {
-    src: '~/plugins/axios'
-  }, {
     src: '~plugins/scroll.js',
     ssr: false
   }, {
