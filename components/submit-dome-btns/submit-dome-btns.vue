@@ -1,15 +1,18 @@
 <template>
 <transition name="fade" mode="out-in">
+	<!-- <div>
+		<p  class="btn btn-all" href="javascript:;" @click.stop.prevent="startRecord"><i class="iconfont icon-huatong"></i>点击开始录音</p>
+	</div> -->
 	<div class="form-content">
 		<p class="item" v-if="voice === null">
-			<a v-if="flag"  class="btn btn-all" href="javascript:;" @click.stop.prevent="startRecord"><i class="iconfont icon-huatong"></i>点击开始录音</a>
+			<a v-if="flag"  class="btn btn-all" href="javascript:;" @click.stop.prevent="getUserAndStartRecord"><i class="iconfont icon-huatong"></i>点击开始录音</a>
 			<a v-else class="btn btn-all active" href="javascript:;" @click.stop.prevent="stopRecord"><i class="iconfont icon-nan"></i>停止录音</a>
 			
 		</p>
 		<p class="item" v-else>
 			<a v-if="flag"  class="btn btn-all" href="javascript:;" @click.stop.prevent="startRecord"><i class="iconfont icon-shuaxin"></i>重新录音</a>
 			<a v-else class="btn btn-all active" href="javascript:;" @click.stop.prevent="stopRecord"><i class="iconfont icon-weibiaoti519"></i>停止录音</a>
-
+		
 			
 		</p>
 		<p class="item">
@@ -17,12 +20,14 @@
 			<a href="javascript:;" v-if="voice && voice.localId" class="btn btn-blue" @click.stop.prevent="playVoice"> <i class="iconfont icon-bofang"></i> 试听</a>
 		</p>
 		<p v-if="num" class="total">已有{{num}}人已参与该主题试音</p>
+		<confirm ref="confirm" :text="text" @confirm="confirm"></confirm>
 	</div>
 </transition>
 </template>
 <script type="text/ecmascript-6">
 
-import { postData } from '~/api/api'
+import { getData, postData } from '~/api/api'
+import Confirm from '~/components/confirm/confirm'
 	export default {
 		props: {
 			num: {
@@ -40,13 +45,14 @@ import { postData } from '~/api/api'
 			return {
 				voice: null,
 				flag: true,
-				timer: null
+				timer: null,
+				text: ''
 			}
 		},
-		mounted() {
-			//this.voiceRecordEnd()
-		},
 		methods: {
+			confirm() {
+				this.$router.push('/bind')
+			},
 			voiceRecordEnd() {
 				console.log("VoiceRecordEnd")
 				let _this = this;
@@ -62,6 +68,8 @@ import { postData } from '~/api/api'
 			// 4.2 开始录音
 		  startRecord () {
 		  	let _this = this
+		  	if(this.timer) clearInterval(this.timer)
+
 		  	this._timer()
 		    window.wx.startRecord({
 		      cancel: function () {
@@ -73,7 +81,6 @@ import { postData } from '~/api/api'
 		    });
 		  },
 		  stopRecord() {
-		  	if(this.timer) clearInterval(this.timer)
 		  	let _this = this;
 		  	this.flag = true
 		  	window.wx.stopRecord({
@@ -84,7 +91,7 @@ import { postData } from '~/api/api'
 		  },
 		  playVoice () {
 		  	let _this = this
-		    if (_this.voice.localId == '') {
+		  	if (_this.voice.localId == '') {
 		      alert('请先使用 startRecord 接口录制一段声音');
 		      return;
 		    }
@@ -108,6 +115,14 @@ import { postData } from '~/api/api'
 		      }
 		    });
 		  },
+		  getUserAndStartRecord() {
+		  	getData('/api/user/profile.json').then(res => {
+		  		this.startRecord()
+			}).catch(err => {
+				this.text = '您还没有绑定手机号,快去绑定'
+				this.$refs.confirm.show()
+			})
+		  },
 		  _postDataServerId(audioId) {
 		  	postData('/api/bind/audio.json', {
 		  		audioId
@@ -127,7 +142,7 @@ import { postData } from '~/api/api'
 	                    return;
 	                }
 	                time--;
-	                console.log(time, "timer")
+	                //console.log(time, "timer")
 	                if(time < 1) {
 	                    clearInterval(this.timer)
 	                    //this.tip="获取验证码"
@@ -136,6 +151,9 @@ import { postData } from '~/api/api'
 	                }
 	            },1000)
 	        }
+		},
+		components: {
+			Confirm
 		}
 		
 	}

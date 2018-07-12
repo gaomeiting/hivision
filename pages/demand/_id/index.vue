@@ -1,6 +1,6 @@
 <template>
 <transition name="fade" mode="out-in">
-	<scroll class="page" :data="data">
+	<div class="whitespace">
 		<div class="form-wrap">
 			<div class="task-list-wrap">
 				<task-title :list="list"></task-title>
@@ -9,7 +9,7 @@
 			<submit-btns v-if="list[0] && list[0].status=='进行中'" :num="num"></submit-btns>
 			<dome-list :list="audioList"></dome-list>
 		</div>
-	</scroll>
+	</div>
 </transition>
 </template>
 <script type="text/ecmascript-6">
@@ -19,7 +19,9 @@ import Part from '~/components/part/part'
 import SubmitBtns from '~/components/submit-dome-btns/submit-dome-btns'
 import DomeList from '~/components/dome-list/dome-list'
 import { getData } from '~/api/api'
+import { wxconfig } from '~/assets/js/mixin'
 	export default {
+		mixins: [wxconfig],
 		data() {
 			return {
 				list: [],
@@ -30,6 +32,7 @@ import { getData } from '~/api/api'
 			}
 		},
 		created() {
+			console.log(123)
 			this.id = this.$route.params.id;
 			if(!this.$route.params.id) {
 				return;
@@ -74,9 +77,11 @@ import { getData } from '~/api/api'
 <style scoped lang="scss">
 @import "~assets/scss/variable";
 @import "~assets/scss/mixin";
-.page {
+
+.whitespace {
 	padding: 0 16px;
 	background: $color-background-d;
+	min-height: 100vh;
 }
 .task-list-wrap {
 	padding-top: 20px;

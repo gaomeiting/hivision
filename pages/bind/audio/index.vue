@@ -15,48 +15,15 @@
 import SubTitle from '~/components/htitle/htitle'
 import Part from '~/components/part/part'
 import SubmitBtns from '~/components/submit-dome-btns/submit-dome-btns'
-import { getData } from '~/api/api'
+/*import { wxconfig } from '~/assets/js/mixin'*/
 	export default {
+		/*mixins: [wxconfig],*/
 		data() {
 			return {
-				form: {
-					tel: '',
-					code: ''
-				},
-				config: null
+				
 			}
 		},
-		created() {
-			getData('/api/wechat/sdkconfig.json').then(res => {
-				this.config = res;
-				window.wx.config({
-			      debug: true,
-			      appId: res.appId,
-			      timestamp: res.timestamp,
-			      nonceStr: res.nonceStr,
-			      signature: res.signature,
-			      jsApiList: [
-			        'startRecord',
-			        'stopRecord',
-			        'onVoiceRecordEnd',
-			        'playVoice',
-			        'pauseVoice',
-			        'stopVoice',
-			        'uploadVoice',
-			        'downloadVoice'
-			      ]
-			  })
-			}).catch(err => {
-				console.log(err)
-			})
-		},
-		mounted() {
-			 
-		},
-		methods: {
-			
-
-		},
+		
 		components: {
 			SubTitle,
 			Part,

@@ -4,7 +4,7 @@
 		<li v-for="(item, index) in list" :key="index" @click.stop.prevent="goNext(item.id)">
 			<div class="title">
 				<figure>
-					<img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1530695406815&di=df1b14bcc63249b1f2a4f03da398fded&imgtype=0&src=http%3A%2F%2Fc.hiphotos.baidu.com%2Fimage%2Fpic%2Fitem%2Fcefc1e178a82b901e004bbc17f8da9773812ef93.jpg" alt="">
+					<img :src="item.client.clientAvatar">
 				</figure>
 				<p>{{item.client.clientName}}</p>
 				<p>{{item.createOn}}<!-- 1小时前发布 --></p>
@@ -49,13 +49,14 @@ props: {
 	},
 	loading: {
 		type: Boolean,
-		default: true
+		default: false
 	},
 	hasMore: {
 		type: Boolean,
 		default: true
 	}
 },
+
 methods: {
 	goNext(id) {
 		this.$router.push(`/demand/${id}`)

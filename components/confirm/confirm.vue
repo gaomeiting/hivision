@@ -63,6 +63,8 @@ methods: {
 	right: 0;
 	top: 0;
 	bottom: 0;
+	width: 100%;
+	height: 100%;
 	z-index: 998;
 	background-color: rgba(0,0,0,0.3);
 	&.confirm-fade-enter-active {

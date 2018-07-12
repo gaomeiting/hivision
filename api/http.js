@@ -19,13 +19,14 @@ function startLoading() {
     loading = Loading.service({
         lock: true,
         text: '拼命加载中',
-        background: 'rgba(0, 0, 0, 0.7)'
+        background: 'rgba(0, 0, 0, 0.5)'
     })
 }
 
 function endLoading() {
     loading.close()
 }
+
 
 let needLoadingRequestCount = 0
 
@@ -46,7 +47,7 @@ export function tryHideFullScreenLoading() {
 
 axios.interceptors.request.use(
     config => {
-        console.log(config.showLoading)
+        //console.log(config.showLoading)
         if (config.showLoading) {
             showFullScreenLoading()
         }

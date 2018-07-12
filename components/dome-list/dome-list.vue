@@ -17,7 +17,7 @@
 				</p>
 				 <p class="dialog" v-if="!type" @click.stop.prevent="settingCurrentSong(index)">
 					<i class="iconfont icon-shengyin" :class="{'active': index === currentSongIndex && flag}"></i>
-					<strong>{{ currentSongIndex >= 0 && index === currentSongIndex ? currentTime : totalTime}}</strong>
+					<strong>{{ currentSongIndex >= 0 && index === currentSongIndex ? currentTime : '- '+format(item.duration / 1000)}}</strong>
 					<span class="triangle-left"></span>
 				</p>
 				<p class="tags" v-if="type">
@@ -51,20 +51,11 @@ data() {
 		currentSongIndex: -1,
 		flag: false,
 		currentTime: '',
-		totalTime: '- 00:00',
+		totalTime: '',
 		songReady: false
 	}
 },
-watch: {
-	/*currentSongIndex(newIndex, oldIndex) {
-		
-		setTimeout(() => {
-			this.$refs.audio.play();
-			window.alert(this.$refs.audio.paused+","+this.songReady)
-			this.flag = true;
-		}, 30)
-	}*/
-},
+created() {},
 methods: {
 	settingCurrentSong(index) {
 		if(index === this.currentSongIndex) {

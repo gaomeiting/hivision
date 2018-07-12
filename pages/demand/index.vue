@@ -25,7 +25,7 @@ import { getData } from '~/api/init'
 					{ name: '年龄性别'},
 					{ name: '语言风格'}
 				],
-				loading: true,
+				loading: false,
 				page: 0,
 				size: 10,
 				list: [],
@@ -39,9 +39,6 @@ import { getData } from '~/api/init'
 			this.listenScroll=true
 			this._getData();
 		},
-		mounted() {
-			 
-		},
 		methods: {
 			hasMoreData() {
 				if(!this.hasMore) {
@@ -52,6 +49,7 @@ import { getData } from '~/api/init'
 				this._getData()
 			},
 			_getData() {
+				this.loading = true;
 				getData('/api/demand/list.json', {page: this.page, size: this.size}).then(res => {
 					//this.loading = false;
 					if(this.page+1 > res.pages) {
