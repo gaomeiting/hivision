@@ -1,15 +1,16 @@
 <template>
-<transition name="fade" mode="out-in">
+
 	<div class="page">
 		<div class="form-wrap">
 			<sub-title title="提交样音"></sub-title>
 			<part title="试音说明" paragraph="直接在手机上录制1分钟音频，将你擅长的风格都表现出来。如需发送更清晰的音频样音，请发邮箱到XXX，发送时请注明你的姓名、手机号。"></part>
 			<submit-btns></submit-btns>
+			<!-- <a href="javascript:;" @click.stop.prevent="share">分享到朋友圈</a> -->
 			<part title="重要提示" paragraph="Mint UI 包含丰富的 CSS 和 JS 组件，能够满足日常的移动端开发需要。通过它，可以快速构建出风格统一的页面，提升开发效率。"></part>
 			
 		</div>
 	</div>
-</transition>
+
 </template>
 <script type="text/ecmascript-6">
 import SubTitle from '~/components/htitle/htitle'
@@ -23,7 +24,9 @@ import { wxconfig } from '~/assets/js/mixin'
 				
 			}
 		},
-		
+		methods: {
+			
+		},
 		components: {
 			SubTitle,
 			Part,

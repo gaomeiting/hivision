@@ -1,5 +1,4 @@
 <template>
-<transition name="fade" mode="out-in">
 	<div class="whitespace">
 		<div class="form-wrap">
 			<div class="task-list-wrap">
@@ -10,7 +9,6 @@
 			<dome-list :list="audioList"></dome-list>
 		</div>
 	</div>
-</transition>
 </template>
 <script type="text/ecmascript-6">
 import Scroll from '~/components/scroll/scroll'

@@ -1,5 +1,5 @@
 <template>
-	<transition name="fade" mode="out-in">
+	
  	<div id="area" v-if="flag">
  		<div class="content">
 	 		<scroll class="area-con-wrap" :data="cityLists" :probe-type="probeType" :listenScroll="listenScroll" @scroll="scroll" ref="listview">
@@ -25,7 +25,6 @@
 	 		</div>
  		</div>
  	</div>
- 	</transition>
 </template>
 <script>
 import Scroll from '~/components/scroll/scroll'

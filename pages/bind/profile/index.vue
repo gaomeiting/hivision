@@ -1,5 +1,5 @@
 <template>
-<transition name="fade" mode="out-in">
+
 	<div>
 		<div class="form-wrap">
 			<sub-title title="个人信息"></sub-title>
@@ -40,7 +40,7 @@
 		</div>
 		<confirm ref="confirm" :text="text" @confirm="confirm"></confirm>
 	</div>
-</transition>
+
 </template>
 <script type="text/ecmascript-6">
 import { mapGetters, mapMutations } from 'vuex'

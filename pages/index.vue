@@ -1,5 +1,4 @@
 <template>
-<transition name="fade" mode="out-in">
 	<scroll class="page" :data="list" :pullUp="pullUp" @scrollEnd="hasMoreData" :beforeScroll="beforeScroll">
 		<div class="form-wrap">
 			<div class="head">
@@ -10,7 +9,6 @@
 			</div>
 		</div>
 	</scroll>
-</transition>
 </template>
 <script type="text/ecmascript-6">
 import Scroll from '~/components/scroll/scroll'
@@ -60,7 +58,6 @@ import { getData } from '~/api/init'
 						this.hasMore = true;
 					}
 					
-					//console.log(this.list)
 				}).catch(err => {
 					console.log(err)
 				})

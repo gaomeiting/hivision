@@ -1,7 +1,6 @@
 <template>
-<transition name="fade" mode="out-in">
-	<div class="page">
-		<div class="form-wrap">
+
+	<div class="form-wrap">
 			<sub-title title="绑定手机号"></sub-title>
 			<div class="form-content">
 				<p class="item">
@@ -18,9 +17,6 @@
 			<part title="重要提示" paragraph="Mint UI 包含丰富的 CSS 和 JS 组件，能够满足日常的移动端开发需要。通过它，可以快速构建出风格统一的页面，提升开发效率。"></part>
 			
 		</div>
-
-	</div>
-</transition>
 </template>
 <script type="text/ecmascript-6">
 import SubTitle from '~/components/htitle/htitle'

@@ -1,5 +1,4 @@
 <template>
-<transition name="fade" mode="out-in">
 	<scroll class="page" :data="list">
 		<div class="form-wrap">
 			<div class="dome-list-wrap">
@@ -13,7 +12,6 @@
 			</div>
 		</div>
 	</scroll>
-</transition>
 </template>
 <script type="text/ecmascript-6">
 

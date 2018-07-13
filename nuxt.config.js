@@ -71,7 +71,6 @@ module.exports = {
    ** Build configuration
    */
   build: {
-    vendor: ['axios'],
     /*
      ** Run ESLint on save
      */
@@ -85,7 +84,7 @@ module.exports = {
       plugins: ['transform-runtime']
     },
     vendor: ['axios', 'babel-polyfill', 'weixin-js-sdk'],
-    publicPath: '/st/',
+    publicPath: '/api/',
     extend(config, {
       isDev,
       isClient
