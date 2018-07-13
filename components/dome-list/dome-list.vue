@@ -11,7 +11,6 @@
 					<strong>{{item.narrator.nickname}}</strong>
 					<i v-if="item.narrator.gender==='男'" class="iconfont icon-nan"></i>
 					<i v-if="item.narrator.gender==='女'" class="iconfont icon-nv"></i>
-					<!-- <i class="iconfont icon-nan"></i> -->
 					<i v-if="item.narrator.grade" class="iconfont icon-nan"></i>
 					<small v-if="item.narrator.grade">{{item.narrator.grade}}</small>
 				</p>

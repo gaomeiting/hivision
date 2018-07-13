@@ -75,12 +75,23 @@ module.exports = {
     /*
      ** Run ESLint on save
      */
+    postcss: [
+      require('autoprefixer')({
+        browsers: ['last 3 versions']
+      })
+    ],
+    babel: {
+      presets: ['es2015', 'stage-0'],
+      plugins: ['transform-runtime']
+    },
+    vendor: ['axios', 'babel-polyfill', 'weixin-js-sdk'],
     publicPath: '/st/',
     extend(config, {
       isDev,
       isClient
     }) {
       if (isDev && isClient) {
+        config.entry['polyfill'] = ['babel-polyfill']
         config.module.rules.push({
           enforce: 'pre',
           test: /\.(js|vue)$/,

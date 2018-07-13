@@ -32,7 +32,6 @@ import { wxconfig } from '~/assets/js/mixin'
 			}
 		},
 		created() {
-			console.log(123)
 			this.id = this.$route.params.id;
 			if(!this.$route.params.id) {
 				return;

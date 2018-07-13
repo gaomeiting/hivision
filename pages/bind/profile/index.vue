@@ -18,7 +18,7 @@
 				</p>
 				<p class="item">选择城市</p>
 				<p class="item">
-					<span class="city" @click.stop.prevent="switchCity" style="padding-left: 1em">{{ city.NAME }}</span>
+					<span class="city" @click.stop.prevent="switchCity" style="padding-left: 1em">{{ city.NAME || '北京' }}</span>
 					<!-- <input type="text" v-model="form.city" readonly placeholder="选择你所在的城市" @click.stop.prevent="switchCity"> -->
 				</p>
 				<p class="item">可录音时间</p>
@@ -106,7 +106,6 @@ import { getData, postData } from '~/api/api'
 				this.form.city = item.NAME;
 			},
 			switchCity() {
-				//console.log(12345)
 				this.$router.push('/city')
 			},
 			submitHandler() {
