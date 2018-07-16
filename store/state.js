@@ -3,6 +3,6 @@ const state = {
 	city: {
 		NAME: '选择城市'
 	},
-	wxuser: {}
+	user: {}
 }
 export default state;

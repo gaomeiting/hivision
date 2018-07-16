@@ -46,7 +46,7 @@ module.exports = {
     src: '~plugins/scroll.js',
     ssr: false
   }, {
-    src: '~plugins/weixin-js-sdk.js',
+    src: '~plugins/ilingxi-1.0.0.js',
     ssr: false
   }],
   modules: [
@@ -84,7 +84,7 @@ module.exports = {
       plugins: ['transform-runtime']
     },
     vendor: ['axios', 'babel-polyfill', 'weixin-js-sdk'],
-    publicPath: '/api/',
+    publicPath: 'http://st.ddpei.cn/hv/mglx/',
     extend(config, {
       isDev,
       isClient

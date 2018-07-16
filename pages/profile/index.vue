@@ -4,7 +4,7 @@
 		<div class="form-wrap">
 			<div class="avatar-wrap">
 				<p>上传头像</p>
-				<el-upload class="avatar-uploader" action="/hversion/upload" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+				<el-upload class="avatar-uploader" action="/api/media/avatar" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
 				  <img v-if="imageUrl" :src="imageUrl" class="avatar">
 				  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
 				</el-upload>
@@ -59,6 +59,16 @@ import { postData } from '~/api/api'
 	export default {
 		data() {
 			return {
+				/*form: {
+					title: '上海',
+					name: '高山',
+					identity: '130833199401230664',
+					tel: '18201491299',
+					email: '1959151877@qq.com',
+					info: '16岁（含）以上配音员以及声音条件良好的配',
+					declaration: '16岁（含）以上配音员以及声音条',
+					avatarId: ''
+				},*/
 				form: {
 					title: '',
 					name: '',
@@ -66,10 +76,9 @@ import { postData } from '~/api/api'
 					tel: '',
 					email: '',
 					info: '',
-					declaration: ''
-					
+					declaration: '',
+					avatarId: ''
 				},
-				
 				error: '',
 				text: '',
 				imageUrl: ''
@@ -85,9 +94,10 @@ import { postData } from '~/api/api'
 
 		methods: {
 			handleAvatarSuccess(res, file) {
-				console.log(res, file)
-				this.ruleForm.avatarId = file.response;
+				//console.log(res, file)
+				this.form.avatarId = file.response.url;
 			    this.imageUrl = URL.createObjectURL(file.raw);
+			    console.log(file, res)
 			},
 			beforeAvatarUpload(file) {
 				console.log(file)
@@ -96,9 +106,7 @@ import { postData } from '~/api/api'
 				if (!isJPG) {
 				  this.$message.error('上传头像图片只能是 JPG或png 格式!');
 				}
-				
-				
-				return isJPG && isLt2M;
+				return isJPG;
 			},
 					settingCity(item) {
 				this.form.city = item.NAME;
@@ -107,12 +115,15 @@ import { postData } from '~/api/api'
 				this.$router.push('/city')
 			},
 			submitHandler() {
-				//let isIDCard=/(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/
 				let isIDCard=/^[1-9]\d{5}(18|19|20)\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/
 				let isName = /^([\u4e00-\u9fa5]){2+}$/
 				let isTitle = /^[\w\u4e00-\u9fa5]{6,8}$/
-				/*console.log(this.form.email, /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z]{2,5}$/.test(this.form.email))*/
-				if(!this.form.title) {
+				console.log(this.form.avatarId)
+				if(!this.form.avatarId) {
+					this.error = "请先上传头像"
+					this.$refs.topTip.show()
+				}
+				else if(!this.form.title) {
 					this.error = "昵称不能为空"
 					this.$refs.topTip.show()
 				}
@@ -159,6 +170,39 @@ import { postData } from '~/api/api'
 
 				else {
 					this.error = ''
+					postData('/api/contestant/signup', {
+					  avatar: this.form.avatarId,
+					  email: this.form.email,
+					  idCard: this.form.identity,
+					  mobile: this.form.tel ,
+					  nickname: this.form.title ,
+					  realname: this.form.name ,
+					  slogan: this.form.info ,
+					  title: this.form.declaration
+					}).then(res => {
+
+						this.setUser({
+							id: res.id,
+							name: this.form.title,
+							declaration: this.form.declaration
+						})
+						let str = JSON.stringify({
+							id: res.id,
+							name: this.form.title,
+							declaration: this.form.declaration
+						}) 
+						localStorage.setItem('user', str) 
+						this.$router.push('/success')
+					}).catch(err => {
+						if(err.data.status == 409) {
+							this.error = '数据重复'
+							this.$refs.topTip.show()
+						}
+						else {
+							this.error = err.data.details[0].defaultMessage
+							this.$refs.topTip.show()
+						}
+					})
 					
 				}
 			},
@@ -180,7 +224,7 @@ import { postData } from '~/api/api'
 			
 			
 	        ...mapMutations({
-	        	'setCity' : 'SET_CITY'
+	        	'setUser' : 'SET_USER'
 	        })
 
 		},

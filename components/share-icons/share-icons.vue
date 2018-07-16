@@ -36,8 +36,8 @@ props: {
 		type: Array,
 		default() {
 			return [
-				{ icon: 'icon-shuaxin', text: '微信好友'},
-				{ icon: 'icon-shuaxin', text: '微信朋友圈'}
+				{ icon: 'icon-wxfriends', text: '微信好友'},
+				{ icon: 'icon-pengyouquan', text: '微信朋友圈'}
 			]
 		}
 	}
@@ -110,6 +110,10 @@ methods: {
 					display: flex;
 					li {
 						flex: 1;
+						i {
+							font-size: $font-size-large-xx;
+							color: $color-theme-d;
+						}
 					}
 				}
 			}

@@ -12,12 +12,12 @@
 								</figure>
 								<p>中国版权协会</p>
 							</div>
-							<div>
+							<!-- <div>
 								<figure>
 									<img src="~/assets/images/logo2.png">
 								</figure>
 								<p>中国移动咪咕文化科技集团</p>
-							</div>
+							</div> -->
 						</li>
 					</ul>
 					<ul>
@@ -39,7 +39,7 @@
 					</ul>
 				</div>
 				<p class="share-icon" @click.stop.prevent="toggleShare">
-					<i class="iconfont icon-shuaxin"></i>
+					<i class="iconfont icon-fenxiang"></i>
 				</p>
 			</div>
 			
@@ -64,7 +64,7 @@
 					<strong>万</strong>元奖金/神秘礼包等你拿签约声咖 常年持续录制
 				</h2>
 				<figure>
-					<img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1531650040077&di=a55f0e29ae252d9c38968763620ee4fc&imgtype=0&src=http%3A%2F%2Fe.hiphotos.baidu.com%2Fimage%2Fpic%2Fitem%2Ffcfaaf51f3deb48fd0e9be27fc1f3a292cf57842.jpg" alt="">
+					<img src="~/assets/images/bg1.jpg">
 				</figure>
 				<p>
 					与一线明星同台演播，同框宣传。<br>
@@ -118,11 +118,11 @@
 						</li>
 					</ul>
 					<ul>
-						<li><i class="iconfont icon-shuaxin"></i></li>
-						<li><i class="iconfont icon-shuaxin"></i></li>
-						<li><i class="iconfont icon-shuaxin"></i></li>
-						<li><i class="iconfont icon-shuaxin"></i></li>
-						<li><i class="iconfont icon-shuaxin"></i></li>
+						<li><i class="iconfont icon-chenggong active"></i></li>
+						<li><i class="iconfont icon-chenggong"></i></li>
+						<li><i class="iconfont icon-chenggong"></i></li>
+						<li><i class="iconfont icon-chenggong"></i></li>
+						<li><i class="iconfont icon-chenggong"></i></li>
 					</ul>
 				</div>
 				
@@ -184,14 +184,14 @@
 			</div>
 		</div>
 		<div class="btns">
-			<a href="javascript:;" class="btn">立即报名</a>
-			<i class="iconfont icon-shuaxin" @click="settingMenu"></i>
+			<a href="javascript:;" class="btn" @click.stop="regist">立即报名</a>
+			<i class="iconfont icon-gengduo" @click="settingMenu"></i>
 		</div>
 		<div class="menu-wrap">
 			<menu-list ref="menu" @selectMenu="selectMenu"></menu-list>
 		</div>
 		<div class="share-icons-wrap">
-			<share-icons ref="share" @cancle="cancle" @selectShare="selectShare"></share-icons>
+			<share-icons ref="share" @cancle="cancle" @selectShare="selectSharehome"></share-icons>
 		</div>
 	</scroll>
 </template>
@@ -213,6 +213,9 @@ import { share } from '~/assets/js/mixin'
 			
 		},
 		methods: {
+			regist() {
+				this.$router.push('/profile')
+			},
 			settingMenu() {
 				this.flag = !this.flag;
 				if(this.flag) {
@@ -280,6 +283,8 @@ import { share } from '~/assets/js/mixin'
 .home {
 	> .info {
 		padding: 50px 20px 60px;
+		min-height: 100vh;
+		box-sizing: border-box;
 		&:last-child {
 			h4 {
 				color: $color-text-d;
@@ -311,9 +316,11 @@ import { share } from '~/assets/js/mixin'
 						display: block;
 						height: 70px;
 						i {
-							
 							padding: 2px;
 							background: $color-background;
+							&.active {
+								color: $color-theme-d;
+							}
 						}
 					}
 				}

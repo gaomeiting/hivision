@@ -7,8 +7,8 @@
 						<img src="~/assets/images/code.jpg" alt="">
 					</figure>
 					<h2>用爱发声、用心陪伴</h2>
-					<p>我是XXX</p>
-					<p>参赛宣言参赛宣言参赛宣言参赛宣</p>
+					<p v-if="user.name">我是{{user.name}}</p>
+					<p v-if="user.declaration">{{user.declaration}}</p>
 				</div>
 				
 			</div>
@@ -20,15 +20,15 @@
 </template>
 <script type="text/ecmascript-6">
 import Scroll from '~/components/scroll/scroll'
-
 	export default {
 		data() {
 			return {
-				
+				user: {}
 			}
 		},
-		created() {
-			
+		mounted() {
+			//console.log(window, "12345")
+			this.user = JSON.parse(window.localStorage.user)
 		},
 		methods: {
 			

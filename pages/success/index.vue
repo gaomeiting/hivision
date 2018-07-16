@@ -1,19 +1,25 @@
 <template>
 	<scroll class="page" ref="scroll">
 		<div class="success">
-			<p class="icon-wrap"><i class="iconfont icon-shuaxin"></i></p>
+			<p class="icon-wrap"><i class="iconfont icon-chenggong1"></i></p>
 			<h2>报名成功！</h2>
 			<p>如果您的资料通过审核，我们会在3个工作日内及时通知你下一步的操作方式。请关注我们的微信公共号，及时获取通知。</p>
 			<figure>
 				<img src="~/~/assets/images/code.jpg">
 			</figure>
-			<a href="javascript:;" class="btn">生成分享页面炫一下</a>
+			<a href="javascript:;" class="btn" @click.stop="toggleShare">生成分享页面炫一下</a>
+		</div>
+		<div class="share-icons-wrap">
+			<share-icons ref="share" @cancle="cancle" @selectShare="selectShare"></share-icons>
 		</div>
 	</scroll>
 </template>
 <script type="text/ecmascript-6">
 import Scroll from '~/components/scroll/scroll'
+import ShareIcons from '~/components/share-icons/share-icons'
+import { share } from '~/assets/js/mixin'
 	export default {
+		mixins: [share],
 		data() {
 			return {
 				
@@ -22,11 +28,13 @@ import Scroll from '~/components/scroll/scroll'
 		created() {
 			
 		},
+
 		methods: {
 			
 		},
 		components: {
-			Scroll
+			Scroll,
+			ShareIcons
 		}
 	}
 </script>
@@ -43,6 +51,7 @@ import Scroll from '~/components/scroll/scroll'
 		text-align: center;
 		i {
 			font-size: 92px;
+			color: $color-theme;
 		}
 	}
 	h2 {
