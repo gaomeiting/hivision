@@ -38,7 +38,9 @@
 						</li>
 					</ul>
 				</div>
-				
+				<p class="share-icon" @click.stop.prevent="toggleShare">
+					<i class="iconfont icon-shuaxin"></i>
+				</p>
 			</div>
 			
 			<div class="info" ref="info_0">
@@ -124,13 +126,7 @@
 					</ul>
 				</div>
 				
-				<!-- <figure>
-					<img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1531650040077&di=a55f0e29ae252d9c38968763620ee4fc&imgtype=0&src=http%3A%2F%2Fe.hiphotos.baidu.com%2Fimage%2Fpic%2Fitem%2Ffcfaaf51f3deb48fd0e9be27fc1f3a292cf57842.jpg" alt="">
-				</figure>
-				<p>
-					与一线明星同台演播，同框宣传。<br>
-					用爱发声，你就是宝贝心中的声音大咖
-				</p> -->
+				
 				
 			</div>
 			<div class="info" ref="info_3">
@@ -194,16 +190,23 @@
 		<div class="menu-wrap">
 			<menu-list ref="menu" @selectMenu="selectMenu"></menu-list>
 		</div>
+		<div class="share-icons-wrap">
+			<share-icons ref="share" @cancle="cancle" @selectShare="selectShare"></share-icons>
+		</div>
 	</scroll>
 </template>
 <script type="text/ecmascript-6">
 import Scroll from '~/components/scroll/scroll'
 import MenuList from '~/components/menu/menu'
+import ShareIcons from '~/components/share-icons/share-icons'
+import { share } from '~/assets/js/mixin'
 	export default {
+		mixins: [ share ],
 		data() {
 			return {
 				list: [1,2,3],
 				flag: false
+				
 			}
 		},
 		created() {
@@ -231,7 +234,8 @@ import MenuList from '~/components/menu/menu'
 		},
 		components: {
 			Scroll,
-			MenuList
+			MenuList,
+			ShareIcons
 		}
 	}
 </script>
@@ -245,8 +249,16 @@ import MenuList from '~/components/menu/menu'
 	right: 0;
 	z-index: 999;
 }
+.share-icon {
+	position: absolute;
+	top: 0;
+	right: 0;
+	padding: 16px;
+	
+	
+}
 .btns {
-	position: fixed;
+	position: absolute;
 	bottom: 0;
 	z-index: 999;
 	width: 100%;
