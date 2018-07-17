@@ -5,8 +5,12 @@ import {
 export const share = {
 	data() {
 		return {
-			isShare: false
+			isShare: false,
+			hasShare: true
 		}
+	},
+	mounted() {
+		this.hasShare = navigator.userAgent.indexOf('Lingxi') != -1
 	},
 	methods: {
 		toggleShare() {

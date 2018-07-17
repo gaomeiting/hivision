@@ -27,8 +27,7 @@ import Scroll from '~/components/scroll/scroll'
 			}
 		},
 		mounted() {
-			//console.log(window, "12345")
-			this.user = JSON.parse(window.localStorage.user)
+			if(window.localStorage.user) this.user = JSON.parse(window.localStorage.user)
 		},
 		methods: {
 			

@@ -3,8 +3,8 @@ module.exports = {
    ** Headers of the page
    */
   head: {
-    titleTemplate: '%s - 叮当配主播配音平台',
-    title: '叮当配',
+    /*titleTemplate: '%s - 叮当配主播配音平台',*/
+    title: '与声俱来·声咖大赛',
     meta: [{
       charset: 'utf-8'
     }, {

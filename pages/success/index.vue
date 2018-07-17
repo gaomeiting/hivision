@@ -7,7 +7,7 @@
 			<figure>
 				<img src="~/~/assets/images/code.jpg">
 			</figure>
-			<a href="javascript:;" class="btn" @click.stop="toggleShare">生成分享页面炫一下</a>
+			<a v-if="hasShare" href="javascript:;" class="btn" @click.stop="toggleShare">生成分享页面炫一下</a>
 		</div>
 		<div class="share-icons-wrap">
 			<share-icons ref="share" @cancle="cancle" @selectShare="selectShare"></share-icons>

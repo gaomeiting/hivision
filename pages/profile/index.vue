@@ -339,15 +339,12 @@ import { postData } from '~/api/api'
 .avatar-uploader .el-upload {
 display: inline-block;
 border: 1px dashed #d9d9d9;
-border-radius: 6px;
 position: relative;
 overflow: hidden;
-
 
 }
 .avatar-uploader .el-upload:hover {
 border-color: #409EFF;
-
 }
 .avatar-uploader-icon {
 font-size: 28px;
@@ -362,6 +359,7 @@ border-radius: 44px;
 .avatar {
 width: 88px;
 height: 88px;
+border-radius: 44px;
 display: block;
 }
 </style>

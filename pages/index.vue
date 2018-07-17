@@ -1,5 +1,5 @@
 <template>
-	<scroll class="page" :data="list" ref="scroll">
+	<scroll class="page" ref="scroll">
 		<div class="home">
 			<div class="contain">
 				<div class="logos">
@@ -38,7 +38,7 @@
 						</li>
 					</ul>
 				</div>
-				<p class="share-icon" @click.stop.prevent="toggleShare">
+				<p v-if="hasShare" class="share-icon" @click.stop.prevent="toggleShare">
 					<i class="iconfont icon-fenxiang"></i>
 				</p>
 			</div>
@@ -61,12 +61,12 @@
 					奖项设置
 				</h2>
 				<h2>
-					<strong>万</strong>元奖金/神秘礼包等你拿签约声咖 常年持续录制
+					<strong>万</strong>元奖金/神秘礼包等你拿签约声咖 <br> 常年持续录制
 				</h2>
 				<figure>
 					<img src="~/assets/images/bg1.jpg">
 				</figure>
-				<p>
+				<p style="text-align: center">
 					与一线明星同台演播，同框宣传。<br>
 					用爱发声，你就是宝贝心中的声音大咖
 				</p>
@@ -81,7 +81,7 @@
 					<ul>
 						<li>
 							<div>
-								<h4>大赛报名 </h4>
+								<h4>大赛报名</h4>
 								<p>7月19日～8月19日</p>
 							</div>
 							<div></div>
@@ -204,14 +204,11 @@ import { share } from '~/assets/js/mixin'
 		mixins: [ share ],
 		data() {
 			return {
-				list: [1,2,3],
 				flag: false
 				
 			}
 		},
-		created() {
-			
-		},
+		
 		methods: {
 			regist() {
 				this.$router.push('/profile')
@@ -229,7 +226,6 @@ import { share } from '~/assets/js/mixin'
 			},
 			selectMenu(index, flag) {
 				this.flag = !flag;
-				console.log(this.flag)
 				let refsIndex = 'info_' + index
 				let el = this.$refs[refsIndex];
 				this.$refs.scroll.scrollToElement(el)
@@ -278,6 +274,7 @@ import { share } from '~/assets/js/mixin'
 	i {
 		padding: 0 16px;
 		background: $color-text-d;
+		font-size: $font-size-large;
 	}
 }
 .home {
@@ -404,7 +401,9 @@ import { share } from '~/assets/js/mixin'
 			background-repeat: no-repeat;
 			position: relative;
 			color: $color-background-d;
-			
+			.icon-fenxiang {
+				font-size: $font-size-large-x;
+			}
 			.logos {
 				width: 100%;
 				position: absolute;
@@ -415,7 +414,7 @@ import { share } from '~/assets/js/mixin'
 
 				ul {
 					display: flex;
-					padding-left: 20px;
+					padding-left: 5em;
 					li {
 						&:first-child {
 							padding-right: 16px;
