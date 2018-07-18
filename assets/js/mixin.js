@@ -6,9 +6,10 @@ export const share = {
 	data() {
 		return {
 			isShare: false,
-			hasShare: true
+			hasShare: true,
 		}
 	},
+
 	mounted() {
 		this.hasShare = navigator.userAgent.indexOf('Lingxi') != -1
 	},
@@ -20,7 +21,6 @@ export const share = {
 			} else {
 				this.$refs.share.hide()
 			}
-			console.log(this.isShare)
 		},
 		cancle() {
 			this.isShare = !this.isShare
@@ -30,13 +30,13 @@ export const share = {
 			switch (index + 1) {
 				case 1:
 					type = 2;
-					link = 'http://mglx.hvkid.com/share'
+					link = 'http://mglx.hvkid.com/share?type=lingxi'
 					//window.alert(lx)
 					this.shareWX(link, type);
 					break;
 				case 2:
 					type = 1;
-					link = 'http://mglx.hvkid.com/share'
+					link = 'http://mglx.hvkid.com/share?type=lingxi'
 					this.shareWX(link, type);
 					break;
 			}
@@ -46,12 +46,12 @@ export const share = {
 			switch (index + 1) {
 				case 1:
 					type = 2;
-					link = 'http://mglx.hvkid.com'
+					link = 'http://mglx.hvkid.com?type=lingxi'
 					this.shareWX(link, type);
 					break;
 				case 2:
 					type = 1;
-					link = 'http://mglx.hvkid.com'
+					link = 'http://mglx.hvkid.com?type=lingxi'
 					this.shareWX(link, type);
 					break;
 			}
@@ -71,5 +71,15 @@ export const share = {
 				}
 			});
 		}
+	}
+};
+export const loadBtn = {
+	data() {
+		return {
+			type: ''
+		}
+	},
+	created() {
+		if (this.$route.query.type) this.type = this.$route.query.type
 	}
 }

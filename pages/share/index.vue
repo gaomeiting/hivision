@@ -12,7 +12,7 @@
 				</div>
 				
 			</div>
-			
+			<down-load v-if="type"></down-load>
 		</div>
 		
 		
@@ -20,7 +20,10 @@
 </template>
 <script type="text/ecmascript-6">
 import Scroll from '~/components/scroll/scroll'
+import DownLoad from '~/components/down-load/down-load'
+import { loadBtn } from '~/assets/js/mixin'
 	export default {
+		mixins: [loadBtn],
 		data() {
 			return {
 				user: {}
@@ -33,7 +36,8 @@ import Scroll from '~/components/scroll/scroll'
 			
 		},
 		components: {
-			Scroll
+			Scroll,
+			DownLoad
 		}
 	}
 </script>
@@ -52,7 +56,7 @@ import Scroll from '~/components/scroll/scroll'
 		&:first-child {
 			background-image: url('~assets/images/share_bg.jpg');
 			background-size: cover;
-			background-position: center;
+			background-position: center top;
 			background-repeat: no-repeat;
 			position: relative;
 			color: $color-background-d;

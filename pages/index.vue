@@ -193,15 +193,17 @@
 		<div class="share-icons-wrap">
 			<share-icons ref="share" @cancle="cancle" @selectShare="selectSharehome"></share-icons>
 		</div>
+		<down-load v-if="type"></down-load>
 	</scroll>
 </template>
 <script type="text/ecmascript-6">
 import Scroll from '~/components/scroll/scroll'
 import MenuList from '~/components/menu/menu'
 import ShareIcons from '~/components/share-icons/share-icons'
-import { share } from '~/assets/js/mixin'
+import DownLoad from '~/components/down-load/down-load'
+import { share, loadBtn } from '~/assets/js/mixin'
 	export default {
-		mixins: [ share ],
+		mixins: [ share, loadBtn ],
 		data() {
 			return {
 				flag: false
@@ -234,7 +236,8 @@ import { share } from '~/assets/js/mixin'
 		components: {
 			Scroll,
 			MenuList,
-			ShareIcons
+			ShareIcons,
+			DownLoad
 		}
 	}
 </script>
@@ -397,7 +400,7 @@ import { share } from '~/assets/js/mixin'
 		&:first-child {
 			background-image: url('~assets/images/bg.jpg');
 			background-size: cover;
-			background-position: center;
+			background-position:  center top;
 			background-repeat: no-repeat;
 			position: relative;
 			color: $color-background-d;
