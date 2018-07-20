@@ -193,7 +193,7 @@
 		<div class="share-icons-wrap">
 			<share-icons ref="share" @cancle="cancle" @selectShare="selectSharehome"></share-icons>
 		</div>
-		<down-load v-if="type"></down-load>
+		<down-load v-if="name"></down-load>
 	</scroll>
 </template>
 <script type="text/ecmascript-6">

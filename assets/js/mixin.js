@@ -30,13 +30,13 @@ export const share = {
 			switch (index + 1) {
 				case 1:
 					type = 2;
-					link = 'http://mglx.hvkid.com/share?type=lingxi'
+					link = 'http://mglx.hvkid.com/share?name=lingxi'
 					//window.alert(lx)
 					this.shareWX(link, type);
 					break;
 				case 2:
 					type = 1;
-					link = 'http://mglx.hvkid.com/share?type=lingxi'
+					link = 'http://mglx.hvkid.com/share?name=lingxi'
 					this.shareWX(link, type);
 					break;
 			}
@@ -46,12 +46,12 @@ export const share = {
 			switch (index + 1) {
 				case 1:
 					type = 2;
-					link = 'http://mglx.hvkid.com?type=lingxi'
+					link = 'http://mglx.hvkid.com?name=lingxi'
 					this.shareWX(link, type);
 					break;
 				case 2:
 					type = 1;
-					link = 'http://mglx.hvkid.com?type=lingxi'
+					link = 'http://mglx.hvkid.com?name=lingxi'
 					this.shareWX(link, type);
 					break;
 			}
@@ -76,10 +76,11 @@ export const share = {
 export const loadBtn = {
 	data() {
 		return {
-			type: ''
+			name: ''
 		}
 	},
 	created() {
-		if (this.$route.query.type) this.type = this.$route.query.type
+		if (this.$route.query.name) this.name = this.$route.query.name
+
 	}
 }

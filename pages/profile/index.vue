@@ -102,11 +102,14 @@ import { postData } from '~/api/api'
 			beforeAvatarUpload(file) {
 				console.log(file)
 				const isJPG = file.type === 'image/jpeg' || 'image/png';
-				const isLt2M = file.size / 1024 / 1024 < 2;
+				const isLt5M = file.size / 1024 / 1024 < 5;
 				if (!isJPG) {
 				  this.$message.error('上传头像图片只能是 JPG或png 格式!');
 				}
-				return isJPG;
+				if(!isLt5M) {
+					this.$message.error('上传头像图片大小不能超过5M');
+				}
+				return isJPG && isLt5M;
 			},
 					settingCity(item) {
 				this.form.city = item.NAME;
@@ -177,8 +180,8 @@ import { postData } from '~/api/api'
 					  mobile: this.form.tel ,
 					  nickname: this.form.title ,
 					  realname: this.form.name ,
-					  slogan: this.form.info ,
-					  title: this.form.declaration
+					  slogan: this.form.declaration ,
+					  title: this.form.info
 					}).then(res => {
 
 						this.setUser({

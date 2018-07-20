@@ -12,7 +12,7 @@
 				</div>
 				
 			</div>
-			<down-load v-if="type"></down-load>
+			<down-load v-if="name"></down-load>
 		</div>
 		
 		
