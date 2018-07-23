@@ -38,7 +38,7 @@
 						</li>
 					</ul>
 				</div>
-				<p v-if="hasShare" class="share-icon" @click.stop.prevent="toggleShare">
+				<p v-if="!isWx" class="share-icon" @click.stop.prevent="toggleShare">
 					<i class="iconfont icon-fenxiang"></i>
 				</p>
 			</div>
@@ -193,14 +193,16 @@
 		<div class="share-icons-wrap">
 			<share-icons ref="share" @cancle="cancle" @selectShare="selectSharehome"></share-icons>
 		</div>
-		<down-load v-if="name"></down-load>
+		<div class="down-loaded-wrap" v-show="name">
+			<down-loaded></down-loaded>
+		</div>
 	</scroll>
 </template>
 <script type="text/ecmascript-6">
 import Scroll from '~/components/scroll/scroll'
 import MenuList from '~/components/menu/menu'
 import ShareIcons from '~/components/share-icons/share-icons'
-import DownLoad from '~/components/down-load/down-load'
+import DownLoaded from '~/components/down-loaded/down-loaded'
 import { share, loadBtn } from '~/assets/js/mixin'
 	export default {
 		mixins: [ share, loadBtn ],
@@ -237,7 +239,7 @@ import { share, loadBtn } from '~/assets/js/mixin'
 			Scroll,
 			MenuList,
 			ShareIcons,
-			DownLoad
+			DownLoaded
 		}
 	}
 </script>

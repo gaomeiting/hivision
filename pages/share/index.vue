@@ -12,7 +12,9 @@
 				</div>
 				
 			</div>
-			<down-load v-if="name"></down-load>
+			<div class="down-loaded-wrap" v-show="name">
+				<down-loaded></down-loaded>
+			</div>
 		</div>
 		
 		
@@ -20,7 +22,7 @@
 </template>
 <script type="text/ecmascript-6">
 import Scroll from '~/components/scroll/scroll'
-import DownLoad from '~/components/down-load/down-load'
+import DownLoaded from '~/components/down-loaded/down-loaded'
 import { loadBtn } from '~/assets/js/mixin'
 	export default {
 		mixins: [loadBtn],
@@ -37,7 +39,7 @@ import { loadBtn } from '~/assets/js/mixin'
 		},
 		components: {
 			Scroll,
-			DownLoad
+			DownLoaded
 		}
 	}
 </script>

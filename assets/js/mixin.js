@@ -6,13 +6,17 @@ export const share = {
 	data() {
 		return {
 			isShare: false,
-			hasShare: true,
+			isWx: false
 		}
 	},
 
-	mounted() {
-		this.hasShare = navigator.userAgent.indexOf('Lingxi') != -1
+	beforeMount() {
+		this.$nextTick(() => {
+			this.isWx = this.versions()
+			console.log(this.isWx, "isWx")
+		})
 	},
+
 	methods: {
 		toggleShare() {
 			this.isShare = !this.isShare;
@@ -40,18 +44,20 @@ export const share = {
 					this.shareWX(link, type);
 					break;
 			}
+			//http://mglx.hvkid.com/share
+			//http://mgt.hvkid.cn:9000/
 		},
 		selectSharehome(index) {
 			let type, link;
 			switch (index + 1) {
 				case 1:
 					type = 2;
-					link = 'http://mglx.hvkid.com?name=lingxi'
+					link = 'http://mglx.hvkid.com/?name=lingxi'
 					this.shareWX(link, type);
 					break;
 				case 2:
 					type = 1;
-					link = 'http://mglx.hvkid.com?name=lingxi'
+					link = 'http://mglx.hvkid.com/?name=lingxi'
 					this.shareWX(link, type);
 					break;
 			}
@@ -70,6 +76,14 @@ export const share = {
 					//alert('分享成功');
 				}
 			});
+		},
+		versions() {
+			var ua = navigator.userAgent.toLowerCase(); //获取判断用的对象
+			if (ua.match(/MicroMessenger/i) == "micromessenger") {
+				return true;
+			} else {
+				return false
+			}
 		}
 	}
 };
@@ -80,7 +94,13 @@ export const loadBtn = {
 		}
 	},
 	created() {
-		if (this.$route.query.name) this.name = this.$route.query.name
 
+		if (this.$route.query.name) {
+			/*console.log(this.$route.query.name, "123")*/
+			this.$nextTick(() => {
+				this.name = this.$route.query.name
+			})
+			//console.log(this.name, "123created")
+		}
 	}
 }
