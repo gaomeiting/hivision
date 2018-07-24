@@ -3,7 +3,7 @@
 		<div class="success">
 			<p class="icon-wrap"><i class="iconfont icon-chenggong1"></i></p>
 			<h2>报名成功！</h2>
-			<p>如果您的资料通过审核，我们会在3个工作日内及时通知你下一步的操作方式。请关注我们的微信公共号，及时获取通知。</p>
+			<p>我们会在3个工作日内审核您的参赛资料，关注“嗨未来”微信公众号，及时获取比赛通知。长按识别二维码 关注“嗨未来”微信公共号</p>
 			<figure>
 				<img src="~/~/assets/images/code.jpg">
 			</figure>

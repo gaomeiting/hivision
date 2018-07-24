@@ -15,21 +15,22 @@
 			<div class="down-loaded-wrap" v-show="name">
 				<down-loaded></down-loaded>
 			</div>
+			<error v-if="error" :error="error"></error>
 		</div>
-		
-		
 	</scroll>
 </template>
 <script type="text/ecmascript-6">
 import Scroll from '~/components/scroll/scroll'
 import DownLoaded from '~/components/down-loaded/down-loaded'
+import Error from '~/components/error/error'
 import { loadBtn } from '~/assets/js/mixin'
 import { getData } from '~/api/api'
 	export default {
 		mixins: [loadBtn],
 		data() {
 			return {
-				user: {}
+				user: {},
+				error: ''
 			}
 		},
 		created() {
@@ -39,7 +40,7 @@ import { getData } from '~/api/api'
 				this.user = res;
 			}).catch(err => {
 				if(err && err.data) {
-					this.error = err.data.toString();
+					this.error = `${err.data.status}${err.data.error}`;
 				}
 				else {
 					this.error = '程序调试中请稍等'
@@ -51,7 +52,8 @@ import { getData } from '~/api/api'
 		},
 		components: {
 			Scroll,
-			DownLoaded
+			DownLoaded,
+			Error
 		}
 	}
 </script>
