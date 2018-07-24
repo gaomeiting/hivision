@@ -48,6 +48,9 @@ module.exports = {
   }, {
     src: '~plugins/ilingxi-1.0.0.js',
     ssr: false
+  }, {
+    src: '~plugins/ga.js',
+    ssr: false
   }],
   modules: [
     '@nuxtjs/axios'
@@ -59,7 +62,7 @@ module.exports = {
   },
   proxy: {
     "/api": {
-      target: "http://192.168.100.59:8080/api",
+      target: "http://mglx.hvkid.com/api",
       pathRewrite: {
         "^/api": ""
       }
@@ -85,7 +88,7 @@ module.exports = {
     },
     vendor: ['axios', 'babel-polyfill', 'weixin-js-sdk'],
     publicPath: 'http://st.ddpei.cn/hv/mglx/',
-   /* publicPath: '/st/',*/
+    /* publicPath: '/st/',*/
     extend(config, {
       isDev,
       isClient

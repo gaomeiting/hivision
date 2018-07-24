@@ -1,7 +1,8 @@
 <template>
 
 	<div>
-		<div class="form-wrap">
+		<error v-if="errMsg" :error="errMsg" :key="1"></error>
+		<div v-else class="form-wrap" :key="0">
 			<div class="avatar-wrap">
 				<p>上传头像</p>
 				<el-upload class="avatar-uploader" action="/api/media/avatar" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
@@ -54,6 +55,7 @@
 <script type="text/ecmascript-6">
 import { mapGetters, mapMutations } from 'vuex'
 import TopTip from '~/components/top-tip/top-tip'
+import Error from '~/components/error/error'
 import { Message } from 'element-ui'
 import { postData } from '~/api/api'
 	export default {
@@ -81,7 +83,8 @@ import { postData } from '~/api/api'
 				},
 				error: '',
 				text: '',
-				imageUrl: ''
+				imageUrl: '',
+				errMsg: ''
 				
 			}
 		},
@@ -194,17 +197,25 @@ import { postData } from '~/api/api'
 							name: this.form.title,
 							declaration: this.form.declaration
 						}) 
+
 						localStorage.setItem('user', str) 
-						this.$router.push('/success')
+						this.$router.push(`/success/${res.id}`)
+						window.alert(localStorage.user)
 					}).catch(err => {
+						
 						if(err.data.status == 409) {
 							this.error = '数据重复'
 							this.$refs.topTip.show()
 						}
-						else {
+						else if(err.data.details) {
 							this.error = err.data.details[0].defaultMessage
 							this.$refs.topTip.show()
 						}
+						else {
+							this.errMsg = '调试中请等待'
+							return;
+						}
+
 					})
 					
 				}
@@ -232,7 +243,8 @@ import { postData } from '~/api/api'
 
 		},
 		components: {
-			TopTip
+			TopTip,
+			Error
 		}
 	}
 </script>

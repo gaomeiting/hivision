@@ -34,13 +34,13 @@ export const share = {
 			switch (index + 1) {
 				case 1:
 					type = 2;
-					link = 'http://mglx.hvkid.com/share?name=lingxi'
+					link = 'http://192.168.100.46:8080/share?name=lingxi'
 					//window.alert(lx)
 					this.shareWX(link, type);
 					break;
 				case 2:
 					type = 1;
-					link = 'http://mglx.hvkid.com/share?name=lingxi'
+					link = 'http://192.168.100.46:8080/share?name=lingxi'
 					this.shareWX(link, type);
 					break;
 			}
