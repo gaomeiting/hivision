@@ -187,7 +187,7 @@ import { postData } from '~/api/api'
 					  title: this.form.info
 					}).then(res => {
 
-						this.setUser({
+						/*this.setUser({
 							id: res.id,
 							name: this.form.title,
 							declaration: this.form.declaration
@@ -198,9 +198,9 @@ import { postData } from '~/api/api'
 							declaration: this.form.declaration
 						}) 
 
-						localStorage.setItem('user', str) 
+						localStorage.setItem('user', str) */
 						this.$router.push(`/success/${res.id}`)
-						window.alert(localStorage.user)
+						/*window.alert(localStorage.user)*/
 					}).catch(err => {
 						
 						if(err.data.status == 409) {

@@ -7,8 +7,8 @@
 						<img src="~/assets/images/code.jpg" alt="">
 					</figure>
 					<h2>用爱发声、用心陪伴</h2>
-					<p v-if="user.name">我是{{user.name}}</p>
-					<p v-if="user.declaration">{{user.declaration}}</p>
+					<p v-if="user.realname">我是{{user.realname}}</p>
+					<p v-if="user.slogan">{{user.slogan}}</p>
 				</div>
 				
 			</div>
@@ -24,6 +24,7 @@
 import Scroll from '~/components/scroll/scroll'
 import DownLoaded from '~/components/down-loaded/down-loaded'
 import { loadBtn } from '~/assets/js/mixin'
+import { getData } from '~/api/api'
 	export default {
 		mixins: [loadBtn],
 		data() {
@@ -31,8 +32,19 @@ import { loadBtn } from '~/assets/js/mixin'
 				user: {}
 			}
 		},
-		mounted() {
-			if(window.localStorage.user) this.user = JSON.parse(window.localStorage.user)
+		created() {
+			/*if(window.localStorage.user) this.user = JSON.parse(window.localStorage.user)*/
+			let id = this.$route.params.id;
+			getData(`/api/contestant/${id}`).then(res => {
+				this.user = res;
+			}).catch(err => {
+				if(err && err.data) {
+					this.error = err.data.toString();
+				}
+				else {
+					this.error = '程序调试中请稍等'
+				}
+			})
 		},
 		methods: {
 			
