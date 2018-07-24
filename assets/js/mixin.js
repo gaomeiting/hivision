@@ -35,13 +35,13 @@ export const share = {
 			switch (index + 1) {
 				case 1:
 					type = 2;
-					link = `http://mgt.hvkid.cn:9000/share/${id}?name=lingxi`
+					link = `http://mglx.hvkid.com/share/${id}?name=lingxi`
 					//window.alert(lx)
 					this.shareWX(link, type);
 					break;
 				case 2:
 					type = 1;
-					link = `http://mgt.hvkid.cn:9000/share/${id}?name=lingxi`
+					link = `http://mglx.hvkid.com/share/${id}?name=lingxi`
 					this.shareWX(link, type);
 					break;
 			}
