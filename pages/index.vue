@@ -1,6 +1,7 @@
 <template>
 	<scroll class="page" ref="scroll">
 		<div class="home">
+
 			<div class="contain">
 				<div class="logos">
 					<ul>
@@ -182,6 +183,7 @@
 					<img src="~/assets/images/code.jpg" alt="">
 				</figure>
 			</div>
+
 		</div>
 		<div class="btns">
 			<a href="javascript:;" class="btn" @click.stop="regist">立即报名</a>
@@ -196,6 +198,7 @@
 		<div class="down-loaded-wrap" v-show="name">
 			<down-loaded></down-loaded>
 		</div>
+		<error-tip :error="error" @hide="errHide" ref="errorTip"></error-tip>
 	</scroll>
 </template>
 <script type="text/ecmascript-6">
@@ -203,17 +206,21 @@ import Scroll from '~/components/scroll/scroll'
 import MenuList from '~/components/menu/menu'
 import ShareIcons from '~/components/share-icons/share-icons'
 import DownLoaded from '~/components/down-loaded/down-loaded'
-import { share, loadBtn } from '~/assets/js/mixin'
+import ErrorTip from '~/components/error-tip/error-tip'
+import { share, loadBtn, wxShare } from '~/assets/js/mixin'
 	export default {
-		mixins: [ share, loadBtn ],
+		mixins: [ share, loadBtn, wxShare ],
 		data() {
 			return {
-				flag: false
-				
+				flag: false,
+				error: ''
 			}
 		},
 		
 		methods: {
+			errHide() {
+				this.error = ''
+			},
 			regist() {
 				this.$router.push('/profile')
 			},
@@ -239,7 +246,8 @@ import { share, loadBtn } from '~/assets/js/mixin'
 			Scroll,
 			MenuList,
 			ShareIcons,
-			DownLoaded
+			DownLoaded,
+			ErrorTip
 		}
 	}
 </script>

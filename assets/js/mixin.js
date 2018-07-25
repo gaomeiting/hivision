@@ -104,4 +104,69 @@ export const loadBtn = {
 			//console.log(this.name, "123created")
 		}
 	}
+};
+export const wxShare = {
+	created() {
+		this._getShareConfig()
+	},
+	methods: {
+		wxHide() {
+			wx.hideMenuItems({
+				menuList: ["menuItem:share:appMessage", "menuItem:share:timeline", "menuItem:share:qq", "menuItem:share:QZone", "menuItem:share:facebook"]
+			});
+		},
+		wxS(response, url) {
+			wx.hideMenuItems({
+				menuList: ["menuItem:share:facebook"]
+			});
+			wx.config({
+				debug: true,
+				appId: response.appId,
+				timestamp: response.timestamp,
+				nonceStr: response.nonceStr,
+				signature: response.signature,
+				jsApiList: [
+					'checkJsApi',
+					'onMenuShareTimeline',
+					'onMenuShareAppMessage',
+					'onMenuShareQQ',
+					'onMenuShareWeibo',
+					'onMenuShareQZone'
+				]
+			});
+			wx.ready(function() {
+				let shareData = {
+					imgUrl: 'http://st.ddpei.cn/hv/mglx/img/hvlogo.jpg', //图片地址
+					link: url,
+					title: '嗨未来 儿童有声阅读计划 声咖大赛用爱发声 用心陪伴 与一线明星同台演播',
+					desc: '万元奖金/神秘大礼包等你拿有声俱来声咖大赛 用爱为孩子们发声',
+					success: function(res) {
+						alert('已分享');
+					},
+					fail: function(res) {
+						alert('分享失败');
+					}
+				};
+				wx.onMenuShareAppMessage(shareData);
+				wx.onMenuShareTimeline(shareData);
+				wx.onMenuShareQQ(shareData);
+				wx.onMenuShareWeibo(shareData);
+				wx.onMenuShareQZone(shareData);
+			});
+		},
+		_getShareConfig() {
+			getData('/api/wechat/sdkconfig.json').then(res => {
+				let config = res;
+				this.wxS(config, 'http://mglx.hvkid.com')
+			}).catch(err => {
+				console.log(err)
+				if (err && err.data) {
+					this.error = `${err.data.status}${err.data.error}`
+					this.$refs.errorTip.show()
+				} else {
+					this.error = '接口调试中请等待'
+				}
+			})
+		}
+	}
 }

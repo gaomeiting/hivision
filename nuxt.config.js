@@ -51,6 +51,9 @@ module.exports = {
   }, {
     src: '~plugins/ga.js',
     ssr: false
+  }, {
+    src: '~plugins/weixin-js-sdk.js',
+    ssr: false
   }],
   modules: [
     '@nuxtjs/axios'
@@ -68,6 +71,7 @@ module.exports = {
       }
     }
   },
+  //http://mglx.hvkid.com/api
   //http://192.168.100.210:8080
   //http://192.168.100.70:8080
   /*
@@ -87,8 +91,8 @@ module.exports = {
       plugins: ['transform-runtime']
     },
     vendor: ['axios', 'babel-polyfill', 'weixin-js-sdk'],
-    publicPath: 'http://st.ddpei.cn/hv/mglx/',
-    //publicPath: '/st/',
+    //publicPath: 'http://st.ddpei.cn/hv/mglx/',
+    publicPath: '/st/',
     extend(config, {
       isDev,
       isClient
