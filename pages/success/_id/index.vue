@@ -17,16 +17,18 @@
 <script type="text/ecmascript-6">
 import Scroll from '~/components/scroll/scroll'
 import ShareIcons from '~/components/share-icons/share-icons'
-import { share } from '~/assets/js/mixin'
+import { share, wxShare } from '~/assets/js/mixin'
 	export default {
-		mixins: [share],
+		mixins: [share, wxShare],
 		data() {
 			return {
 				
 			}
 		},
-		created() {
-			
+		beforeMount() {
+			let id = this.$route.params.id;
+			//this._getShareConfig(`http://mgt.hvkid.com/share/?id=${id}`)
+			this._getShareConfig(`http://mglx.hvkid.com/share/?id=${id}`)
 		},
 
 		methods: {

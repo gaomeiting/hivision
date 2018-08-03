@@ -1,6 +1,6 @@
 <template>
 	<scroll class="page" ref="scroll">
-		<div class="home">
+		<div class="home" ref="home">
 			<div class="contain">
 				<div class="main">
 					<figure>
@@ -15,14 +15,21 @@
 			<div class="down-loaded-wrap" v-show="name">
 				<down-loaded></down-loaded>
 			</div>
-			<error v-if="error" :error="error"></error>
 		</div>
+		<div class="target-wrap">
+			<div class="target" ref="target" v-if="jpg">
+				<img :src="jpg">
+				<p>长按保存图片</p>
+			</div>
+		</div>
+		<error ref="error" :error="error" @hide="hideError"></error>
 	</scroll>
 </template>
 <script type="text/ecmascript-6">
 import Scroll from '~/components/scroll/scroll'
 import DownLoaded from '~/components/down-loaded/down-loaded'
-import Error from '~/components/error/error'
+import Error from '~/components/error-tip/error-tip'
+import html2canvas from 'html2canvas'
 import { loadBtn } from '~/assets/js/mixin'
 import { getData } from '~/api/api'
 	export default {
@@ -30,16 +37,15 @@ import { getData } from '~/api/api'
 		data() {
 			return {
 				user: {},
-				error: ''
+				error: '',
+				jpg: ''
 			}
 		},
 		created() {
-			/*if(window.localStorage.user) this.user = JSON.parse(window.localStorage.user)*/
-			let id = this.$route.params.id;
-			getData(`/api/contestant/current/${id}`).then(res => {
-				if(res.status == 200) {
-					this.user = res.data;
-				}
+			
+			getData('/api/contestant/current').then(res => {
+				this._hasStatus(res)
+				
 			}).catch(err => {
 				if(err && err.data) {
 					this.error = `${err.data.status}${err.data.error}`;
@@ -47,10 +53,48 @@ import { getData } from '~/api/api'
 				else {
 					this.error = '程序调试中请稍等'
 				}
+				this.$refs.error.show()
 			})
 		},
+		
 		methods: {
-			
+			hideError() {
+				if(this.error) this.error = ''
+			},
+			convertCanvasToImage() {
+				let el = this.$refs.home;
+				let _this = this;
+				html2canvas(el).then(function(canvas) {
+				    _this.jpg = _this.convertCanvasToBase64(canvas);
+				});
+			},
+			convertCanvasToBase64(canvas){
+			     /*var image = new Image();
+			     image.src = canvas.toDataURL("image/jpg");
+				 return image;*/
+			     return canvas.toDataURL("image/jpg");
+			},
+			_normalizeData(res) {
+				this.user = res.data;
+				this.$nextTick(() => {
+					this.convertCanvasToImage()
+				})
+			},
+			_hasStatus(res) {
+				if(res.status == 406) {
+					this.error = res.message;
+					this.$refs.errorTip.show()
+				}
+				else if(res.status == 302) {
+					window.location = res.error;
+				}
+				else if(res.status == 401) {
+					this.$router.push('/bind')
+				}
+				else if(res.status == 200) {
+					this._normalizeData(res);
+				}
+			}
 		},
 		components: {
 			Scroll,
@@ -64,7 +108,30 @@ import { getData } from '~/api/api'
 @import "~assets/scss/variable";
 @import "~assets/scss/mixin";
 
-
+.target-wrap {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	z-index: 899;
+	top: 0;
+	left: 0;
+	background: $color-background;
+	.target {
+		width: 75%;
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		transform: translate3d(-50%, -50%, 0);
+		box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+		> img {
+			width: 100%;
+		}
+		> p {
+			text-align: center;
+			line-height: 1.5;
+		}
+	}
+}
 .home {
 	
 	> .contain {
@@ -81,7 +148,7 @@ import { getData } from '~/api/api'
 			.main {
 				width: 100%;
 				position: absolute;
-				bottom: 110px;
+				top: 44%;
 				figure {
 					width: 120px;
 					height: 120px;

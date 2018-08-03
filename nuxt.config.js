@@ -54,6 +54,12 @@ module.exports = {
   }, {
     src: '~plugins/weixin-js-sdk.js',
     ssr: false
+  }, {
+    src: '~plugins/canvas2image.js',
+    ssr: false
+  }, {
+    src: '~plugins/dom.js',
+    ssr: false
   }],
   modules: [
     '@nuxtjs/axios'
@@ -65,15 +71,16 @@ module.exports = {
   },
   proxy: {
     "/api": {
-      target: "http://mglx.hvkid.com/api",
+      target: "http://mgt.hvkid.cn:9000/api",
       pathRewrite: {
         "^/api": ""
       }
     }
   },
+  //http://mgt.hvkid.cn:9000/api
   //http://mglx.hvkid.com/api
-  //http://192.168.100.210:8080
-  //http://192.168.100.70:8080
+  //http://192.168.100.210:8085
+  //http://192.168.100.59:8080
   /*
    ** Build configuration
    */

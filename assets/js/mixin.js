@@ -35,13 +35,12 @@ export const share = {
 			switch (index + 1) {
 				case 1:
 					type = 2;
-					link = `http://mglx.hvkid.com/share/${id}?name=lingxi`
-					//window.alert(lx)
+					link = `http://mglx.hvkid.com/share/?name=lingxi&id=${id}`
 					this.shareWX(link, type);
 					break;
 				case 2:
 					type = 1;
-					link = `http://mglx.hvkid.com/share/${id}?name=lingxi`
+					link = `http://mglx.hvkid.com/share/?name=lingxi&id=${id}`
 					this.shareWX(link, type);
 					break;
 			}
@@ -97,36 +96,43 @@ export const loadBtn = {
 	created() {
 
 		if (this.$route.query.name) {
-			/*console.log(this.$route.query.name, "123")*/
 			this.$nextTick(() => {
 				this.name = this.$route.query.name
 			})
-			//console.log(this.name, "123created")
 		}
 	}
 };
 export const wxShare = {
-	created() {
-		this._getShareConfig()
-	},
 	methods: {
-		wxHide() {
-			wx.hideMenuItems({
-				menuList: ["menuItem:share:appMessage", "menuItem:share:timeline", "menuItem:share:qq", "menuItem:share:QZone", "menuItem:share:facebook"]
-			});
-		},
-		wxS(response, url) {
-			wx.hideMenuItems({
-				menuList: ["menuItem:share:facebook"]
-			});
+		wxHide(response) {
 			wx.config({
-				debug: true,
+				debug: false,
 				appId: response.appId,
 				timestamp: response.timestamp,
 				nonceStr: response.nonceStr,
 				signature: response.signature,
 				jsApiList: [
 					'checkJsApi',
+					'hideMenuItems'
+				]
+			});
+			wx.ready(function() {
+				wx.hideMenuItems({
+					menuList: ["menuItem:share:appMessage", "menuItem:share:timeline", "menuItem:share:qq", "menuItem:share:QZone", "menuItem:share:facebook"]
+				});
+			})
+
+		},
+		wxS(response, url) {
+			wx.config({
+				debug: false,
+				appId: response.appId,
+				timestamp: response.timestamp,
+				nonceStr: response.nonceStr,
+				signature: response.signature,
+				jsApiList: [
+					'checkJsApi',
+					'hideMenuItems',
 					'onMenuShareTimeline',
 					'onMenuShareAppMessage',
 					'onMenuShareQQ',
@@ -154,12 +160,24 @@ export const wxShare = {
 				wx.onMenuShareQZone(shareData);
 			});
 		},
-		_getShareConfig() {
+		versions() {
+			var ua = navigator.userAgent.toLowerCase(); //获取判断用的对象
+			if (ua.match(/MicroMessenger/i) == "micromessenger") {
+				return true;
+			} else {
+				return false
+			}
+		},
+		_getShareConfig(url, isShow) {
+			if (!this.versions()) return;
 			getData('/api/wechat/sdkconfig.json').then(res => {
 				let config = res;
-				this.wxS(config, 'http://mglx.hvkid.com')
+				if (!isShow) {
+					this.wxS(config, url)
+				} else {
+					this.wxHide(config)
+				}
 			}).catch(err => {
-				console.log(err)
 				if (err && err.data) {
 					this.error = `${err.data.status}${err.data.error}`
 					this.$refs.errorTip.show()

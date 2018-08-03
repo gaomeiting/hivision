@@ -53,12 +53,13 @@
 
 </template>
 <script type="text/ecmascript-6">
-import { mapGetters, mapMutations } from 'vuex'
 import TopTip from '~/components/top-tip/top-tip'
 import Error from '~/components/error/error'
 import { Message } from 'element-ui'
 import { postData } from '~/api/api'
+import { share, loadBtn, wxShare } from '~/assets/js/mixin'
 	export default {
+		mixins: [ wxShare ],
 		data() {
 			return {
 				/*form: {
@@ -88,13 +89,10 @@ import { postData } from '~/api/api'
 				
 			}
 		},
-		created() {
-			
+		beforeMount() {
+			this._getShareConfig('', true)
 		},
-		computed: {
-			...mapGetters(['city'])
-		},
-
+		
 		methods: {
 			handleAvatarSuccess(res, file) {
 				//console.log(res, file)
@@ -186,25 +184,11 @@ import { postData } from '~/api/api'
 					  slogan: this.form.declaration ,
 					  title: this.form.info
 					}).then(res => {
-
-						/*this.setUser({
-							id: res.id,
-							name: this.form.title,
-							declaration: this.form.declaration
-						})
-						let str = JSON.stringify({
-							id: res.id,
-							name: this.form.title,
-							declaration: this.form.declaration
-						}) 
-
-						localStorage.setItem('user', str) */
 						this.$router.push(`/success/${res.id}`)
-						/*window.alert(localStorage.user)*/
 					}).catch(err => {
 						
 						if(err.data.status == 409) {
-							this.error = '数据重复'
+							this.error = `${err.data.status}${err.data.message}`
 							this.$refs.topTip.show()
 						}
 						else if(err.data.details) {
@@ -234,11 +218,6 @@ import { postData } from '~/api/api'
 				}
 			},
 			
-			
-			
-	        ...mapMutations({
-	        	'setUser' : 'SET_USER'
-	        })
 
 		},
 		components: {

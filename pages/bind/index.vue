@@ -14,7 +14,7 @@
 					<a class="btn btn-all" href="javascript:;" @click.stop.prevent="handleSubmit" >下一步</a>
 				</p>
 			</div>
-			<part title="重要提示" paragraph="Mint UI 包含丰富的 CSS 和 JS 组件，能够满足日常的移动端开发需要。通过它，可以快速构建出风格统一的页面，提升开发效率。"></part>
+			<part title="重要提示" paragraph="请输入您报名参赛时候的手机号码，确认身份后即可进入个人中心，维护管理您的个人资料。"></part>
 			
 		</div>
 </template>
@@ -35,7 +35,11 @@ import { postData } from '~/api/api'
 	            flag: true,
 			}
 		},
-
+		head() {
+			return {
+				title: '与声俱来·声咖大赛'
+			}
+		},
 		
 		methods: {
 			handleSubmit () {
@@ -53,16 +57,16 @@ import { postData } from '~/api/api'
 			        });
 	            }
 	            else {
-	            	///narrator/current/mobile
 	            	if(this.timer) this.timer = null;
 	            	postData('/api/bind/binding.json',{
 	                    mobile: this.form.tel,
   						vcode: this.form.code
 	                }).then(res => {
-	                	//console.log(res)
-	                    this._switchPage(res)
+	                	this.$router.push('/me')
+	                    //this._switchPage(res)
 	                }).catch(err => {
-	                    console.log(123)
+	                	this._handlerError(err);
+	                    
 	                })
 	            	
 	            }
@@ -92,13 +96,31 @@ import { postData } from '~/api/api'
 				          type: 'success'
 				        });
 	                }).catch(err => {
-	                	console.log(err)
+	                	this._handlerError(err);
 	                })
 	                
 	            }
 	        },
+	        _handlerError(err) {
+	        	if(err && err.data) {
+	        		if(err.data.status == 404) {
+	        			this.$router.push('/profile')
+	        		}
+            		Message({
+			          message: `${err.status}${err.data.error}${err.data.message}`,
+			          type: 'error'
+			        });
+
+            	}
+            	else {
+            		Message({
+			          message: '接口调试中',
+			          type: 'error'
+			        });
+            	}
+    		},
 	        _timer() {
-	            let time = 5;
+	            let time = 60;
 	            clearInterval(this.timer);
 	            this.timer = setInterval(() => {
 	                if(time<= 0) {
@@ -117,10 +139,10 @@ import { postData } from '~/api/api'
 	        },
 	        _switchPage(id) {
 	        	if(!id) {
-	        		this.$router.push('/bind/profile')
+	        		this.$router.push('/profile')
 	        	}
 	        	else {
-	        		this.$router.push('/home')
+	        		this.$router.push('/me')
 	        	}
 	        }
 

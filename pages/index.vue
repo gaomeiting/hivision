@@ -216,7 +216,10 @@ import { share, loadBtn, wxShare } from '~/assets/js/mixin'
 				error: ''
 			}
 		},
-		
+		beforeMount() {
+			let url = 'http://mglx.hvkid.com'
+			this._getShareConfig(url)
+		},
 		methods: {
 			errHide() {
 				this.error = ''

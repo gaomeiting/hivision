@@ -41,7 +41,7 @@
 					<input maxlength="16" type="text" v-model="form.declaration" placeholder="请输入自己的参赛宣言(16字以内)">
 				</p>
 				<p class="item">
-					<a class="btn btn-all" href="javascript:;" @click="submitHandler">确认报名</a>
+					<a class="btn btn-all" href="javascript:;" @click="submitHandler">确认</a>
 				</p>
 			</div>
 			<top-tip ref="topTip">
@@ -53,24 +53,13 @@
 
 </template>
 <script type="text/ecmascript-6">
-import { mapGetters, mapMutations } from 'vuex'
 import TopTip from '~/components/top-tip/top-tip'
 import Error from '~/components/error/error'
 import { Message } from 'element-ui'
-import { postData } from '~/api/api'
+import { putData, getData } from '~/api/api'
 	export default {
 		data() {
 			return {
-				/*form: {
-					title: '上海',
-					name: '高山',
-					identity: '130833199401230664',
-					tel: '18201491299',
-					email: '1959151877@qq.com',
-					info: '16岁（含）以上配音员以及声音条件良好的配',
-					declaration: '16岁（含）以上配音员以及声音条',
-					avatarId: ''
-				},*/
 				form: {
 					title: '',
 					name: '',
@@ -89,11 +78,9 @@ import { postData } from '~/api/api'
 			}
 		},
 		created() {
-			
+			this._getProfile();
 		},
-		computed: {
-			...mapGetters(['city'])
-		},
+		
 
 		methods: {
 			handleAvatarSuccess(res, file) {
@@ -114,17 +101,11 @@ import { postData } from '~/api/api'
 				}
 				return isJPG && isLt5M;
 			},
-			settingCity(item) {
-				this.form.city = item.NAME;
-			},
-			switchCity() {
-				this.$router.push('/city')
-			},
+			
 			submitHandler() {
 				let isIDCard=/^[1-9]\d{5}(18|19|20)\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/
 				let isName = /^([\u4e00-\u9fa5]){2+}$/
 				let isTitle = /^[\w\u4e00-\u9fa5]{6,8}$/
-				console.log(this.form.avatarId)
 				if(!this.form.avatarId) {
 					this.error = "请先上传头像"
 					this.$refs.topTip.show()
@@ -149,10 +130,6 @@ import { postData } from '~/api/api'
 					this.error = '身份证号格式不正确'
 					this.$refs.topTip.show()
 				}
-				else if(!this.form.tel) {
-					this.error = '手机号码不能为空'
-					this.$refs.topTip.show()
-				}
 				else if(/^1[34578]\d{9}$/.test(this.form.tel) == false) {
 					this.error = '手机号码格式不正确'
 					this.$refs.topTip.show()
@@ -173,36 +150,21 @@ import { postData } from '~/api/api'
 					this.error = '参赛宣言不能为空'
 					this.$refs.topTip.show()
 				}
-
 				else {
 					this.error = ''
-					postData('/api/contestant/signup', {
+					let id = this.$route.params.id
+					putData(`/api/contestant/current`, {
 					  avatar: this.form.avatarId,
 					  email: this.form.email,
 					  idCard: this.form.identity,
-					  mobile: this.form.tel ,
 					  nickname: this.form.title ,
+					  mobile: this.form.tel ,
 					  realname: this.form.name ,
 					  slogan: this.form.declaration ,
 					  title: this.form.info
 					}).then(res => {
-
-						/*this.setUser({
-							id: res.id,
-							name: this.form.title,
-							declaration: this.form.declaration
-						})
-						let str = JSON.stringify({
-							id: res.id,
-							name: this.form.title,
-							declaration: this.form.declaration
-						}) 
-
-						localStorage.setItem('user', str) */
-						this.$router.push(`/success/${res.id}`)
-						/*window.alert(localStorage.user)*/
+						this._hasStatus(res, '/me');
 					}).catch(err => {
-						
 						if(err.data.status == 409) {
 							this.error = '数据重复'
 							this.$refs.topTip.show()
@@ -233,13 +195,41 @@ import { postData } from '~/api/api'
 					return true
 				}
 			},
-			
-			
-			
-	        ...mapMutations({
-	        	'setUser' : 'SET_USER'
-	        })
-
+			_getProfile() {
+				getData('/api/contestant/current').then(res => {
+					this._hasStatus(res)
+				}).catch(err => {
+					//console.log("getprofile调试")
+					if(err && err.data) {
+						this.errMsg = `${err.data.status}${err.data.error}`
+					}
+					else {
+						this.errMsg = '接口调试中'
+					}
+				})
+			},
+			_goNext(url) {
+				this.$router.push(url)
+			},
+			_normalizeData(res) {
+				this.imageUrl = res.data.avatar;
+				this.form.title = res.data.nickname;
+				this.form.name = res.data.realname;
+				this.form.tel = res.data.mobile;
+				this.form.identity = res.data.idCard;
+				this.form.email = res.data.email;
+				this.form.info = res.data.title;
+				this.form.declaration = res.data.slogan;
+				this.form.avatarId = res.data.avatar;
+			},
+			_hasStatus(res, url) {
+				if(!url) {
+					this._normalizeData(res);
+				}
+				else {
+					this._goNext(url)
+				}
+			}
 		},
 		components: {
 			TopTip,

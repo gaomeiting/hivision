@@ -2,29 +2,30 @@
 <scroll class="page" ref="scroll">
 	<div class="me-wrap" ref="me">
 		<div class="top" v-if="singer">
-			<div class="img" :style="'background-image: url('+singer.avatar+');'"> </div>
-			<h3>{{ singer.nickname }}</h3>
-			<p> {{ singer.slogan }} </p>
-			<ul>
-				<li>
-					<p>{{ singer.id }}</p>
-					<p>参赛编号</p>
-				</li>
-				<li v-if="singer.popularNum">
-					<p>{{ singer.popularNum }}</p>
-					<p>人气排行</p>
-				</li>
-				<li v-if="singer.likeNum">
-					<p>{{ singer.likeNum }}</p>
-					<p>点赞数</p>
-				</li>
-			</ul>
+			<div class="singer-top">
+				<div class="icon">
+					<i class="iconfont icon-wxfriends"></i>
+					<p>36001</p>
+					<p>投票</p>
+				</div>
+				<div class="head-wrap">
+					<div class="img" :style="'background-image: url('+singer.avatar+');'"> </div>
+					<h3>{{ singer.nickname }}</h3>
+					<!-- <p> {{ singer.title }} </p> -->
+				</div>
+				<div class="icon">
+					<i class="iconfont icon-fenxiang"></i>
+					<p>36001</p>
+					<p>分享</p>
+				</div>
+			</div>
+			
 		</div>
 		<div class="music-wrap">
 			<h2>参赛作品</h2>
 			<p v-if="singer.entryWork">{{singer.entryWork.voiceTitle}}</p>
 			<p v-else>暂未提交参赛作品，请使用报名参赛的邮箱，发送作品名称及音频mp3到hvkid@ddpeiyin.com</p>
-			<div class="music" v-if="currentSong.url">
+			<div class="music">
 				<div class="operators">
 					<div class="icon i-center" @click.stop.prevent="togglePlaying">
 						<i class="iconfont" :class="playIcon"></i>
@@ -39,19 +40,9 @@
 				</div>
 			</div>
 		</div>
-		<div class="handler-wrap">
-			<ul>
-				<li @click.stop="goPutProfile">
-					<i class="iconfont icon-setup"></i>
-					<p>参赛报名信息</p>
-					<i class="iconfont icon-jiantouyou"></i>
-				</li>
-				<li @click.stop="goShareImages">
-					<i class="iconfont icon-fenxiang"></i>
-					<p>生成分享图片</p>
-					<i class="iconfont icon-jiantouyou"></i>
-				</li>
-			</ul>
+		<div class="music-wrap">
+			<h2>参赛宣言</h2>
+			<p>{{singer.slogan}}</p>
 		</div>
 		<audio :src="currentSong.url" ref="audio" @play="ready" @error="errorSong" @timeupdate="updateTime" @ended="end"></audio>
 		<error-tip ref="errorTip" :error="error"></error-tip>
@@ -69,9 +60,8 @@ export default {
 	data() {
 		return {
 			currentSong: {
-
-				/*url: 'http://dl.stream.qqmusic.qq.com/C400001UynRM0Noiti.m4a?vkey=BAAFF1DE5DBAF8E041FA5DC7AA7C5492AD66CA8352A4EC0F1CFC34B248AC713A1CEBA739204FE121DAF88C26469A33328DE78E7B5BC07DB6&guid=8182525974&uin=0&fromtag=66',
-				duration: 227*/
+				duration: 270,
+				url: 'http://dl.stream.qqmusic.qq.com/C400001VgbVT41jKg1.m4a?vkey=32A507AA1843EC3059FED697992107732347B57A6D7800CCC98221DB51DDEE967B007A76BB3C54E0E6495E1C362479A9F0C43AD297F237C0&guid=8182525974&uin=0&fromtag=66'
 			},
 			currentTime: '0:00',
 			playing: false,
@@ -79,6 +69,13 @@ export default {
 			songReady: false,
 			error: '',
 			singer: {
+				avatar: 'https://ss1.baidu.com/-4o3dSag_xI4khGko9WTAnF6hhy/image/h%3D300/sign=65d890b39422720e64cee4fa4bca0a3a/4a36acaf2edda3cc10f68df10de93901203f92d4.jpg',
+				nickname: '太阳叔叔',
+				title: '湖北人民广播电台少儿频道主持人',
+				slogan: '湖北人民广播电台少儿频道主持人，金话筒获得者湖北人民广播电台少儿频道主持人，金话筒获得者',
+				entryWork: {
+					voiceTitle: '小蝌蚪找妈妈'
+				}
 			}
 		}
 	},
@@ -88,7 +85,7 @@ export default {
 		}
 	},
 	created() {
-		this._getCurrentInfo()
+		/*this._getCurrentInfo()*/
 	},
 	beforeMount() {
 		this._getShareConfig('', true)
@@ -102,14 +99,8 @@ export default {
 			return this.playing ? 'icon-bofang' : 'icon-pause'
 		}
 	},
-	
 	methods: {
-		goPutProfile() {
-			this.$router.push('/profile/30')
-		},
-		goShareImages() {
-			this.$router.push('/card/30')
-		},
+		
 		setSongProgress(percent, flag) {
 			if(percent==1){
 				this.end();
@@ -119,14 +110,14 @@ export default {
 				return;
 			}
 			this.$refs.audio.currentTime = percent*this.currentSong.duration
-			/*if(!flag) {
+			if(!flag) {
 				this.playing = flag
 			}
 			else{
-				if(this.playing) {
+				if(!this.playing) {
 					this.togglePlaying()
 				}
-			}*/
+			}
 		},
 		ready() {
 			this.songReady= true;
@@ -182,11 +173,9 @@ export default {
 			})
 		},
 		_normalizeData(res) {
-			this.singer = res.data
-			if(res.data.entryWork) {
-				this.currentSong.duration = res.data.entryWork.duration / 1000;
-				this.currentSong.url = res.data.entryWork.voiceUrl;
-			}
+			this.singer = res.error
+			this.currentSong.duration = res.error.entryWork.duration / 1000;
+			this.currentSong.url = res.error.entryWork.voiceUrl;
 		},
 		_hasStatus(res) {
 			if(res.status == 406) {
@@ -284,41 +273,53 @@ export default {
 	.top {
 		padding: 30px 16px 16px;
 		@include border-type-1px($color-text-ll, dashed)
-		> .img {
-			width: 78px;
-			height: 78px;
-			overflow: hidden;
-			border-radius: 50%;
-			background-size: cover;
-			background-position: center;
-			background-repeat: no-repeat;
-			margin: 0 auto;
-		}
-		> h3, > p {
-			text-align: center;
-			line-height: 1.5;
-		}
-		> h3 {
-			color: $color-text-d;
-			font-size: $font-size-large;
-			line-height: 2;
-			padding-top: 12px;
-		}
-		> ul {
+		.singer-top {
 			display: flex;
-			padding-top: 16px;
-			li {
-				flex: 1;
+			align-items: flex-end;
+			.icon {
+				text-align: center;
+				padding-bottom: 12px;
+				i {
+					font-size: $font-size-large-x;
+				}
 				p {
-					text-align: center;
 					line-height: 1.5;
 				}
 			}
+			.head-wrap {
+				flex: 1;
+				> .img {
+					width: 78px;
+					height: 78px;
+					overflow: hidden;
+					border-radius: 50%;
+					background-size: cover;
+					background-position: center;
+					background-repeat: no-repeat;
+					margin: 0 auto;
+				}
+				> h3, > p {
+					text-align: center;
+					line-height: 1.5;
+				}
+				> h3 {
+					color: $color-text-d;
+					font-size: $font-size-large;
+					line-height: 2;
+					padding-top: 12px;
+				}
+			}
 		}
+		
+		
 	}
 	.music-wrap {
 		background: $color-background;
 		padding: 16px;
+		&:last-of-type {
+			background: $color-background-d;
+			text-align: center;
+		}
 		h2 {
 			font-size: $font-size-medium-x;
 			color: $color-text-d;
@@ -328,22 +329,7 @@ export default {
 			line-height: 1.5;
 		}
 	}
-	.handler-wrap {
-		li {
-			display: flex;
-			padding: 0 16px;
-			align-items: center;
-			@include border-type-1px($color-text-ll, solid)
-			i {
-				@include extend-click()
-			}
-			p {
-				flex: 1;
-				line-height: 3.5;
-				padding: 0 6px;
-			}
-		}
-	}
+	
 }
 
 </style>

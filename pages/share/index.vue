@@ -33,9 +33,9 @@ import { getData } from '~/api/api'
 				error: ''
 			}
 		},
-		created() {
+		beforeMount() {
 			/*if(window.localStorage.user) this.user = JSON.parse(window.localStorage.user)*/
-			let id = this.$route.params.id;
+			let id = this.$route.query.id;
 			getData(`/api/contestant/current/${id}`).then(res => {
 				if(res.status == 200) {
 					this.user = res.data;
@@ -48,9 +48,6 @@ import { getData } from '~/api/api'
 					this.error = '程序调试中请稍等'
 				}
 			})
-		},
-		methods: {
-			
 		},
 		components: {
 			Scroll,

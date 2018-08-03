@@ -11,7 +11,7 @@ export default {
 props: {
 	delay: {
 		type: Number,
-		default: 3000
+		default: 5000
 	},
 	error: {
 		type: String,
@@ -47,7 +47,7 @@ methods: {
 	top: 0;
 	left: 0;
 	right: 0;
-	z-index: 500;
+	z-index: 999;
 	background: $color-theme;
 	p {
 		text-align: center;
