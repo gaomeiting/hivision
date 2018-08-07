@@ -105,6 +105,7 @@ export const loadBtn = {
 export const wxShare = {
 	methods: {
 		wxHide(response) {
+			let _this = this;
 			wx.config({
 				debug: false,
 				appId: response.appId,
@@ -113,15 +114,30 @@ export const wxShare = {
 				signature: response.signature,
 				jsApiList: [
 					'checkJsApi',
-					'hideMenuItems'
+					'hideMenuItems',
+					'startRecord',
+					'stopRecord',
+					'onVoiceRecordEnd',
+					'playVoice',
+					'pauseVoice',
+					'uploadVoice'
 				]
 			});
 			wx.ready(function() {
 				wx.hideMenuItems({
 					menuList: ["menuItem:share:appMessage", "menuItem:share:timeline", "menuItem:share:qq", "menuItem:share:QZone", "menuItem:share:facebook"]
 				});
+				/*wx.onVoiceRecordEnd({
+					// 录音时间超过一分钟没有停止的时候会执行 complete 回调
+					complete: function(res) {
+						_this.localId = res.localId;
+						console.log("12345")
+					}
+				});*/
 			})
-
+			wx.error(function(res) {
+				alert(res.errMsg);
+			});
 		},
 		wxS(response, url) {
 			wx.config({
@@ -158,6 +174,9 @@ export const wxShare = {
 				wx.onMenuShareQQ(shareData);
 				wx.onMenuShareWeibo(shareData);
 				wx.onMenuShareQZone(shareData);
+			});
+			wx.error(function(res) {
+				alert(res.errMsg);
 			});
 		},
 		versions() {

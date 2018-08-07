@@ -2,20 +2,13 @@
 <div class="list-wrap">
 	<ul class="vote">
 		<li class="vote-item" v-for="(item, index) in 5 " :key="index">
-		  	<div class="head" style="background-image: url('https://ss1.baidu.com/9vo3dSag_xI4khGko9WTAnF6hhy/image/h%3D300/sign=e28f94a74fa98226a7c12d27ba83b97a/54fbb2fb43166d22460103464a2309f79152d2e9.jpg');">
-		  		<p>
-		  			<i class="iconfont icon-jiantouyou"></i>
-		  		</p>
-		  	</div>
+		  	<div class="head"> <img src="https://ss1.baidu.com/9vo3dSag_xI4khGko9WTAnF6hhy/image/h%3D300/sign=e28f94a74fa98226a7c12d27ba83b97a/54fbb2fb43166d22460103464a2309f79152d2e9.jpg" alt=""></div>
 		  	<div class="text">
-		  		<h3>太阳叔叔<!-- <strong>13557 票</strong> --></h3>
-		  		<p>个人简介个人简介个人简介个人简介</p>
+		  		<h3>狐狸请客<strong>20人录制</strong></h3>
+		  		<p>狐狸请鹤吃饭。它把豆子做的汤盛在一个又浅又大的碟子。狐狸很容就狐狸请鹤吃饭。它把豆子做的汤盛在一个又浅又大的碟子。狐狸很容就</p>
 		  	</div>
 		  	<div class="icon">
-		  		<p>
-		  			<i class="iconfont icon-jiantouyou"></i>
-		  		</p>
-		  		<p>112</p>
+		  		<p>录制</p>
 		  	</div>
 		</li>
 	</ul>
@@ -77,28 +70,15 @@ export default {
 			@include border-type-1px($color-background-d, dashed)
 		}
 		.head {
-			width: 56px;
-			height: 56px;
+			width: 64px;
+			height: 94px;
 			overflow: hidden;
-			border-radius: 50%;
-			background-size: cover;
-			background-position: center center;
-			background-repeat: no-repeat;
 			background-color: $color-text-d;
 			margin-right: 10px;
-			p{
+			img {
 				width: 100%;
-				height: 100%;
-				overflow: hidden;
-				border-radius: 28px;
-				background: rgba(0,0,0,0.5);
-				text-align: center;
-				color: $color-theme;
-				i {
-					line-height: 56px;
-				}
+				min-height: 100%;
 			}
-			
 		}
 		.text {
 			flex: 1;
@@ -106,10 +86,13 @@ export default {
 				line-height: 1.5;
 				strong {
 					color: $color-theme;
+					padding-left: 1em;
 				}
 			}
 			p {
 				padding-top: 6px;
+				line-height: 1.5;
+				@include ellipsis(2);
 			}
 		}
 		.icon {
@@ -120,7 +103,13 @@ export default {
 			}
 
 			>p:last-child {
-				padding-top: 10px;
+				/* padding-top: 10px; */
+				border: 1px solid $color-theme;
+				padding: 4px 10px;
+				border-radius: 12px;
+				background: $color-theme;
+				color: $color-background;
+				margin-left: 4px;
 			}
 		}
 	}

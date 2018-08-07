@@ -2,14 +2,14 @@
 <div class="list-wrap">
 	<ul class="vote">
 		<li class="vote-item" v-for="(item, index) in 5 " :key="index">
-		  	<div class="head" style="background-image: url('https://ss1.baidu.com/9vo3dSag_xI4khGko9WTAnF6hhy/image/h%3D300/sign=e28f94a74fa98226a7c12d27ba83b97a/54fbb2fb43166d22460103464a2309f79152d2e9.jpg');">
+		  	<div class="head">
 		  		<p>
 		  			<i class="iconfont icon-jiantouyou"></i>
 		  		</p>
 		  	</div>
 		  	<div class="text">
-		  		<h3>太阳叔叔<!-- <strong>13557 票</strong> --></h3>
-		  		<p>个人简介个人简介个人简介个人简介</p>
+		  		<h3>小兔子吃萝卜</h3>
+		  		<p>20人录制</p>
 		  	</div>
 		  	<div class="icon">
 		  		<p>
@@ -81,17 +81,13 @@ export default {
 			height: 56px;
 			overflow: hidden;
 			border-radius: 50%;
-			background-size: cover;
-			background-position: center center;
-			background-repeat: no-repeat;
-			background-color: $color-text-d;
+			border: 2px solid $color-theme;
 			margin-right: 10px;
 			p{
 				width: 100%;
 				height: 100%;
 				overflow: hidden;
 				border-radius: 28px;
-				background: rgba(0,0,0,0.5);
 				text-align: center;
 				color: $color-theme;
 				i {

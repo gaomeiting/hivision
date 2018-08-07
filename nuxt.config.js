@@ -71,7 +71,7 @@ module.exports = {
   },
   proxy: {
     "/api": {
-      target: "http://mgt.hvkid.cn:9000/api",
+      target: "http://192.168.100.59:8080/api",
       pathRewrite: {
         "^/api": ""
       }

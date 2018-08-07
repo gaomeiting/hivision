@@ -4,7 +4,7 @@
 			<div class="contain">
 				<div class="main">
 					<figure>
-						<img src="~/assets/images/code.jpg" alt="">
+						<img  src="~/assets/images/code.jpg" alt="">
 					</figure>
 					<h2>用爱发声、用心陪伴</h2>
 					<p v-if="user.nickname">我是{{user.nickname}}</p>
@@ -139,7 +139,7 @@ import { getData } from '~/api/api'
 		min-height: 100vh;
 		padding-bottom: 44px;
 		&:first-child {
-			background-image: url('~assets/images/share_bg.jpg');
+			background-image: url('/share_bg.jpg');
 			background-size: cover;
 			background-position: center top;
 			background-repeat: no-repeat;
