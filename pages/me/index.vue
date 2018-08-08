@@ -20,27 +20,13 @@
 				</li>
 			</ul>
 		</div>
-		<div class="music-wrap">
-			<h2>参赛作品</h2>
-			<p v-if="singer.entryWork">{{singer.entryWork.voiceTitle}}</p>
-			<p v-else>暂未提交参赛作品，请使用报名参赛的邮箱，发送作品名称及音频mp3到hvkid@ddpeiyin.com</p>
-			<div class="music" v-if="currentSong.url">
-				<div class="operators">
-					<div class="icon i-center" @click.stop.prevent="togglePlaying">
-						<i class="iconfont" :class="playIcon"></i>
-					</div>
-				</div>
-				<div class="progress-wrapper">
-					<span class="time time-l">{{ currentTime }}</span>
-					<div class="progress-bar-wrapper">
-					  	<progress-bar :percent="percent" @triggerPercent="setSongProgress"></progress-bar>
-					</div>
-					<span class="time time-r">{{ format(currentSong.duration) }}</span>
-				</div>
-			</div>
-		</div>
 		<div class="handler-wrap">
 			<ul>
+				<li>
+					<i class="iconfont icon-setup"></i>
+					<p>参赛报名信息</p>
+					<i class="iconfont icon-jiantouyou"></i>
+				</li>
 				<li @click.stop="goPutProfile">
 					<i class="iconfont icon-setup"></i>
 					<p>参赛报名信息</p>

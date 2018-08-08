@@ -3,11 +3,14 @@
 		<div class="success">
 			<p class="icon-wrap"><i class="iconfont icon-chenggong1"></i></p>
 			<h2>报名成功！</h2>
-			<p>我们会在3个工作日内审核您的参赛资料，关注“嗨未来”微信公众号，及时获取比赛通知。长按识别二维码 关注“嗨未来”微信公共号</p>
+			<p v-if="!isWx">我们会在3个工作日内审核您的参赛资料，关注“嗨未来”微信公众号，及时获取比赛通知。长按识别二维码 关注“嗨未来”微信公共号</p>
+			<p v-else>长按识别下方二维码，添加“嗨未来”大赛官方客服微信号，如有问题，客服会第一时间为您解答。</p>
 			<figure>
-				<img src="~/~/assets/images/code.jpg">
+				<img v-if="!isWx" src="/code.jpg">
+				<img v-else src="/code_2.jpg">
 			</figure>
 			<a v-if="!isWx" href="javascript:;" class="btn" @click.stop="toggleShare">生成分享页面炫一下</a>
+			<a v-else href="javascript:;" class="btn">继续录制您的海选音频</a>
 		</div>
 		<div class="share-icons-wrap">
 			<share-icons ref="share" @cancle="cancle" @selectShare="selectShare"></share-icons>

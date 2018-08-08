@@ -5,10 +5,12 @@
 		<div class="img-wrap">
 			<img src="https://ss1.baidu.com/9vo3dSag_xI4khGko9WTAnF6hhy/image/h%3D300/sign=e28f94a74fa98226a7c12d27ba83b97a/54fbb2fb43166d22460103464a2309f79152d2e9.jpg">
 		</div>
-		<p :class="isShow ? '' : 'ellipsis'">{{text}}</p>
+		<transition name="fade" mode="out-in">
+			<p :class="isShow ? '' : 'ellipsis'">{{text}}</p>
+		</transition>
 		<p style="text-align: center;" @click.stop="toggleText">
 			<span>{{isShow ? '收起内容' : '展开全部'}}</span>
-			<i class="iconfont icon-fenxiang"></i>
+			<i class="iconfont" :class="isShow ? 'icon-jiantoushang' : 'icon-jiantouxia'"></i>
 		</p>
 	</div>
 	<div class="switches-wrap">
@@ -19,9 +21,10 @@
 	</div>
 	
 	<error-tip ref="errorTip" :error="error"></error-tip>
+
 </div>
 <p class="btn">
-	<i class="iconfont icon-fenxiang"></i>
+	<i class="iconfont icon-maikefeng"></i>
 	<span>我要录制</span>
 </p>
 </scroll>
@@ -41,6 +44,7 @@ export default {
 			switches: [{ name: '最佳人气作品' }, { name: '最新参赛作品' }],
 			isShow: false,
 			text: '二百字的二百字的二百字的二百字的二百字的二百字的二百字的二百字的二百字的二百字的二百字的二百字的二百字的二百字的二百字的二百字的二百字的二百字的二百字的二百字的二百字的二百字的二百字的二百字的二'
+			
 		}
 	},
 	head() {
@@ -56,7 +60,9 @@ export default {
 	methods: {
 		toggleText() {
 			this.isShow = !this.isShow;
-			console.log(123)
+			this.$nextTick(()=>{
+				this.$refs.scroll.refresh()
+			})
 		}
 	},
 	components: {
@@ -85,8 +91,10 @@ export default {
 	left: 0;
 	z-index: 800;
 	box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+	color: $color-theme;
 	i {
-		padding-right: 8px;
+		padding-right: 4px;
+		font-size: $font-size-large;
 	}
 }
 .vote-wrap {
@@ -112,6 +120,10 @@ export default {
 			padding-top: 12px;
 			&.ellipsis {
 				@include ellipsis(3);
+			}
+			i {
+				font-size: $font-size-medium;
+				padding-left: 6px;
 			}	
 		}
 	}

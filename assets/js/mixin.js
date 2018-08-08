@@ -47,26 +47,26 @@ export const share = {
 			//http://mglx.hvkid.com/share
 			//http://mgt.hvkid.cn:9000/
 		},
-		selectSharehome(index) {
+		selectSharehome(index, title, desc) {
 			let type, link;
 			switch (index + 1) {
 				case 1:
 					type = 2;
 					link = 'http://mglx.hvkid.com/?name=lingxi'
-					this.shareWX(link, type);
+					this.shareWX(link, type, title, desc);
 					break;
 				case 2:
 					type = 1;
 					link = 'http://mglx.hvkid.com/?name=lingxi'
-					this.shareWX(link, type);
+					this.shareWX(link, type, title, desc);
 					break;
 			}
 		},
-		shareWX(link, type) {
+		shareWX(link, type, title, desc) {
 			lx.shareWXCallback({
 				shareType: 'text', //分享类别：text 分享链接；image 分享图片；local 本地图片路径
-				title: '嗨未来 儿童有声阅读计划 声咖大赛用爱发声 用心陪伴 与一线明星同台演播', //分享标题
-				desc: '万元奖金/神秘大礼包等你拿有声俱来声咖大赛 用爱为孩子们发声', //分享描述
+				title: title || '嗨未来 儿童有声阅读计划 声咖大赛用爱发声 用心陪伴 与一线明星同台演播', //分享标题
+				desc: desc || '万元奖金/神秘大礼包等你拿有声俱来声咖大赛 用爱为孩子们发声', //分享描述
 				link, //分享连接
 				imgUrl: 'http://st.ddpei.cn/hv/mglx/img/hvlogo.jpg', //分享小图标
 				type, //是否分享到朋友圈:1 朋友圈 2 好友
@@ -139,7 +139,8 @@ export const wxShare = {
 				alert(res.errMsg);
 			});
 		},
-		wxS(response, url) {
+
+		wxS(response, url, title, desc) {
 			wx.config({
 				debug: false,
 				appId: response.appId,
@@ -160,8 +161,8 @@ export const wxShare = {
 				let shareData = {
 					imgUrl: 'http://st.ddpei.cn/hv/mglx/img/hvlogo.jpg', //图片地址
 					link: url,
-					title: '嗨未来 儿童有声阅读计划 声咖大赛用爱发声 用心陪伴 与一线明星同台演播',
-					desc: '万元奖金/神秘大礼包等你拿有声俱来声咖大赛 用爱为孩子们发声',
+					title: title || '嗨未来 儿童有声阅读计划 声咖大赛用爱发声 用心陪伴 与一线明星同台演播',
+					desc: desc || '万元奖金/神秘大礼包等你拿有声俱来声咖大赛 用爱为孩子们发声',
 					success: function(res) {
 						alert('已分享');
 					},
@@ -187,12 +188,13 @@ export const wxShare = {
 				return false
 			}
 		},
+
 		_getShareConfig(url, isShow) {
 			if (!this.versions()) return;
 			getData('/api/wechat/sdkconfig.json').then(res => {
 				let config = res;
 				if (!isShow) {
-					this.wxS(config, url)
+					this.wxS(config, url, title, desc)
 				} else {
 					this.wxHide(config)
 				}

@@ -1,22 +1,20 @@
 <template>
 <transition name="fade" mode="out-in">
-	<!-- <div>
-		<p  class="btn btn-all" href="javascript:;" @click.stop.prevent="startRecord"><i class="iconfont icon-huatong"></i>点击开始录音</p>
-	</div> -->
+	
 	<div class="form-content">
+		
 		<p class="item" v-if="voice === null">
-			<a v-if="flag"  class="btn btn-all" href="javascript:;" @click.stop.prevent="getUserAndStartRecord"><i class="iconfont icon-huatong"></i>点击开始录音</a>
-			<a v-else class="btn btn-all active" href="javascript:;" @click.stop.prevent="stopRecord"><i class="iconfont icon-nan"></i>停止录音</a>
+			<a v-if="flag"  class="btn btn-all" href="javascript:;" @click.stop.prevent="getUserAndStartRecord"><i class="iconfont icon-maikefeng"></i>开始录音</a>
+			<a v-else class="btn btn-all active" href="javascript:;" @click.stop.prevent="stopRecord"><!-- 停止录音 --></a>
 			
 		</p>
 		<p class="item" v-else>
-			<a v-if="flag"  class="btn btn-all" href="javascript:;" @click.stop.prevent="startRecord"><i class="iconfont icon-shuaxin"></i>重新录音</a>
-			<a v-else class="btn btn-all active" href="javascript:;" @click.stop.prevent="stopRecord"><i class="iconfont icon-weibiaoti519"></i>停止录音</a>
+			<a v-if="flag"  class="btn btn-all" href="javascript:;" @click.stop.prevent="startRecord"><i class="iconfont icon-chexiao"></i>重录</a>
+			<a v-else class="btn btn-all active" href="javascript:;" @click.stop.prevent="stopRecord"><i class="iconfont icon-weibiaoti519"></i><!-- 停止录音 --></a>
 		
-			
 		</p>
 		<p class="item">
-			<a href="javascript:;" v-if="voice && voice.localId" class="btn btn-blue" @click.stop.prevent="uploadVoice" style="margin-right: 12px;"> <i class="iconfont icon-tijiao"></i> 提交</a>
+			<a href="javascript:;" v-if="voice && voice.localId" class="btn btn-blue" @click.stop.prevent="uploadVoice" style="margin-right: 12px;"> <i class="iconfont icon-shangchuan"></i> 提交</a>
 			<a href="javascript:;" v-if="voice && voice.localId" class="btn btn-blue" @click.stop.prevent="playVoice"> <i class="iconfont icon-bofang"></i> 试听</a>
 		</p>
 		<confirm ref="confirm" :text="text" @confirm="confirm"></confirm>
@@ -41,7 +39,7 @@ import Confirm from '~/components/confirm/confirm'
 		},
 		methods: {
 			confirm() {
-				this.$router.push('/bind')
+				//this.$router.push('/bind')
 			},
 			voiceRecordEnd() {
 				console.log("VoiceRecordEnd")
@@ -201,6 +199,12 @@ import Confirm from '~/components/confirm/confirm'
 				display: block;
 				width: 100%;
 				text-align: center;
+			}
+			&.btn-pause {
+				background-image: url('/audio.gif');
+				background-size: 112px 32px;
+				background-position: center center;
+				background-repeat: no-repeat;
 			}
 		}
 	}

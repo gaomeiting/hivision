@@ -2,22 +2,16 @@
 <div class="list-wrap">
 	<ul class="vote">
 		<li class="vote-item" v-for="(item, index) in 5 " :key="index">
-		  	<div class="head">
-		  		<p>
-		  			<i class="iconfont icon-bofangqi-bofang"></i>
-		  			<!-- <i class="iconfont icon-bofangqi-zanting"></i> -->
-		  		</p>
-		  	</div>
+		  	<div class="head"> <img src="https://ss1.baidu.com/9vo3dSag_xI4khGko9WTAnF6hhy/image/h%3D300/sign=e28f94a74fa98226a7c12d27ba83b97a/54fbb2fb43166d22460103464a2309f79152d2e9.jpg" alt=""></div>
 		  	<div class="text">
-		  		<h3>小兔子吃萝卜</h3>
-		  		<p>20人录制</p>
+		  		<h3>狐狸请客<strong>20人录制</strong></h3>
+		  		<div class="icon-wrap">
+		  			<p class="icon">播放</p>
+				  	<p class="icon">重录</p>
+				  	<p class="icon">删除</p>
+		  		</div>
 		  	</div>
-		  	<div class="icon active">
-		  		<p>
-		  			<i class="iconfont icon-zan"></i>
-		  		</p>
-		  		<p>112</p>
-		  	</div>
+		  	
 		</li>
 	</ul>
 	<div class="result-wrap">
@@ -78,52 +72,51 @@ export default {
 			@include border-type-1px($color-background-d, dashed)
 		}
 		.head {
-			width: 56px;
-			height: 56px;
+			width: 64px;
+			height: 94px;
 			overflow: hidden;
-			border-radius: 50%;
-			border: 2px solid $color-theme;
+			background-color: $color-text-d;
 			margin-right: 10px;
-			p{
+			img {
 				width: 100%;
-				height: 100%;
-				overflow: hidden;
-				border-radius: 28px;
-				text-align: center;
-				color: $color-theme;
-				i {
-					line-height: 56px;
-					font-size: 28px;
-					padding-left: 4px;
-				}
+				min-height: 100%;
 			}
-			
 		}
 		.text {
 			flex: 1;
 			h3 {
 				line-height: 1.5;
+				padding-bottom: 16px;
 				strong {
 					color: $color-theme;
+					padding-left: 1em;
 				}
 			}
 			p {
 				padding-top: 6px;
+				line-height: 1.5;
+				@include ellipsis(2);
 			}
 		}
-		.icon {
-			text-align: center;
-			&.active {
+		.icon-wrap {
+			display: flex;
+			.icon {
+				text-align: center;
 				color: $color-theme;
-			}
-			i {
-				font-size: $font-size-large;
-			}
-
-			>p:last-child {
-				padding-top: 10px;
+				border: 1px solid $color-theme;
+				padding: 4px 16px;
+				border-radius: 16px;
+				background: $color-theme;
+				color: $color-background;
+				margin-right: 6px;
+				&:last-of-type {
+					border: 1px solid $color-background;
+					background: none;
+					color: $color-text;
+				}
 			}
 		}
+		
 	}
 
 }

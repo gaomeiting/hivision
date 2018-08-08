@@ -26,14 +26,20 @@
 				<vote-list></vote-list>
 			</div>
 		</div>
-		<error-tip ref="errorTip" :error="error"></error-tip>
+		
 	</div>
+	<p class="share-wrap" v-if="hasWxVer">
+		<i @click.stop="showShareTip" class="iconfont icon-fenxiang"></i>
+	</p>
+	<error-tip ref="errorTip" :error="error"></error-tip>
+	<share-tip ref="shareTip"></share-tip>
 </scroll>
 </template>
 <script type="text/ecmascript-6">
 import Scroll from '~/components/scroll/scroll'
 import ErrorTip from '~/components/error-tip/error-tip';
 import VoteList from '~/components/song-list/song-list'
+import ShareTip from '~/components/share-tip/share-tip'
 import { wxShare } from '~/assets/js/mixin'
 import { getData } from '~/api/api'
 export default {
@@ -54,7 +60,8 @@ export default {
 				nickname: '网校',
 				slogan: 'abcddsalgfjalsgjaojaof',
 				avatar: 'http://st.ddpei.cn/hv/avatar/3h7u7faAggbfoP9TJGd729.jpeg?x-oss-process=style/avatar120png'
-			}
+			},
+			hasWxVer: false
 		}
 	},
 	head() {
@@ -66,12 +73,18 @@ export default {
 		this._getInfo()
 	},
 	beforeMount() {
-		this._getShareConfig('', true)
+		//let id = this.$route.query.singer;
+		let url = this.$route.fullPath
+		let title = '我是张曼玉，我参加了“嗨未来”与声俱来·声咖大赛，快来支持我吧！'
+		this._getShareConfig(url, '', title)
+		this.hasWxVer=this.versions();
 	},
 	
 	
 	methods: {
-		
+		showShareTip() {
+			this.$refs.shareTip.show()
+		},
 		_getInfo(id) {
 			getData(`/api/contestant/current/${id}`).then(res => {
 				if(res.status == 200) {
@@ -92,7 +105,8 @@ export default {
 	components: {
 		Scroll,
 		ErrorTip,
-		VoteList
+		VoteList,
+		ShareTip
 	}
 }
 </script>
@@ -102,6 +116,15 @@ export default {
 @import "~assets/scss/mixin";
 .page {
 	background: $color-background-d;
+}
+.share-wrap {
+	position: fixed;
+	right: 10px;
+	top: 10px;
+	z-index: 800;
+	i {
+
+	}
 }
 .me-wrap {
 	min-height: 100vh;
