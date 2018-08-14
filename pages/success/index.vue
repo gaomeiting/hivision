@@ -10,7 +10,7 @@
 				<img v-else src="/code_2.jpg">
 			</figure>
 			<a v-if="!isWx" href="javascript:;" class="btn" @click.stop="toggleShare">生成分享页面炫一下</a>
-			<a v-else href="javascript:;" class="btn">继续录制您的海选音频</a>
+			<a v-else href="javascript:;" class="btn" @click.stop="goNext">继续录制您的海选音频</a>
 		</div>
 		<div class="share-icons-wrap">
 			<share-icons ref="share" @cancle="cancle" @selectShare="selectShare"></share-icons>
@@ -30,12 +30,15 @@ import { share, wxShare } from '~/assets/js/mixin'
 		},
 		beforeMount() {
 			let id = this.$route.query.id;
+			
 			//this._getShareConfig(`http://mgt.hvkid.com/share/?id=${id}`)
 			this._getShareConfig(`http://mglx.hvkid.com/share/?id=${id}`)
 		},
 
 		methods: {
-			
+			goNext() {
+				this.$router.push('/selectbook')
+			}
 		},
 		components: {
 			Scroll,

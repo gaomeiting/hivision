@@ -1,9 +1,9 @@
 <template>
-<scroll class="page" ref="scroll">
+<scroll class="page" ref="scroll" :data="list">
 <div class="vote-wrap" ref="vote">
 	<h2 class="title">选择您要录制的音频故事</h2>
 	<div class="vote-list">
-		<book-list></book-list>
+		<book-list :list="list" @goNext="goNext"></book-list>
 	</div>
 	<error-tip ref="errorTip" :error="error"></error-tip>
 </div>
@@ -19,7 +19,8 @@ export default {
 	mixins: [wxShare],
 	data() {
 		return {
-			error: ''
+			error: '',
+			list : []
 		}
 	},
 	head() {
@@ -30,9 +31,29 @@ export default {
 	created() {
 	},
 	beforeMount() {
-		/*this._getShareConfig('', true)*/
+		this._getShareConfig('', true)
+		let url = '/api/audition_story/';
+		this._getStoriesData(url);
 	},
 	methods: {
+		goNext(item) {
+			let id = item.id;
+			this.$router.push(`/selectbook/${id}`);
+		},
+		
+		_getStoriesData(url) {
+			getData(url).then(res => {
+				if(res.status == 200) {
+					this.list = res.data
+				}
+			}).catch(err => {
+				if(err.data) {
+					this.error = `${err.data.status}${err.data.message}`;
+					this.$refs.errorTip.show();
+				}
+			})
+		}
+		
 	},
 	components: {
 		Scroll,

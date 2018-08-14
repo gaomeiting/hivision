@@ -1,12 +1,13 @@
 <template>
-<scroll class="page" ref="scroll">
+<scroll class="page" ref="scroll" :data="list" :pullUp="pullUp" @scrollEnd="hasMoreData" :beforeScroll="beforeScroll">
 <div class="vote-wrap" ref="vote">
-	<div class="top-wrap">
+	<div class="top-wrap" v-if="story">
 		<div class="img-wrap">
-			<img src="https://ss1.baidu.com/9vo3dSag_xI4khGko9WTAnF6hhy/image/h%3D300/sign=e28f94a74fa98226a7c12d27ba83b97a/54fbb2fb43166d22460103464a2309f79152d2e9.jpg">
+			<img :src="story.coverImg">
 		</div>
+		<p class="title">{{story.title}}</p>
 		<transition name="fade" mode="out-in">
-			<p :class="isShow ? '' : 'ellipsis'">{{text}}</p>
+			<p :class="isShow ? '' : 'ellipsis'">{{story.content}}</p>
 		</transition>
 		<p style="text-align: center;" @click.stop="toggleText">
 			<span>{{isShow ? '收起内容' : '展开全部'}}</span>
@@ -14,19 +15,19 @@
 		</p>
 	</div>
 	<div class="switches-wrap">
-		<switches :switches="switches"></switches>
+		<switches :switches="switches" :currentIndex="switchIndex" @switchItem="switchItem"></switches>
 	</div>
 	<div class="vote-list">
-		<vote-list></vote-list>
+		<vote-list :more="more" :list="list" :load = "load" @goByName="goByName"></vote-list>
 	</div>
 	
-	<error-tip ref="errorTip" :error="error"></error-tip>
 
 </div>
-<p class="btn">
+<p class="btn" @click.stop="goRecord" v-if="hasWx">
 	<i class="iconfont icon-maikefeng"></i>
 	<span>我要录制</span>
 </p>
+<error-tip ref="errorTip" :error="error"></error-tip>
 </scroll>
 </template>
 <script type="text/ecmascript-6">
@@ -35,7 +36,7 @@ import ErrorTip from '~/components/error-tip/error-tip'
 import Switches from '~/components/switches/switches'
 import VoteList from '~/components/vote-list/vote-list'
 import { wxShare } from '~/assets/js/mixin'
-import { getData } from '~/api/api'
+import { getData } from '~/api/init'
 export default {
 	mixins: [wxShare],
 	data() {
@@ -43,8 +44,17 @@ export default {
 			error: '',
 			switches: [{ name: '最佳人气作品' }, { name: '最新参赛作品' }],
 			isShow: false,
-			text: '二百字的二百字的二百字的二百字的二百字的二百字的二百字的二百字的二百字的二百字的二百字的二百字的二百字的二百字的二百字的二百字的二百字的二百字的二百字的二百字的二百字的二百字的二百字的二百字的二'
-			
+			story: {},
+			more: true,
+			currentPage: 0,
+			size: 10,
+			list: [],
+			load: true,
+			pullUp: true,
+			beforeScroll: true,
+			url: '',
+			switchIndex: 0,
+			hasWx: false
 		}
 	},
 	head() {
@@ -53,16 +63,93 @@ export default {
 		}
 	},
 	created() {
+		this.$nextTick(() => {
+			this.hasWx =  this.versions()
+		})
 	},
+	
 	beforeMount() {
-		/*this._getShareConfig('', true)*/
+		
+		this._getShareConfig('', true)
+		let id = this.$route.params.id;
+		this._getSingerDetails(id)
+		
+	},
+	watch: {
+		switchIndex(newVal, oldVal) {
+			console.log(newVal, oldVal)
+			this.currentPage = 0;
+			this.more = true;
+			this.list = []
+			this._getStories(this.url, {page: this.currentPage, size: this.size, sort: this.sort})
+		}
+	},
+	computed: {
+		sort() {
+			return this.switchIndex ? 'id' : 'likeNum'
+		}
 	},
 	methods: {
+		switchItem(index) {
+			console.log(index)
+			this.switchIndex = index;
+		}, 
+		goByName(item) {
+			console.log('goByName')
+			let id = item.contestant.id;
+			this.$router.push(`/singer?id=${id}`)
+		},
+		goRecord() {
+			let id = this.$route.params.id;
+			this.$router.push(`/record?id=${id}`)
+		},
 		toggleText() {
 			this.isShow = !this.isShow;
 			this.$nextTick(()=>{
 				this.$refs.scroll.refresh()
 			})
+		},
+		hasMoreData() {
+			if(!this.more) return;
+			this.currentPage+=1;
+			this._getStories(this.url, {page: this.currentPage, size: this.size, sort: this.sort})
+		},
+		
+		_getStories(url, params) {
+			this.load = true;
+			getData(url, params).then(res => {
+				this.load = false;
+				if(res.status===200) {
+					this.list= [...this.list, ...res.data]
+					this._hasMore(res.total)
+				}
+			}).catch(err => {
+				this.load = false;
+				if(err.data) {
+					this.error = `${err.data.status}${err.data.message}`
+					this.$refs.errorTip.show()
+				}
+			})
+			
+		},
+		_getSingerDetails(id) {
+			getData(`/api/audition_story/${id}`).then(res=> {
+				if(res.status===200) {
+					this.story = res.data
+					let id = this.$route.params.id;
+					this.url = `/api/audition_story/${id}/players`
+					this._getStories(this.url, {page: this.currentPage, size: this.size, sort: this.sort})
+				}
+			}).catch(err => {
+				if(err.data) {
+					this.error = `${err.data.status}${err.data.message}`
+					this.$refs.errorTip.show()
+				}
+			})
+		},
+		_hasMore(total) {
+			this.more = (this.currentPage+1) * this.size < total
+
 		}
 	},
 	components: {
@@ -92,6 +179,7 @@ export default {
 	z-index: 800;
 	box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 	color: $color-theme;
+	font-size: $font-size-large;
 	i {
 		padding-right: 4px;
 		font-size: $font-size-large;
@@ -114,6 +202,11 @@ export default {
 				width: 100%;
 				min-height: 100%;
 			}
+		}
+		.title {
+			text-align: center;
+			padding-bottom: 16px;
+			@include border-1px($color-background)
 		}
 		p {
 			line-height: 1.5;

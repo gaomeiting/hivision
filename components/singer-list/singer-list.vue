@@ -1,23 +1,18 @@
 <template>
 <div class="list-wrap">
 	<ul class="vote" v-if="list.length > 0">
-		<li class="vote-item" v-for="(item, index) in list " :key="index">
-		  	<div class="head" :style="'background-image: url('+item.contestant.avatar+');'" @click.stop="settingCurrentSong(index)">
-		  		<p :class="song && index === currentSongIndex && flag ? 'active' : ''">
-		  			<i class="iconfont" v-if="index != currentSongIndex || index === currentSongIndex && !song " :class="index === currentSongIndex && flag ? 'icon-bofangqi-zanting' : 'icon-bofangqi-bofang'"></i>
-		  			 <!-- :class="{'active': index === currentSongIndex && flag}" -->
-		  			<!-- <i class="iconfont icon-bofangqi-zanting"></i> -->
-		  		</p>
+		<li class="vote-item" v-for="(item, index) in list " :key="index" @click.stop="goByName(item)">
+		  	<div class="head" :style="'background-image: url('+item.avatar+');'">
+		  		
 		  	</div>
 		  	<div class="text">
-		  		<h3 @click.stop="goByName(item)">{{item.contestant.nickname}}<!-- <strong>13557 票</strong> --></h3>
-		  		<p>{{item.contestant.slogan}}</p>
+		  		<h3>{{item.nickname}} <strong v-if="item.popularNum">{{item.popularNum}}票</strong></h3>
+		  		<p>{{item.slogan}}</p>
 		  	</div>
 		  	<div class="icon">
 		  		<p>
-		  			<i class="iconfont icon-zan"></i>
+		  			<i class="iconfont icon-jiantouyou"></i>
 		  		</p>
-		  		<p>{{item.likeNum}}</p>
 		  	</div>
 		</li>
 	</ul>
@@ -28,17 +23,14 @@
 		<no-result title="空空如也~~" v-if="list.length === 0"></no-result>
 		<p v-if="list.length>0 && !more">我是有底线的</p>
 	</div>
-	<audio :src="list[currentSongIndex] && list[currentSongIndex].voiceUrl" ref="audio" @timeupdate="updateTime" @play="ready"></audio>
 </div>
   
 </template>
 
 <script type="text/ecmascript-6">
 import NoResult from "~/components/no-result/no-result"
-import Loading from '~/components/loading/loading';
-import { audioHandler } from '~/assets/js/mixin'
+import Loading from '~/components/loading/loading'
 export default {
-	mixins: [ audioHandler ],
 	props: {
 		currentIndex: {
 			type: Number,
@@ -61,9 +53,7 @@ export default {
 	},
 	
 	methods: {
-		selectItem(index) {
-			this.$emit('selectItem', index)
-		},
+		
 		goByName(item) {
 			this.$emit('goByName', item)
 		},

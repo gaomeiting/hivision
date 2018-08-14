@@ -184,7 +184,7 @@ import { share, loadBtn, wxShare } from '~/assets/js/mixin'
 					  slogan: this.form.declaration ,
 					  title: this.form.info
 					}).then(res => {
-						this.$router.push(`/success/?id=${res.id}`)
+						this.$router.push(`/success/?id=${res.id}&nickname=${this.form.title}`)
 					}).catch(err => {
 						
 						if(err.data.status == 409) {

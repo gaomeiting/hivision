@@ -62,7 +62,7 @@ import { postData } from '~/api/api'
 	                    mobile: this.form.tel,
   						vcode: this.form.code
 	                }).then(res => {
-	                	this.$router.push('/me')
+	                	this.$router.back()
 	                    //this._switchPage(res)
 	                }).catch(err => {
 	                	this._handlerError(err);

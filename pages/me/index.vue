@@ -22,9 +22,9 @@
 		</div>
 		<div class="handler-wrap">
 			<ul>
-				<li>
-					<i class="iconfont icon-setup"></i>
-					<p>参赛报名信息</p>
+				<li @click.stop="goDome(singer.entryWorks)">
+					<i class="iconfont icon-guanli"></i>
+					<p>参赛作品管理</p>
 					<i class="iconfont icon-jiantouyou"></i>
 				</li>
 				<li @click.stop="goPutProfile">
@@ -90,6 +90,10 @@ export default {
 	},
 	
 	methods: {
+		goDome(list) {
+			let dome = encodeURIComponent(JSON.stringify(list))
+			this.$router.push(`/dome?list=${dome}`)
+		},
 		goPutProfile() {
 			this.$router.push('/profile/30')
 		},

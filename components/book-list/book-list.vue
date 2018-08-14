@@ -1,19 +1,19 @@
 <template>
 <div class="list-wrap">
-	<ul class="vote">
-		<li class="vote-item" v-for="(item, index) in 5 " :key="index">
-		  	<div class="head"> <img src="https://ss1.baidu.com/9vo3dSag_xI4khGko9WTAnF6hhy/image/h%3D300/sign=e28f94a74fa98226a7c12d27ba83b97a/54fbb2fb43166d22460103464a2309f79152d2e9.jpg" alt=""></div>
+	<ul class="vote" v-if="list.length > 0">
+		<li class="vote-item" v-for="(item, index) in list " :key="index" @click.stop="goNext(item)">
+		  	<div class="head"> <img :src="item.coverImg" alt=""></div>
 		  	<div class="text">
-		  		<h3>狐狸请客<strong>20人录制</strong></h3>
-		  		<p>狐狸请鹤吃饭。它把豆子做的汤盛在一个又浅又大的碟子。狐狸很容就狐狸请鹤吃饭。它把豆子做的汤盛在一个又浅又大的碟子。狐狸很容就</p>
+		  		<h3>{{item.title}}<strong v-if="item.pnum > 0">{{item.pnum}}人录制</strong></h3>
+		  		<p>{{item.content}}</p>
 		  	</div>
-		  	<div class="icon">
+		  	<div class="icon" @click.stop="goNext(item)">
 		  		<p>录制</p>
 		  	</div>
 		</li>
 	</ul>
 	<div class="result-wrap">
-		<no-result title="空空如也~~" v-if="list.length === 0"></no-result>
+		<no-result title="空空如也~~" v-if="list.length === 0 && !more"></no-result>
 		<p v-if="list.length>0 && !more">我是有底线的</p>
 	</div>
 </div>
@@ -42,6 +42,9 @@ export default {
 	methods: {
 		selectItem(index) {
 			this.$emit('selectItem', index)
+		},
+		goNext(item) {
+			this.$emit('goNext', item)
 		}
 	},
 	components: {

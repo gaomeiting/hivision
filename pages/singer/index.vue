@@ -1,5 +1,5 @@
 <template>
-<scroll class="page" ref="scroll">
+<scroll class="page" ref="scroll" :data="list">
 	<div class="me-wrap" ref="me">
 		<div class="top" v-if="singer">
 			<div class="img" :style="'background-image: url('+singer.avatar+');'"> </div>
@@ -23,7 +23,7 @@
 		<div class="music-wrap">
 			<h2>参赛作品</h2>
 			<div class="vote-list">
-				<vote-list></vote-list>
+				<vote-list :list="list"></vote-list>
 			</div>
 		</div>
 		
@@ -57,11 +57,10 @@ export default {
 			songReady: false,
 			error: '',
 			singer: {
-				nickname: '网校',
-				slogan: 'abcddsalgfjalsgjaojaof',
-				avatar: 'http://st.ddpei.cn/hv/avatar/3h7u7faAggbfoP9TJGd729.jpeg?x-oss-process=style/avatar120png'
+				
 			},
-			hasWxVer: false
+			hasWxVer: false,
+			list: []
 		}
 	},
 	head() {
@@ -70,14 +69,14 @@ export default {
 		}
 	},
 	created() {
-		this._getInfo()
+		
 	},
 	beforeMount() {
-		//let id = this.$route.query.singer;
 		let url = this.$route.fullPath
-		let title = '我是张曼玉，我参加了“嗨未来”与声俱来·声咖大赛，快来支持我吧！'
-		this._getShareConfig(url, '', title)
+		let id = this.$route.query.id
+
 		this.hasWxVer=this.versions();
+		this._getInfo(id)
 	},
 	
 	
@@ -86,11 +85,16 @@ export default {
 			this.$refs.shareTip.show()
 		},
 		_getInfo(id) {
-			getData(`/api/contestant/current/${id}`).then(res => {
+			getData(`/api/contestant/${id}`).then(res => {
 				if(res.status == 200) {
 					this.singer = res.data;
+					this.list = res.data.entryWorks;
+					let url = this.$route.fullPath
+					let title = `我是${this.singer.nickname}，我参加了“嗨未来”与声俱来·声咖大赛，快来支持我吧！`
+					this._getShareConfig(url, '', title)
 				}
 			}).catch(err => {
+				//console.log(1123343)
 				if(err && err.data) {
 					this.error = `${err.data.status}${err.data.message}`
 				}

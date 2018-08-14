@@ -1,30 +1,39 @@
 <template>
 <div class="list-wrap">
 	<ul class="vote">
-		<li class="vote-item" v-for="(item, index) in 5 " :key="index">
-		  	<div class="head"> <img src="https://ss1.baidu.com/9vo3dSag_xI4khGko9WTAnF6hhy/image/h%3D300/sign=e28f94a74fa98226a7c12d27ba83b97a/54fbb2fb43166d22460103464a2309f79152d2e9.jpg" alt=""></div>
+		<li class="vote-item" v-for="(item, index) in list " :key="index">
+		  	<div class="head" v-if="item.story"> <img :src="item.story.coverImg" alt=""></div>
 		  	<div class="text">
-		  		<h3>狐狸请客<strong>20人录制</strong></h3>
+		  		<h3 v-if="item.story">{{item.story.title}}<!-- <strong>20人录制</strong> --></h3>
 		  		<div class="icon-wrap">
-		  			<p class="icon">播放</p>
-				  	<p class="icon">重录</p>
-				  	<p class="icon">删除</p>
+		  			<p class="icon" :class="song && index === currentSongIndex && flag ? 'active' : ''" @click.stop="settingCurrentSong(index)">
+		  				<span v-if="index != currentSongIndex || index === currentSongIndex && !song ">
+				  			{{ index === currentSongIndex && flag ? '暂停' : '播放' }}
+				  		</span>
+				  	</p>
+				  	<p class="icon" @click.stop="record(item)">重录</p>
+				  	<p class="icon" @click.stop="deleteOne(item, index)">删除</p>
 		  		</div>
 		  	</div>
 		  	
 		</li>
 	</ul>
 	<div class="result-wrap">
-		<no-result title="空空如也~~" v-if="list.length === 0"></no-result>
+		<div class="no-result-wrap" v-if="list.length === 0">
+			<no-result title="空空如也~~"></no-result>
+		</div>
 		<p v-if="list.length>0 && !more">我是有底线的</p>
 	</div>
+	<audio :src="list[currentSongIndex] && list[currentSongIndex].voiceUrl" ref="audio" @timeupdate="updateTime" @play="ready"></audio>
 </div>
   
 </template>
 
 <script type="text/ecmascript-6">
 import NoResult from "~/components/no-result/no-result"
+import { audioHandler } from "~/assets/js/mixin"
 export default {
+	mixins: [ audioHandler ],
 	props: {
 		currentIndex: {
 			type: Number,
@@ -42,6 +51,12 @@ export default {
 		}
 	},
 	methods: {
+		record(item) {
+			this.$emit('record', item)
+		}, 
+		deleteOne(item, index) {
+			this.$emit('deleteOne', item, index)
+		},
 		selectItem(index) {
 			this.$emit('selectItem', index)
 		}
@@ -56,13 +71,18 @@ export default {
 @import "~assets/scss/variable";
 @import "~assets/scss/mixin";
 .result-wrap {
+	.no-result-wrap {
+		padding-top: 100px;
+	}
 	p {
 		text-align: center;
 		line-height: 2;
 	}
 }
+
 .vote {
 	padding: 0 16px;
+
 	.vote-item {
 		display: flex;
 		align-items: center;
@@ -93,7 +113,6 @@ export default {
 				}
 			}
 			p {
-				padding-top: 6px;
 				line-height: 1.5;
 				@include ellipsis(2);
 			}
@@ -101,14 +120,22 @@ export default {
 		.icon-wrap {
 			display: flex;
 			.icon {
+				width: 66px;
+				height: 30px;
 				text-align: center;
+				line-height: 30px;
 				color: $color-theme;
 				border: 1px solid $color-theme;
-				padding: 4px 16px;
 				border-radius: 16px;
 				background: $color-theme;
 				color: $color-background;
 				margin-right: 6px;
+				&.active {
+					background-image: url('/loading.gif');
+					background-size: 20px 20px;
+					background-repeat: no-repeat;
+					background-position: center center;
+				}
 				&:last-of-type {
 					border: 1px solid $color-background;
 					background: none;

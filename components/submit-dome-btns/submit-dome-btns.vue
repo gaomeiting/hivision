@@ -5,18 +5,18 @@
 		
 		<p class="item" v-if="voice === null">
 			<a v-if="flag"  class="btn btn-all" href="javascript:;" @click.stop.prevent="getUserAndStartRecord"><i class="iconfont icon-maikefeng"></i>开始录音</a>
-			<a v-else class="btn btn-all active" href="javascript:;" @click.stop.prevent="stopRecord"><!-- 停止录音 --></a>
+			<a v-else class="btn btn-all btn-pause active" href="javascript:;" @click.stop.prevent="stopRecord"></a>
 			
 		</p>
 		<p class="item" v-else>
 			<a v-if="flag"  class="btn btn-all" href="javascript:;" @click.stop.prevent="startRecord"><i class="iconfont icon-chexiao"></i>重录</a>
-			<a v-else class="btn btn-all active" href="javascript:;" @click.stop.prevent="stopRecord"><i class="iconfont icon-weibiaoti519"></i><!-- 停止录音 --></a>
-		
+			<a v-else class="btn btn-all btn-pause active" href="javascript:;" @click.stop.prevent="stopRecord"><i class="iconfont icon-weibiaoti519"></i></a>
 		</p>
-		<p class="item">
+		<p class="item" v-if="!time">
 			<a href="javascript:;" v-if="voice && voice.localId" class="btn btn-blue" @click.stop.prevent="uploadVoice" style="margin-right: 12px;"> <i class="iconfont icon-shangchuan"></i> 提交</a>
-			<a href="javascript:;" v-if="voice && voice.localId" class="btn btn-blue" @click.stop.prevent="playVoice"> <i class="iconfont icon-bofang"></i> 试听</a>
+			<a href="javascript:;" v-if="voice && voice.localId" class="btn btn-blue" @click.stop.prevent="switchVoice"> <i class="iconfont" :class=" voicePlay ? 'icon-pause' : 'icon-bofang'"></i>试听</a>
 		</p>
+		<p v-if="time" style="text-align: center;">你还可以录{{time}}s</p>
 		<confirm ref="confirm" :text="text" @confirm="confirm"></confirm>
 	</div>
 </transition>
@@ -26,20 +26,33 @@
 import { getData, postData } from '~/api/api'
 import Confirm from '~/components/confirm/confirm'
 	export default {
-		props: {
-			
-		},
+		
 		data() {
 			return {
 				voice: null,
 				flag: true,
 				timer: null,
-				text: ''
+				text: '',
+				type: 0,
+				time: 0,
+				voicePlay: true
 			}
 		},
+		
 		methods: {
 			confirm() {
-				//this.$router.push('/bind')
+				if(this.type === 0) {
+					this._startRecord()
+				}
+			},
+			switchVoice() {
+				console.log(this.voicePlay)
+				if(this.voicePlay) {
+					this.playVoice();
+				}
+				else {
+					this.pauseVoice();
+				}
 			},
 			voiceRecordEnd() {
 				console.log("VoiceRecordEnd")
@@ -55,22 +68,20 @@ import Confirm from '~/components/confirm/confirm'
 			},
 			// 4.2 开始录音
 		  startRecord () {
-		  	let _this = this
-		  	if(this.timer) clearInterval(this.timer)
-
-		  	this._timer()
-		    window.wx.startRecord({
-		      cancel: function () {
-		        alert('用户拒绝授权录音');
-		      },
-		      success: function(res) {
-		      	_this.flag = false
-		      }
-		    });
+		  	
+		  	this.text = '您真的要重新录制音频吗'
+		  	this.$refs.confirm.show()
+		  	this.type = 0;
+		    
 		  },
 		  stopRecord() {
 		  	let _this = this;
 		  	this.flag = true
+		  	if(this.timer) {
+		  		clearInterval(this.timer)
+		  		this.time = 0;
+		  	}
+
 		  	window.wx.stopRecord({
 				success: function (res) {
 					_this.voice = res;
@@ -86,6 +97,24 @@ import Confirm from '~/components/confirm/confirm'
 		    window.wx.playVoice({
 		      localId: _this.voice.localId
 		    });
+		    this.voicePlay = false;
+		    this.voicePlayEnd()
+		  },
+		  pauseVoice() {
+		  	let _this = this
+		  	window.wx.pauseVoice({
+				localId: _this.voice.localId
+			});
+			this.voicePlay = true;
+		  },
+		  voicePlayEnd() {
+		  	let _this = this
+		  	window.wx.onVoicePlayEnd({
+				success: function (res) {
+					this.voicePlay = true;
+				 console.log(res.localId)
+				}
+			});
 		  },
 		  // 4.8 上传语音
 		  uploadVoice () {
@@ -99,12 +128,13 @@ import Confirm from '~/components/confirm/confirm'
 		      success: function (res) {
 		        //alert('上传语音成功，serverId 为' + res.serverId);
 		        //_this.voice.serverId = res.serverId;
-		        _this._postDataServerId(res.serverId)
+		        _this.$emit('postDataServerId', res.serverId)
+		       
 		      }
 		    });
 		  },
 		  getUserAndStartRecord() {
-		  	this.startRecord()
+		  	this._getCurrentInfo()
 		  	/*getData('/api/contestant/current').then(res => {
 		  		this.startRecord()
 			}).catch(err => {
@@ -112,27 +142,62 @@ import Confirm from '~/components/confirm/confirm'
 				this.$refs.confirm.show()
 			})*/
 		  },
-		  _postDataServerId(audioId) {
-		  	postData('/api/bind/audio.json', {
-		  		audioId
-		  	}).then(res => {
-		  		console.log("成功")
-		  	}).catch(err => {
-		  		console.log(err)
-		  	})
+		  _startRecord () {
+		  	let _this = this
+		  	if(this.timer) clearInterval(this.timer)
+			this._timer()
+		  	window.wx.startRecord({
+			      cancel: function () {
+			        alert('用户拒绝授权录音');
+			      },
+			      success: function(res) {
+			      	_this.flag = false
+			      }
+			    });
 		  },
+		  _getCurrentInfo() {
+				getData('/api/contestant/current').then(res => {
+					this._hasStatus(res)
+				}).catch(err => {
+					if(err && err.data) {
+						this.error = `${err.data.status}${err.data.message}`
+					}
+					else {
+						this.error = '接口调试中'
+					}
+					this.$refs.confirm.show()
+				})
+			},
+			
+			_hasStatus(res) {
+				if(res.status == 406) {
+					this.error = res.message;
+					this.$refs.confirm.show()
+				}
+				else if(res.status == 302) {
+					window.location = res.error;
+				}
+				else if(res.status == 401) {
+					this.$router.push('/bind')
+				}
+				else if(res.status == 200) {
+					this._startRecord();
+				}
+			},
+		  
 		  _timer() {
-	            let time = 60;
+	            this.time = 60;
 	            clearInterval(this.timer);
 	            this.timer = setInterval(() => {
-	                if(time<= 0) {
-	                    time = 0;
+	                if(this.time<= 0) {
+	                    this.time = 0;
 	                    if(this.timer) clearInterval(this.timer);
 	                    return;
 	                }
-	                time--;
+	                this.time--;
+	                //console.log(this.time)
 	                //console.log(time, "timer")
-	                if(time < 1) {
+	                if(this.time < 1) {
 	                    clearInterval(this.timer)
 	                    //this.tip="获取验证码"
 	                    this.stopRecord()

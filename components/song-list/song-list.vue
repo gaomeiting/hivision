@@ -1,22 +1,22 @@
 <template>
 <div class="list-wrap">
 	<ul class="vote">
-		<li class="vote-item" v-for="(item, index) in 5 " :key="index">
-		  	<div class="head">
-		  		<p>
-		  			<i class="iconfont icon-bofangqi-bofang"></i>
+		<li class="vote-item" v-for="(item, index) in list " :key="index">
+		  	<div class="head" @click.stop="settingCurrentSong(index)">
+		  		<p :class="song && index === currentSongIndex && flag ? 'active' : ''">
+		  			<i class="iconfont"  v-if="index != currentSongIndex || index === currentSongIndex && !song " :class="index === currentSongIndex && flag ? 'icon-bofangqi-zanting' : 'icon-bofangqi-bofang'"></i>
 		  			<!-- <i class="iconfont icon-bofangqi-zanting"></i> -->
 		  		</p>
 		  	</div>
 		  	<div class="text">
-		  		<h3>小兔子吃萝卜</h3>
+		  		<h3>{{item.story.title}}</h3>
 		  		<p>20人录制</p>
 		  	</div>
-		  	<div class="icon active">
+		  	<div class="icon">
 		  		<p>
 		  			<i class="iconfont icon-zan"></i>
 		  		</p>
-		  		<p>112</p>
+		  		<p>{{item.likeNum}}</p>
 		  	</div>
 		</li>
 	</ul>
@@ -24,13 +24,16 @@
 		<no-result title="空空如也~~" v-if="list.length === 0"></no-result>
 		<p v-if="list.length>0 && !more">我是有底线的</p>
 	</div>
+	<audio :src="list[currentSongIndex] && list[currentSongIndex].voiceUrl" ref="audio" @timeupdate="updateTime" @play="ready"></audio>
 </div>
   
 </template>
 
 <script type="text/ecmascript-6">
 import NoResult from "~/components/no-result/no-result"
+import { audioHandler } from "~/assets/js/mixin"
 export default {
+	mixins: [ audioHandler ],
 	props: {
 		currentIndex: {
 			type: Number,
@@ -91,10 +94,15 @@ export default {
 				border-radius: 28px;
 				text-align: center;
 				color: $color-theme;
+				&.active {
+					background-image: url('/loading.gif');
+					background-size: 28px 28px;
+					 background-repeat: no-repeat;
+					  background-position: center center;
+				}
 				i {
 					line-height: 56px;
-					font-size: 28px;
-					padding-left: 4px;
+					font-size: 30px;
 				}
 			}
 			

@@ -32,16 +32,18 @@ export const share = {
 		selectShare(index) {
 			let id = this.$route.params.id;
 			let type, link;
+			let nickname = this.$route.query.nickname
+			let title = `我是${nickname}，我参加了“嗨未来”与声俱来·声咖大赛，快来支持我吧！`
 			switch (index + 1) {
 				case 1:
 					type = 2;
-					link = `http://mglx.hvkid.com/share/?name=lingxi&id=${id}`
-					this.shareWX(link, type);
+					link = `http://mglx.hvkid.com/singer/?name=lingxi&id=${id}`
+					this.shareWX(link, type, title);
 					break;
 				case 2:
 					type = 1;
-					link = `http://mglx.hvkid.com/share/?name=lingxi&id=${id}`
-					this.shareWX(link, type);
+					link = `http://mglx.hvkid.com/singer/?name=lingxi&id=${id}`
+					this.shareWX(link, type, title);
 					break;
 			}
 			//http://mglx.hvkid.com/share
@@ -120,7 +122,8 @@ export const wxShare = {
 					'onVoiceRecordEnd',
 					'playVoice',
 					'pauseVoice',
-					'uploadVoice'
+					'uploadVoice',
+					'onVoicePlayEnd'
 				]
 			});
 			wx.ready(function() {
@@ -154,7 +157,14 @@ export const wxShare = {
 					'onMenuShareAppMessage',
 					'onMenuShareQQ',
 					'onMenuShareWeibo',
-					'onMenuShareQZone'
+					'onMenuShareQZone',
+					'startRecord',
+					'stopRecord',
+					'onVoiceRecordEnd',
+					'playVoice',
+					'pauseVoice',
+					'uploadVoice',
+					'onVoicePlayEnd'
 				]
 			});
 			wx.ready(function() {
@@ -189,7 +199,7 @@ export const wxShare = {
 			}
 		},
 
-		_getShareConfig(url, isShow) {
+		_getShareConfig(url, isShow, title = '', desc = '') {
 			if (!this.versions()) return;
 			getData('/api/wechat/sdkconfig.json').then(res => {
 				let config = res;
@@ -206,6 +216,64 @@ export const wxShare = {
 					this.error = '接口调试中请等待'
 				}
 			})
+		}
+	}
+};
+export const audioHandler = {
+	data() {
+		return {
+			currentSongIndex: -1,
+			flag: false,
+			currentTime: '',
+			totalTime: '',
+			songReady: false,
+			song: false
+		}
+	},
+	methods: {
+		settingCurrentSong(index) {
+			if (index === this.currentSongIndex) {
+				//歌曲切换
+				this.flag = !this.flag;
+				this.flag ? this.$refs.audio.play() : this.$refs.audio.pause()
+			} else {
+				this.song = true;
+				this.currentSongIndex = index
+				this.$refs.audio.load()
+				setTimeout(() => {
+					this.song = false
+					this.$refs.audio.play();
+				}, 1000)
+				this.flag = true;
+
+			}
+		},
+		ready() {
+			this.songReady = true;
+		},
+		updateTime(e) {
+			//window.alert(e.target.currentTime)
+			let currentTime = e.target.currentTime | 0;
+			let totalTime = this.$refs.audio.duration | 0;
+			let diff = totalTime * 1 - currentTime * 1
+			this.currentTime = "- " + this.format(diff);
+			//console.log(this.percent, e.target.currentTime, totalTime, "updateTime")
+		},
+		format(n) {
+			let m = 0;
+			let s = 0;
+			m = n / 60 | 0;
+			s = n % 60;
+			let padS = this._pad(s)
+			return `${m}:${padS}`
+		},
+		_pad(num, n = 2) {
+			let len = num.toString().length
+			while (len < n) {
+				num = '0' + num
+				len++
+			}
+			return num
 		}
 	}
 }
