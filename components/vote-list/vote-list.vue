@@ -13,7 +13,7 @@
 		  		<h3 @click.stop="goByName(item)">{{item.contestant.nickname}}<!-- <strong>13557 票</strong> --></h3>
 		  		<p>{{item.contestant.slogan}}</p>
 		  	</div>
-		  	<div class="icon">
+		  	<div class="icon" :class="{'active' : currentIndexs.includes(index)}"  @click.stop="decideByBallot(item, index)">
 		  		<p>
 		  			<i class="iconfont icon-zan"></i>
 		  		</p>
@@ -40,9 +40,11 @@ import { audioHandler } from '~/assets/js/mixin'
 export default {
 	mixins: [ audioHandler ],
 	props: {
-		currentIndex: {
-			type: Number,
-			default: 0
+		currentIndexs: {
+			type: Array,
+			default() {
+				return []
+			}
 		},
 		list: {
 			type: Array,
@@ -67,7 +69,9 @@ export default {
 		goByName(item) {
 			this.$emit('goByName', item)
 		},
-		
+		decideByBallot(item, index) {
+			this.$emit('decideByBallot', item, index)
+		}
 	},
 	components: {
 		NoResult,

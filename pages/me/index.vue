@@ -92,7 +92,7 @@ export default {
 	methods: {
 		goDome(list) {
 			let dome = encodeURIComponent(JSON.stringify(list))
-			this.$router.push(`/dome?list=${dome}`)
+			this.$router.push(`/dome`)
 		},
 		goPutProfile() {
 			this.$router.push('/profile/30')

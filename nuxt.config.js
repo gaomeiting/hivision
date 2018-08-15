@@ -98,8 +98,8 @@ module.exports = {
       plugins: ['transform-runtime']
     },
     vendor: ['axios', 'babel-polyfill', 'weixin-js-sdk'],
-    //publicPath: 'http://st.ddpei.cn/hv/mglx/',
-    publicPath: '/st/',
+    publicPath: 'http://st.ddpei.cn/hv/mglx/',
+    //publicPath: '/st/',
     extend(config, {
       isDev,
       isClient

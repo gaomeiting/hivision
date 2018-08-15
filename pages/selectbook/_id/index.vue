@@ -18,7 +18,7 @@
 		<switches :switches="switches" :currentIndex="switchIndex" @switchItem="switchItem"></switches>
 	</div>
 	<div class="vote-list">
-		<vote-list :more="more" :list="list" :load = "load" @goByName="goByName"></vote-list>
+		<vote-list :more="more" :list="list" :load = "load" @goByName="goByName" @decideByBallot="decideByBallot" :currentIndexs="voteCurrentIndexs"></vote-list>
 	</div>
 	
 
@@ -37,6 +37,7 @@ import Switches from '~/components/switches/switches'
 import VoteList from '~/components/vote-list/vote-list'
 import { wxShare } from '~/assets/js/mixin'
 import { getData } from '~/api/init'
+import { putData } from '~/api/api'
 export default {
 	mixins: [wxShare],
 	data() {
@@ -54,7 +55,8 @@ export default {
 			beforeScroll: true,
 			url: '',
 			switchIndex: 0,
-			hasWx: false
+			hasWx: false,
+			voteCurrentIndexs: []
 		}
 	},
 	head() {
@@ -90,6 +92,25 @@ export default {
 		}
 	},
 	methods: {
+		decideByBallot(item, index) {
+			putData(`/api/contestant/updatelikenum/${item.id}/`).then(res => {
+				if(res.status === 200) {
+					if(this.voteCurrentIndexs.indexOf(index) === -1) {
+						this.voteCurrentIndexs.push(index);
+					}
+					this.list[index].likeNum = res.data
+					//console.log(this.list[index].likeNum)
+				}
+			}).catch(err => {
+				if(err && err.data) {
+					this.error = `${err.data.status}${err.data.message}`
+				}
+				else {
+					this.error = '接口调试中'
+				}
+				this.$refs.errorTip.show()
+			})
+		},
 		switchItem(index) {
 			console.log(index)
 			this.switchIndex = index;

@@ -3,13 +3,22 @@
 <div class="vote-wrap" ref="vote">
 	<div v-if="slider.length" class="slider-wrapper" ref="slider">
 		<slider>
-			<div v-for="(item, index) in slider" :key="index">
+			<div v-for="(item, index) in slider" :key="index" @click.stop="goByNav(index)">
 				<a href="javascript:;">
 					<img :src="item.picUrl" @load="imgLoad">
 				</a>
 			</div>
 		</slider>
 	</div>
+	<div class="row-wrap">
+	<div class="pic-wrapper" ref="picWrapper">
+	  <ul class="pic-list" ref="picList">
+			<li class="pic-item" v-for="(item, index) in stories" :key="index" @click.stop="goStory(item)">
+				<img :src="item.coverImg">
+			</li>
+	  </ul>
+    </div>
+    </div>
 	<div class="switches-wrap">
 		<switches :switches="switches" :currentIndex="switchIndex" @switchItem="switchItem"></switches>
 	</div>
@@ -35,8 +44,8 @@ export default {
 			
 			error: '',
 			slider: [ {
-				picUrl: 'https://ss2.baidu.com/-vo3dSag_xI4khGko9WTAnF6hhy/image/h%3D300/sign=16e69d830f4f78f09f0b9cf349300a83/63d0f703918fa0ece5f167da2a9759ee3d6ddb37.jpg'
-			},{ picUrl: 'https://ss0.baidu.com/7Po3dSag_xI4khGko9WTAnF6hhy/image/h%3D300/sign=ff6ed7cfa718972bbc3a06cad6cc7b9d/267f9e2f07082838304837cfb499a9014d08f1a0.jpg'
+				picUrl: '/home_bg.png',
+				url : '/'
 			}],
 			switches: [{ name: '最佳人气选手' }, { name: '最新参赛选手' }],
 			currentPage: 0,
@@ -46,7 +55,8 @@ export default {
 			pullUp: true,
 			beforeScroll: true,
 			switchIndex: 0,
-			list: []
+			list: [],
+			stories: []
 		}
 	},
 	head() {
@@ -57,6 +67,8 @@ export default {
 	created() {
 		/*this._getCurrentInfo()*/
 		this._getSingerList('/api/contestant', {page: this.currentPage, size: this.size, sort: this.sort})
+		this._getStoriesData();
+		
 	},
 	beforeMount() {
 		this._getShareConfig('', true)
@@ -81,6 +93,12 @@ export default {
 				this.imgChecked=true;
 			}
 		},
+		goByNav(index) {
+			this.$router.push(this.slider[index].url)
+		},
+		goStory(item) {
+			this.$router.push(`/selectbook/${item.id}`)
+		},
 		goByName(item) {
 			//console.log(item.id)
 			this.$router.push(`/singer/?id=${item.id}`)
@@ -93,7 +111,39 @@ export default {
 			this.currentPage+=1;
 			this._getSingerList('/api/contestant', {page: this.currentPage, size: this.size, sort: this.sort})
 		},
-		
+		_initPics() {
+	        if (this.stories.length>0) {
+	          let picWidth = 64;
+	          let margin = 6;
+	          let width = (picWidth + margin) * this.stories.length - margin;
+	          this.$refs.picList.style.width = width + 'px';
+	          this.$nextTick(() => {
+	            if (!this.picScroll) {
+	              this.picScroll = new window.BScroll(this.$refs.picWrapper, {
+	                scrollX: true,
+	                eventPassthrough: 'vertical'
+	              });
+	            } else {
+	              this.picScroll.refresh();
+	            }
+	          });
+	        }
+	    },
+		_getStoriesData() {
+			getData('/api/audition_story/').then(res => {
+				if(res.status == 200) {
+					this.stories = res.data
+					this.$nextTick(()=> {
+						this._initPics()
+					})
+				}
+			}).catch(err => {
+				if(err.data) {
+					this.error = `${err.data.status}${err.data.message}`;
+					this.$refs.errorTip.show();
+				}
+			})
+		},
 		_getSingerList(url, params) {
 			this.load = true;
 			getData(url, params).then(res => {
@@ -134,7 +184,31 @@ export default {
 	width: 100%;
 	overflow: hidden;	
 }
-
+.row-wrap {
+	padding: 16px 16px 0;
+}
+ .pic-wrapper{
+	width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    .pic-list{
+		font-size: 0;
+      .pic-item{
+			display: inline-block;
+			margin-right: 6px;
+			width: 64px;
+			height: 94px;
+			img {
+				width: 100%;
+				min-height: 100%;
+			}
+            &:last-child {
+            	margin: 0;
+            }
+                
+        }
+  	}
+ }
 .vote-wrap {
 	min-height: 100vh;
 	background: $color-background-d;

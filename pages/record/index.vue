@@ -9,6 +9,7 @@
 		<submit-btns :id="id" @postDataServerId="postDataServerId"></submit-btns>
 	</div>
 	<error-tip ref="errorTip" :error="error"></error-tip>
+	<alert ref="alert" :text="text" @confirm="alert"></alert>
 </div>
 
 <!-- </scroll> -->
@@ -16,6 +17,7 @@
 <script type="text/ecmascript-6">
 import Scroll from '~/components/scroll/scroll'
 import ErrorTip from '~/components/error-tip/error-tip'
+import Alert from '~/components/alert/alert'
 import SubmitBtns  from '~/components/submit-dome-btns/submit-dome-btns'
 import { wxShare } from '~/assets/js/mixin'
 import { getData, postData } from '~/api/api'
@@ -45,14 +47,22 @@ export default {
 		this._getSingerDetails(id)
 	},
 	methods: {
+		alert() {
+			this.$router.push('/dome')
+		},
 		postDataServerId(audioId) {
 			let id = this.$route.query.id;
+			
 			getData(`/api/audition_story/${id}/player`, {
 		  		mediaId: audioId
 		  	}).then(res => {
-		  		console.log("成功")
+		  		this.text = "上传成功"
+				this.$refs.alert.show()
 		  	}).catch(err => {
-		  		window.alert('失败 '+err.data.message)
+		  		if(err.data) {
+					this.error = `${err.data.status}${err.data.message}`
+					this.$refs.errorTip.show()
+				}
 		  	})
 		},
 		_getSingerDetails(id) {
@@ -71,7 +81,8 @@ export default {
 	components: {
 		Scroll,
 		ErrorTip,
-		SubmitBtns
+		SubmitBtns,
+		Alert
 	}
 }
 </script>

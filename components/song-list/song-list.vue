@@ -10,9 +10,9 @@
 		  	</div>
 		  	<div class="text">
 		  		<h3>{{item.story.title}}</h3>
-		  		<p>20人录制</p>
+		  		<!-- <p>20人录制</p> -->
 		  	</div>
-		  	<div class="icon">
+		  	<div class="icon" :class="{'active' : currentIndexs.includes(index)}"  @click.stop="decideByBallot(item, index)">
 		  		<p>
 		  			<i class="iconfont icon-zan"></i>
 		  		</p>
@@ -35,9 +35,11 @@ import { audioHandler } from "~/assets/js/mixin"
 export default {
 	mixins: [ audioHandler ],
 	props: {
-		currentIndex: {
-			type: Number,
-			default: 0
+		currentIndexs: {
+			type: Array,
+			default() {
+				return []
+			}
 		},
 		list: {
 			type: Array,
@@ -53,6 +55,9 @@ export default {
 	methods: {
 		selectItem(index) {
 			this.$emit('selectItem', index)
+		},
+		decideByBallot(item, index) {
+			this.$emit('decideByBallot', item, index)
 		}
 	},
 	components: {

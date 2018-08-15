@@ -41,13 +41,7 @@ export default {
 		}
 	},
 	created() {
-		this.$nextTick(() => {
-			let list = this.$route.query.list
-			//console.log(list.length)
-			if(list && list != 'undefined') {
-				this.list = JSON.parse(list)
-			}
-		})
+		this._getCurrentInfo()
 	},
 	beforeMount() {
 		this._getShareConfig('', true)
@@ -78,6 +72,37 @@ export default {
 		},
 		goSelectBook() {
 			this.$router.push('/selectbook')
+		},
+		_getCurrentInfo() {
+			getData('/api/contestant/current').then(res => {
+				this._hasStatus(res)
+			}).catch(err => {
+				if(err && err.data) {
+					this.error = `${err.data.status}${err.data.message}`
+				}
+				else {
+					this.error = '接口调试中'
+				}
+				this.$refs.errorTip.show()
+			})
+		},
+
+		_hasStatus(res) {
+			if(res.status == 406) {
+				this.error = res.message;
+				this.$refs.errorTip.show()
+			}
+			else if(res.status == 302) {
+				window.location = res.error;
+			}
+			else if(res.status == 401) {
+				this.$router.push('/bind')
+			}
+			else if(res.status == 200) {
+				if(res.data.entryWorks) {
+					this.list = res.data.entryWorks
+				}
+			}
 		},
 		_deleteOne() {
 			///api/contestant/current/entrywork/{id}?workId=2

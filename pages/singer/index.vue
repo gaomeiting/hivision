@@ -23,7 +23,7 @@
 		<div class="music-wrap">
 			<h2>参赛作品</h2>
 			<div class="vote-list">
-				<vote-list :list="list"></vote-list>
+				<vote-list :list="list" @decideByBallot="decideByBallot" :currentIndexs="voteCurrentIndexs"></vote-list>
 			</div>
 		</div>
 		
@@ -37,11 +37,11 @@
 </template>
 <script type="text/ecmascript-6">
 import Scroll from '~/components/scroll/scroll'
-import ErrorTip from '~/components/error-tip/error-tip';
+import ErrorTip from '~/components/error-tip/error-tip'
 import VoteList from '~/components/song-list/song-list'
 import ShareTip from '~/components/share-tip/share-tip'
 import { wxShare } from '~/assets/js/mixin'
-import { getData } from '~/api/api'
+import { getData, putData } from '~/api/api'
 export default {
 	mixins: [wxShare],
 	data() {
@@ -56,11 +56,10 @@ export default {
 			percent: 0,
 			songReady: false,
 			error: '',
-			singer: {
-				
-			},
+			singer: {},
 			hasWxVer: false,
-			list: []
+			list: [],
+			voteCurrentIndexs: []
 		}
 	},
 	head() {
@@ -81,6 +80,25 @@ export default {
 	
 	
 	methods: {
+		decideByBallot(item, index) {
+			putData(`/api/contestant/updatelikenum/${item.id}/`).then(res => {
+				if(res.status === 200) {
+					if(this.voteCurrentIndexs.indexOf(index) === -1) {
+						this.voteCurrentIndexs.push(index);
+					}
+					this.list[index].likeNum = res.data
+					//console.log(this.list[index].likeNum)
+				}
+			}).catch(err => {
+				if(err && err.data) {
+					this.error = `${err.data.status}${err.data.message}`
+				}
+				else {
+					this.error = '接口调试中'
+				}
+				this.$refs.errorTip.show()
+			})
+		},
 		showShareTip() {
 			this.$refs.shareTip.show()
 		},

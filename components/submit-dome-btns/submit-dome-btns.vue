@@ -9,10 +9,11 @@
 			
 		</p>
 		<p class="item" v-else>
-			<a v-if="flag"  class="btn btn-all" href="javascript:;" @click.stop.prevent="startRecord"><i class="iconfont icon-chexiao"></i>重录</a>
-			<a v-else class="btn btn-all btn-pause active" href="javascript:;" @click.stop.prevent="stopRecord"><i class="iconfont icon-weibiaoti519"></i></a>
+			<!-- <a v-if="flag"  class="btn btn-all" href="javascript:;" @click.stop.prevent="startRecord"><i class="iconfont icon-chexiao"></i>重录</a> -->
+			<a v-if="!flag" class="btn btn-all btn-pause active" href="javascript:;" @click.stop.prevent="stopRecord"><i class="iconfont icon-weibiaoti519"></i></a>
 		</p>
 		<p class="item" v-if="!time">
+			<a v-if="voice && flag"  class="btn btn-blue" style="margin-right: 12px;" href="javascript:;" @click.stop.prevent="startRecord"><i class="iconfont icon-chexiao"></i>重录</a>
 			<a href="javascript:;" v-if="voice && voice.localId" class="btn btn-blue" @click.stop.prevent="uploadVoice" style="margin-right: 12px;"> <i class="iconfont icon-shangchuan"></i> 提交</a>
 			<a href="javascript:;" v-if="voice && voice.localId" class="btn btn-blue" @click.stop.prevent="switchVoice"> <i class="iconfont" :class=" voicePlay ? 'icon-pause' : 'icon-bofang'"></i>试听</a>
 		</p>
@@ -38,7 +39,15 @@ import Confirm from '~/components/confirm/confirm'
 				voicePlay: true
 			}
 		},
-		
+		mounted() {
+			this.$nextTick(() => {
+				let _this = this;
+				window.wx.ready(function() {
+					_this.voicePlayEnd()
+				})
+			})
+			//this.voicePlayEnd()
+		},
 		methods: {
 			confirm() {
 				if(this.type === 0) {
@@ -98,7 +107,7 @@ import Confirm from '~/components/confirm/confirm'
 		      localId: _this.voice.localId
 		    });
 		    this.voicePlay = false;
-		    this.voicePlayEnd()
+		    
 		  },
 		  pauseVoice() {
 		  	let _this = this
@@ -108,6 +117,7 @@ import Confirm from '~/components/confirm/confirm'
 			this.voicePlay = true;
 		  },
 		  voicePlayEnd() {
+		  	console.log('this.voicePlayEnd()')
 		  	let _this = this
 		  	window.wx.onVoicePlayEnd({
 				success: function (res) {
