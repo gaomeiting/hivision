@@ -3,6 +3,12 @@
 <div class="vote-wrap" ref="vote">
 	<h2 class="title">请录制下面的演播内容</h2>
 	<p class="text">
+		注意：<br>
+		1. 录制过程中请勿插播广告；<br>
+		2. 请勿播违反国家法律法规的相关内容；<br>
+		3. 录制时长：60S左右。
+	</p>
+	<p class="text">
 		{{story.content}}
 	</p>
 	<div class="btn-wrap">

@@ -24,7 +24,7 @@
 		<no-result title="空空如也~~" v-if="list.length === 0"></no-result>
 		<p v-if="list.length>0 && !more">我是有底线的</p>
 	</div>
-	<audio :src="list[currentSongIndex] && list[currentSongIndex].voiceUrl" ref="audio" @timeupdate="updateTime" @play="ready"></audio>
+	<audio :src="list[currentSongIndex] && list[currentSongIndex].voiceUrl" ref="audio" @timeupdate="updateTime" @play="ready" @ended="end"></audio>
 </div>
   
 </template>
@@ -126,6 +126,7 @@ export default {
 		}
 		.icon {
 			text-align: center;
+			padding-left: 10px;
 			&.active {
 				color: $color-theme;
 			}

@@ -1,6 +1,7 @@
 <template>
 <scroll class="page" ref="scroll" :data="list">
 <div class="vote-wrap" ref="vote">
+	<div class="title">我的故事</div>
 	<div class="vote-list">
 		<book-list :list="list" @deleteOne="deleteOne" @record="record"></book-list>
 		<div class="result-wrapper" @click.stop="goSelectBook">
@@ -8,7 +9,6 @@
 			<p class="btn" v-else-if="list.length == 0">选择书目录制</p>
 		</div>
 	</div>
-
 </div>
 <error-tip ref="errorTip" :error="error"></error-tip>
 <confirm ref="confirm" :text="text" @confirm="confirm"></confirm>
@@ -53,18 +53,19 @@ export default {
 				this._deleteOne()
 			}
 			else if(this.type === 1) {
+				console.log(this.id, "story.id, confirm")
 				this.$router.push(`/record/?id=${this.id}`)
 			}
 		},
 		record(item) {
-			this.id = item.id;
-
+			this.id = item.story.id;
 			this.text = '重新录制会覆盖之前的作品内容,确定要重新录制内容吗？'
 			this.type = 1;
 			this.$refs.confirm.show()
 		},
 		deleteOne(item, index) {
-			this.id = item.id;
+			console.log(item.story.id, "story.id")
+			this.id = item.story.id;
 			this.currentIndex = index;
 			this.text = '确定删除该作品吗?'
 			this.type = 0;
@@ -105,8 +106,7 @@ export default {
 			}
 		},
 		_deleteOne() {
-			///api/contestant/current/entrywork/{id}?workId=2
-			deleteData(`api/contestant/current/entrywork/${this.id}?workId=${this.id}`).then(res => {
+			deleteData(`api/contestant/current/entrywork/${this.id}`).then(res => {
 				this.list.splice(this.currentIndex, 1)
 			}).catch(err => {
 				this.error = `${err.data.status}${err.data.error}${err.data.message}`
@@ -132,6 +132,13 @@ export default {
 .vote-wrap {
 	min-height: 100vh;
 	
+}
+.title {
+	line-height: 2.5;
+	text-align: center;
+	font-size: $font-size-large;
+	color: $color-text-d;
+	border-bottom: 8px solid $color-background;
 }
 .result-wrapper {
 	padding: 16px;

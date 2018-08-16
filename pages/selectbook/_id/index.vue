@@ -88,22 +88,29 @@ export default {
 	},
 	computed: {
 		sort() {
-			return this.switchIndex ? 'id' : 'likeNum'
+			return this.switchIndex ? 'id,desc' : 'likeNum,desc'
 		}
 	},
 	methods: {
 		decideByBallot(item, index) {
+			//点赞排序
+			
 			putData(`/api/contestant/updatelikenum/${item.id}/`).then(res => {
 				if(res.status === 200) {
 					if(this.voteCurrentIndexs.indexOf(index) === -1) {
 						this.voteCurrentIndexs.push(index);
 					}
 					this.list[index].likeNum = res.data
-					//console.log(this.list[index].likeNum)
+					this.$nextTick(() => {
+						let list = this.list;
+						this.list = list.sort((a, b) => {
+							return b.likeNum - a.likeNum
+						})
+					})
 				}
 			}).catch(err => {
 				if(err && err.data) {
-					this.error = `${err.data.status}${err.data.message}`
+					this.error = `${err.data.message}`
 				}
 				else {
 					this.error = '接口调试中'

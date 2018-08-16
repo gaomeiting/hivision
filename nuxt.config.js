@@ -71,7 +71,7 @@ module.exports = {
   },
   proxy: {
     "/api": {
-      target: "http://192.168.100.210:8085/api",
+      target: "http://mglx.hvkid.com/api",
       pathRewrite: {
         "^/api": ""
       }

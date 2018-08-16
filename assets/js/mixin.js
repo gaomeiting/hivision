@@ -259,6 +259,10 @@ export const audioHandler = {
 			this.currentTime = "- " + this.format(diff);
 			//console.log(this.percent, e.target.currentTime, totalTime, "updateTime")
 		},
+		end() {
+			//console.log("end")
+			this.flag = false;
+		},
 		format(n) {
 			let m = 0;
 			let s = 0;
