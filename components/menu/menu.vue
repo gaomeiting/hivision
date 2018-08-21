@@ -60,7 +60,10 @@ methods: {
 			padding: 0 12px;
 			background: $color-background;
 			line-height: 44px;
-			@include border-1px($color-text-ll);
+			@include border-1px($color-text);
+			&:last-child {
+				@include border-1px($color-background);
+			}
 		}
 	}
 	

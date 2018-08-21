@@ -21,7 +21,7 @@
 	</div>
 	<div v-else class="result-wrap">
 		<no-result title="空空如也~~" v-if="list.length === 0"></no-result>
-		<p v-if="list.length>0 && !more">我是有底线的</p>
+		<p v-if="list.length>10 && !more">我是有底线的</p>
 	</div>
 </div>
   
@@ -122,7 +122,11 @@ export default {
 			h3 {
 				line-height: 1.5;
 				strong {
-					color: $color-theme;
+					color: $color-background-d;
+					background: $color-theme;
+					background: linear-gradient(left, $color-theme-d, $color-theme);
+					padding: 1px 12px;
+					border-radius: 20px;
 				}
 			}
 			p {

@@ -16,6 +16,14 @@
 				<p class="item">
 					<input type="text" v-model="form.title" placeholder="对外显示使用,个人填写昵称,团队填写团队名称">
 				</p>
+				<p class="item">个人/团队简介</p>
+				<p class="item">
+					<input type="text" v-model="form.info" placeholder="例如:专业配音主播,第三届金嗓子大赛获得者">
+				</p>
+				<p class="item">参赛宣言</p>
+				<p class="item">
+					<input maxlength="16" type="text" v-model="form.declaration" placeholder="请输入自己的参赛宣言(16字以内)">
+				</p>
 				<p class="item">真实姓名</p>
 				<p class="item">
 					<input type="text" v-model="form.name" placeholder="真实姓名,团队填写负责人,后续获奖联系使用">
@@ -32,14 +40,7 @@
 				<p class="item">
 					<input type="text" v-model="form.email" placeholder="请输入您常用邮箱,方便我们后续与你联系">
 				</p>
-				<p class="item">个人/团队简介</p>
-				<p class="item">
-					<input type="text" v-model="form.info" placeholder="例如:专业配音主播,第三届金嗓子大赛获得者">
-				</p>
-				<p class="item">参赛宣言</p>
-				<p class="item">
-					<input maxlength="16" type="text" v-model="form.declaration" placeholder="请输入自己的参赛宣言(16字以内)">
-				</p>
+				
 				<p class="item">
 					<a class="btn btn-all" href="javascript:;" @click="submitHandler">确认报名</a>
 				</p>
@@ -188,7 +189,7 @@ import { share, loadBtn, wxShare } from '~/assets/js/mixin'
 					}).catch(err => {
 						
 						if(err.data.status == 409) {
-							this.error = `${err.data.status}${err.data.message}`
+							this.error = `${err.data.message}`
 							this.$refs.topTip.show()
 						}
 						else if(err.data.details) {

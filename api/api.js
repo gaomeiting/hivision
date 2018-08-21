@@ -10,6 +10,16 @@ export function getData(url, params, showLoading = true) {
 		return Promise.reject(err)
 	})
 }
+export function getDataHide(url, params, showLoading = false) {
+	return axios.get(url, {
+		params,
+		showLoading
+	}).then((res) => {
+		return Promise.resolve(res.data)
+	}).catch(err => {
+		return Promise.reject(err)
+	})
+}
 export function postData(url, params, config = {
 	showLoading: true
 }) {

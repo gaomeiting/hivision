@@ -19,11 +19,11 @@ import Scroll from '~/components/scroll/scroll'
 import BookList from '~/components/books-me/books-me'
 import ErrorTip from '~/components/error-tip/error-tip'
 import Confirm from '~/components/confirm/confirm'
-import { wxShare } from '~/assets/js/mixin'
+import { wxShare, commonWxConfig } from '~/assets/js/mixin'
 import { getData, deleteData } from '~/api/api'
 
 export default {
-	mixins: [wxShare],
+	mixins: [wxShare, commonWxConfig],
 	data() {
 		return {
 			error: '',
@@ -44,8 +44,7 @@ export default {
 		this._getCurrentInfo()
 	},
 	beforeMount() {
-		this._getShareConfig('', true)
-		
+		this._getCurrentInfoWx()
 	},
 	methods: {
 		confirm() {
@@ -53,7 +52,7 @@ export default {
 				this._deleteOne()
 			}
 			else if(this.type === 1) {
-				console.log(this.id, "story.id, confirm")
+				this._deleteOne()
 				this.$router.push(`/record/?id=${this.id}`)
 			}
 		},
@@ -64,7 +63,7 @@ export default {
 			this.$refs.confirm.show()
 		},
 		deleteOne(item, index) {
-			console.log(item.story.id, "story.id")
+			//console.log(item.story.id, "story.id")
 			this.id = item.story.id;
 			this.currentIndex = index;
 			this.text = '确定删除该作品吗?'
@@ -75,11 +74,11 @@ export default {
 			this.$router.push('/selectbook')
 		},
 		_getCurrentInfo() {
-			getData('/api/contestant/current').then(res => {
+			getData('/api/contestant/currentDetail').then(res => {
 				this._hasStatus(res)
 			}).catch(err => {
 				if(err && err.data) {
-					this.error = `${err.data.status}${err.data.message}`
+					this.error = `${err.data.message}`
 				}
 				else {
 					this.error = '接口调试中'
@@ -100,16 +99,14 @@ export default {
 				this.$router.push('/bind')
 			}
 			else if(res.status == 200) {
-				if(res.data.entryWorks) {
-					this.list = res.data.entryWorks
-				}
+				this.list = res.data
 			}
 		},
 		_deleteOne() {
-			deleteData(`api/contestant/current/entrywork/${this.id}`).then(res => {
+			deleteData(`/api/contestant/current/entrywork/${this.id}`).then(res => {
 				this.list.splice(this.currentIndex, 1)
 			}).catch(err => {
-				this.error = `${err.data.status}${err.data.error}${err.data.message}`
+				this.error = `${err.data.message}`
 				this.$refs.errorTip.show()
 			})
 		}

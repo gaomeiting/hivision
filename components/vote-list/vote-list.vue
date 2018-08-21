@@ -26,7 +26,7 @@
 	</div>
 	<div v-else class="result-wrap">
 		<no-result title="空空如也~~" v-if="list.length === 0"></no-result>
-		<p v-if="list.length>0 && !more">我是有底线的</p>
+		<p v-if="list.length>10 && !more">我是有底线的</p>
 	</div>
 	<audio :src="list[currentSongIndex] && list[currentSongIndex].voiceUrl" ref="audio" @timeupdate="updateTime" @play="ready" @ended="end"></audio>
 </div>
@@ -40,6 +40,10 @@ import { audioHandler } from '~/assets/js/mixin'
 export default {
 	mixins: [ audioHandler ],
 	props: {
+		switch: {
+			type: Boolean,
+			default: false
+		},
 		currentIndexs: {
 			type: Array,
 			default() {
@@ -61,7 +65,11 @@ export default {
 			default: false
 		}
 	},
-	
+	watch: {
+		switch(newVal, oldVal) {
+			this.currentSongIndex = -1;
+		},
+	},
 	methods: {
 		selectItem(index) {
 			this.$emit('selectItem', index)

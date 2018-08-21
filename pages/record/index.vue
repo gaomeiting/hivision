@@ -7,10 +7,10 @@
 		1. 录制过程中请勿插播广告；<br>
 		2. 请勿播违反国家法律法规的相关内容；<br>
 		3. 录制时长：60S左右。
-	</p>
-	<p class="text">
-		{{story.content}}
-	</p>
+	</p>  
+	<div class="text" v-html="story.content">
+		<!-- {{story.content}} -->
+	</div>
 	<div class="btn-wrap">
 		<submit-btns :id="id" @postDataServerId="postDataServerId"></submit-btns>
 	</div>
@@ -25,16 +25,16 @@ import Scroll from '~/components/scroll/scroll'
 import ErrorTip from '~/components/error-tip/error-tip'
 import Alert from '~/components/alert/alert'
 import SubmitBtns  from '~/components/submit-dome-btns/submit-dome-btns'
-import { wxShare } from '~/assets/js/mixin'
+import { wxShare, commonWxConfig } from '~/assets/js/mixin'
 import { getData, postData } from '~/api/api'
 export default {
-	mixins: [wxShare],
+	mixins: [wxShare, commonWxConfig],
 	data() {
 		return {
 			error: '',
 			switches: [{ name: '最佳人气作品' }, { name: '最新参赛作品' }],
 			isShow: false,
-			text: '二百字的二百字的二百字的二百字的二百字的二百字的二百字的二百字的二百字的二百字的二百字的二百字的二百字的二百字的二百字的二百字的二百字的二百字的二百字的二百字的二百字的二百字的二百字的二百字的二',
+			text: '',
 			story: {},
 			id: ''
 		}
@@ -44,10 +44,9 @@ export default {
 			title: '与声俱来·声咖大赛'
 		}
 	},
-	created() {
-	},
 	beforeMount() {
-		this._getShareConfig('', true)
+
+		this._getCurrentInfoWx()
 		let id = this.$route.query.id;
 		this.id = id;
 		this._getSingerDetails(id)
@@ -66,7 +65,7 @@ export default {
 				this.$refs.alert.show()
 		  	}).catch(err => {
 		  		if(err.data) {
-					this.error = `${err.data.status}${err.data.message}`
+					this.error = `${err.data.message}`
 					this.$refs.errorTip.show()
 				}
 		  	})
@@ -78,7 +77,7 @@ export default {
 				}
 			}).catch(err => {
 				if(err.data) {
-					this.error = `${err.data.status}${err.data.message}`
+					this.error = `${err.data.message}`
 					this.$refs.errorTip.show()
 				}
 			})

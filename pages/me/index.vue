@@ -2,9 +2,12 @@
 <scroll class="page" ref="scroll">
 	<div class="me-wrap" ref="me">
 		<div class="top" v-if="singer">
-			<div class="img" :style="'background-image: url('+singer.avatar+');'"> </div>
-			<h3>{{ singer.nickname }}</h3>
-			<p> {{ singer.slogan }} </p>
+			<div class="info">
+				<div class="img" :style="'background-image: url('+singer.avatar+');'"> </div>
+				<h3>{{ singer.nickname }}</h3>
+				<p> {{ singer.title }} </p>
+			</div>
+			
 			<ul>
 				<li>
 					<p>{{ singer.id }}</p>
@@ -22,7 +25,7 @@
 		</div>
 		<div class="handler-wrap">
 			<ul>
-				<li @click.stop="goDome(singer.entryWorks)">
+				<li @click.stop="goDome">
 					<i class="iconfont icon-guanli"></i>
 					<p>参赛作品管理</p>
 					<i class="iconfont icon-jiantouyou"></i>
@@ -48,10 +51,10 @@
 import Scroll from '~/components/scroll/scroll'
 import ProgressBar from '~/components/progress-bar/progress-bar';
 import ErrorTip from '~/components/error-tip/error-tip';
-import { wxShare } from '~/assets/js/mixin'
+import { wxShare, commonWxConfig } from '~/assets/js/mixin'
 import { getData } from '~/api/api'
 export default {
-	mixins: [wxShare],
+	mixins: [wxShare, commonWxConfig],
 	data() {
 		return {
 			currentSong: {
@@ -76,8 +79,8 @@ export default {
 	created() {
 		this._getCurrentInfo()
 	},
-	beforeMount() {
-		this._getShareConfig('', true)
+	mounted() {
+		
 	},
 	
 	computed: {
@@ -90,9 +93,8 @@ export default {
 	},
 	
 	methods: {
-		goDome(list) {
-			let dome = encodeURIComponent(JSON.stringify(list))
-			this.$router.push(`/dome`)
+		goDome() {
+			this.$router.push('/dome')
 		},
 		goPutProfile() {
 			this.$router.push('/profile/30')
@@ -163,7 +165,7 @@ export default {
 				this._hasStatus(res)
 			}).catch(err => {
 				if(err && err.data) {
-					this.error = `${err.data.status}${err.data.message}`
+					this.error = `${err.data.message}`
 				}
 				else {
 					this.error = '接口调试中'
@@ -173,10 +175,7 @@ export default {
 		},
 		_normalizeData(res) {
 			this.singer = res.data
-			if(res.data.entryWork) {
-				this.currentSong.duration = res.data.entryWork.duration / 1000;
-				this.currentSong.url = res.data.entryWork.voiceUrl;
-			}
+			this._getCurrentInfoWx(res.data.id, res.data.nickname)
 		},
 		_hasStatus(res) {
 			if(res.status == 406) {
@@ -272,36 +271,46 @@ export default {
 	background: $color-background-d;
 	
 	.top {
-		padding: 30px 16px 16px;
-		@include border-type-1px($color-text-ll, dashed)
-		> .img {
-			width: 78px;
-			height: 78px;
-			overflow: hidden;
-			border-radius: 50%;
+		//@include border-type-1px($color-text-ll, dashed)
+		border-bottom: 8px solid $color-background;
+		> .info {
+			padding: 16px;
+			background-image: url('~/assets/images/me_bg.png');
 			background-size: cover;
-			background-position: center;
+			background-position: center center;
 			background-repeat: no-repeat;
-			margin: 0 auto;
-		}
-		> h3, > p {
-			text-align: center;
-			line-height: 1.5;
-		}
-		> h3 {
-			color: $color-text-d;
-			font-size: $font-size-large;
-			line-height: 2;
-			padding-top: 12px;
+			color: $color-background-d;
+			> .img {
+				width: 78px;
+				height: 78px;
+				overflow: hidden;
+				border-radius: 50%;
+				background-size: cover;
+				background-position: center;
+				background-repeat: no-repeat;
+				margin: 0 auto;
+			}
+			> h3, > p {
+				text-align: center;
+				line-height: 1.5;
+			}
+			> h3 {
+				font-size: $font-size-large;
+				line-height: 2;
+				padding-top: 12px;
+			}
 		}
 		> ul {
 			display: flex;
-			padding-top: 16px;
+			padding: 16px;
 			li {
 				flex: 1;
 				p {
 					text-align: center;
 					line-height: 1.5;
+					&:first-child {
+						color: $color-theme;
+					}
 				}
 			}
 		}

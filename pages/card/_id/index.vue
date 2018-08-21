@@ -4,7 +4,7 @@
 			<div class="contain">
 				<div class="main">
 					<figure>
-						<img  src="~/assets/images/code.jpg" alt="">
+						<img  src="/code.jpg" alt="">
 					</figure>
 					<h2>用爱发声、用心陪伴</h2>
 					<p v-if="user.nickname">我是{{user.nickname}}</p>
@@ -19,7 +19,7 @@
 		<div class="target-wrap">
 			<div class="target" ref="target" v-if="jpg">
 				<img :src="jpg">
-				<p>长按保存图片</p>
+				<p>长按保存到相册即可分享到朋友圈</p>
 			</div>
 		</div>
 		<error ref="error" :error="error" @hide="hideError"></error>
@@ -48,7 +48,7 @@ import { getData } from '~/api/api'
 				
 			}).catch(err => {
 				if(err && err.data) {
-					this.error = `${err.data.status}${err.data.error}`;
+					this.error = `${err.data.error}`;
 				}
 				else {
 					this.error = '程序调试中请稍等'
@@ -115,7 +115,7 @@ import { getData } from '~/api/api'
 	z-index: 899;
 	top: 0;
 	left: 0;
-	background: $color-background;
+	background: $color-theme;
 	.target {
 		width: 75%;
 		position: absolute;
@@ -129,6 +129,7 @@ import { getData } from '~/api/api'
 		> p {
 			text-align: center;
 			line-height: 1.5;
+			color: $color-background-d;
 		}
 	}
 }
@@ -138,6 +139,7 @@ import { getData } from '~/api/api'
 		width: 100%;
 		min-height: 100vh;
 		padding-bottom: 44px;
+
 		&:first-child {
 			background-image: url('/share_bg.jpg');
 			background-size: cover;

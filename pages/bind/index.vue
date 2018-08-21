@@ -107,7 +107,7 @@ import { postData } from '~/api/api'
 	        			this.$router.push('/profile')
 	        		}
             		Message({
-			          message: `${err.status}${err.data.error}${err.data.message}`,
+			          message: `${err.data.message}`,
 			          type: 'error'
 			        });
 

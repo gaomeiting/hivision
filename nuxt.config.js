@@ -71,13 +71,13 @@ module.exports = {
   },
   proxy: {
     "/api": {
-      target: "http://mglx.hvkid.com/api",
+      target: "http://192.168.100.210:8085/api",
       pathRewrite: {
         "^/api": ""
       }
     }
   },
-  //http://mgt.hvkid.cn:9000/api
+  //http://mgt.hvkid.cn/api
   //http://mglx.hvkid.com/api
   //http://192.168.100.210:8085
   //http://192.168.100.59:8080

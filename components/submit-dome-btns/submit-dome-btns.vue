@@ -2,7 +2,6 @@
 <transition name="fade" mode="out-in">
 	
 	<div class="form-content">
-		
 		<p class="item" v-if="voice === null">
 			<a v-if="flag"  class="btn btn-all" href="javascript:;" @click.stop.prevent="getUserAndStartRecord"><i class="iconfont icon-maikefeng"></i>开始录音</a>
 			<a v-else class="btn btn-all btn-pause active" href="javascript:;" @click.stop.prevent="stopRecord"></a>
@@ -40,12 +39,12 @@ import Confirm from '~/components/confirm/confirm'
 			}
 		},
 		mounted() {
-			this.$nextTick(() => {
+			/*this.$nextTick(() => {
 				let _this = this;
 				window.wx.ready(function() {
 					_this.voicePlayEnd()
 				})
-			})
+			})*/
 			//this.voicePlayEnd()
 		},
 		methods: {
@@ -64,7 +63,6 @@ import Confirm from '~/components/confirm/confirm'
 				}
 			},
 			voiceRecordEnd() {
-				console.log("VoiceRecordEnd")
 				let _this = this;
 				window.wx.onVoiceRecordEnd({
 				// 录音时间超过一分钟没有停止的时候会执行 complete 回调
@@ -170,10 +168,10 @@ import Confirm from '~/components/confirm/confirm'
 					this._hasStatus(res)
 				}).catch(err => {
 					if(err && err.data) {
-						this.error = `${err.data.status}${err.data.message}`
+						this.text = `${err.data.status}${err.data.message}`
 					}
 					else {
-						this.error = '接口调试中'
+						this.text = '接口调试中'
 					}
 					this.$refs.confirm.show()
 				})

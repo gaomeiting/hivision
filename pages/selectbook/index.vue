@@ -13,10 +13,10 @@
 import Scroll from '~/components/scroll/scroll'
 import BookList from '~/components/book-list/book-list'
 import ErrorTip from '~/components/error-tip/error-tip'
-import { wxShare } from '~/assets/js/mixin'
+import { wxShare, commonWxConfig } from '~/assets/js/mixin'
 import { getData } from '~/api/api'
 export default {
-	mixins: [wxShare],
+	mixins: [wxShare, commonWxConfig],
 	data() {
 		return {
 			error: '',
@@ -31,9 +31,10 @@ export default {
 	created() {
 	},
 	beforeMount() {
-		this._getShareConfig('', true)
+		this._getCurrentInfoWx()
 		let url = '/api/audition_story/';
 		this._getStoriesData(url);
+		
 	},
 	methods: {
 		goNext(item) {
@@ -48,7 +49,7 @@ export default {
 				}
 			}).catch(err => {
 				if(err.data) {
-					this.error = `${err.data.status}${err.data.message}`;
+					this.error = `${err.data.message}`;
 					this.$refs.errorTip.show();
 				}
 			})

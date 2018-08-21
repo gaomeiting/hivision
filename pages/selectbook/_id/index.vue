@@ -18,7 +18,7 @@
 		<switches :switches="switches" :currentIndex="switchIndex" @switchItem="switchItem"></switches>
 	</div>
 	<div class="vote-list">
-		<vote-list :more="more" :list="list" :load = "load" @goByName="goByName" @decideByBallot="decideByBallot" :currentIndexs="voteCurrentIndexs"></vote-list>
+		<vote-list :more="more" :list="list" :load = "load" :switch="switchFlag" @goByName="goByName" @decideByBallot="decideByBallot" :currentIndexs="voteCurrentIndexs"></vote-list>
 	</div>
 	
 
@@ -35,11 +35,11 @@ import Scroll from '~/components/scroll/scroll'
 import ErrorTip from '~/components/error-tip/error-tip'
 import Switches from '~/components/switches/switches'
 import VoteList from '~/components/vote-list/vote-list'
-import { wxShare } from '~/assets/js/mixin'
+import { wxShare, commonWxConfig } from '~/assets/js/mixin'
 import { getData } from '~/api/init'
 import { putData } from '~/api/api'
 export default {
-	mixins: [wxShare],
+	mixins: [wxShare, commonWxConfig],
 	data() {
 		return {
 			error: '',
@@ -56,7 +56,8 @@ export default {
 			url: '',
 			switchIndex: 0,
 			hasWx: false,
-			voteCurrentIndexs: []
+			voteCurrentIndexs: [],
+			switchFlag: false
 		}
 	},
 	head() {
@@ -71,17 +72,17 @@ export default {
 	},
 	
 	beforeMount() {
-		
-		this._getShareConfig('', true)
+		this._getCurrentInfoWx()
 		let id = this.$route.params.id;
 		this._getSingerDetails(id)
 		
 	},
 	watch: {
 		switchIndex(newVal, oldVal) {
-			console.log(newVal, oldVal)
+			//console.log(newVal, oldVal)
 			this.currentPage = 0;
 			this.more = true;
+			this.switchFlag = !this.switchFlag;
 			this.list = []
 			this._getStories(this.url, {page: this.currentPage, size: this.size, sort: this.sort})
 		}
@@ -154,7 +155,7 @@ export default {
 			}).catch(err => {
 				this.load = false;
 				if(err.data) {
-					this.error = `${err.data.status}${err.data.message}`
+					this.error = `${err.data.message}`
 					this.$refs.errorTip.show()
 				}
 			})
@@ -170,7 +171,7 @@ export default {
 				}
 			}).catch(err => {
 				if(err.data) {
-					this.error = `${err.data.status}${err.data.message}`
+					this.error = `${err.data.message}`
 					this.$refs.errorTip.show()
 				}
 			})

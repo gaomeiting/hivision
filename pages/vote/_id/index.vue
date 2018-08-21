@@ -164,7 +164,7 @@ export default {
 				this._hasStatus(res)
 			}).catch(err => {
 				if(err && err.data) {
-					this.error = `${err.data.status}${err.data.message}`
+					this.error = `${err.data.message}`
 				}
 				else {
 					this.error = '接口调试中'

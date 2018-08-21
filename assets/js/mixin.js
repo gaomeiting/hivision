@@ -1,5 +1,6 @@
 import {
-	getData
+	getData,
+	getDataHide
 } from '~/api/api'
 
 export const share = {
@@ -106,6 +107,10 @@ export const loadBtn = {
 };
 export const wxShare = {
 	methods: {
+		hasIos() {
+			let u = navigator.userAgent
+			return !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+		},
 		wxHide(response) {
 			let _this = this;
 			wx.config({
@@ -198,10 +203,35 @@ export const wxShare = {
 				return false
 			}
 		},
+		getUrl() {
+			return window.sessionStorage.getItem('location')
 
+		},
+		setUrl() {
+			let location = window.location.href;
+			if (!window.sessionStorage.getItem('location')) {
+				window.sessionStorage.setItem('location', location)
+			}
+
+		},
+		_findIndex(arr, val) {
+			return arr.findIndex((item) => {
+				return val == item
+			})
+		},
 		_getShareConfig(url, isShow, title = '', desc = '') {
+
 			if (!this.versions()) return;
-			getData('/api/wechat/sdkconfig.json').then(res => {
+			let arrHref = ['http://mglx.hvkid.com/me/', 'http://mglx.hvkid.com/']
+			if (this._findIndex(arrHref, window.location.href) != -1) {
+				this.setUrl();
+			}
+			let params = {}
+			let urlParams = this.getUrl();
+			params = this.hasIos() ? {
+				url: urlParams
+			} : {}
+			getDataHide('/api/wechat/sdkconfig.json', params).then(res => {
 				let config = res;
 				if (!isShow) {
 					this.wxS(config, url, title, desc)
@@ -217,6 +247,37 @@ export const wxShare = {
 				}
 			})
 		}
+	}
+};
+export const commonWxConfig = {
+	methods: {
+		_getCurrentInfoWx(id, nickname) {
+			if (!this.versions()) return;
+			if (id && nickname) {
+				let url = `http://mglx.hvkid.com/singer/?${id}`
+				let title = `我是${nickname}，我参加了“嗨未来”与声俱来·声咖大赛，快来支持我吧！`
+				this._getShareConfig(url, '', title)
+				return;
+			}
+			getDataHide(`/api/contestant/current`).then(res => {
+				if (res.status == 200) {
+					let id = res.data.id
+					let url = `http://mglx.hvkid.com/singer/?${id}`
+					let title = `我是${res.data.nickname}，我参加了“嗨未来”与声俱来·声咖大赛，快来支持我吧！`
+					this._getShareConfig(url, '', title)
+				} else {
+					let url = 'http://mglx.hvkid.com/'
+					this._getShareConfig(url)
+				}
+			}).catch(err => {
+				if (err && err.data) {
+					this.error = `${err.data.status}${err.data.message}`
+				} else {
+					this.error = '接口调试中'
+				}
+				this.$refs.errorTip.show()
+			})
+		},
 	}
 };
 export const audioHandler = {
@@ -252,7 +313,6 @@ export const audioHandler = {
 			this.songReady = true;
 		},
 		updateTime(e) {
-			//window.alert(e.target.currentTime)
 			let currentTime = e.target.currentTime | 0;
 			let totalTime = this.$refs.audio.duration | 0;
 			let diff = totalTime * 1 - currentTime * 1
