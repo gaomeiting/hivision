@@ -1,22 +1,37 @@
-# app-user
+# 小声咖第三方管理后台网站
 
-> 叮当配网站用户账户部分的前端站点，主要包含用户登录、注册、忘记密码等页面，为配音需求方和配音员双方公用.
-
-## Build Setup
-
-``` bash
-# install dependencies
-$ npm install # Or yarn install
-
-# serve with hot reload at localhost:3000
-$ npm run dev
-
-# build for production and launch server
-$ npm run build
-$ npm start
-
-# generate static project
-$ npm run generate
-```
-
-For detailed explanation on how things work, checkout the [Nuxt.js docs](https://github.com/nuxt/nuxt.js).
+### 项目描述
+* 首页
+	> * 公司简介
+	> * 活动流程
+* 小声咖
+	> * 搜索分页
+	> * 添加（表单）
+	> * 详情<br>
+		 修改基本信息
+		 上传多张图片，上传预览，大图预览，删除上传图片
+		 上传音频+表单处理，删除音频
+		 列表预览
+		 删除
+* 指导老师
+	> * 搜索分页
+	> * 添加（表单）
+	> * 详情<br>
+			修改基本信息
+			删除故事
+	> * 列表预览
+	> * 删除
+* 故事
+	> * 列表展示
+* 参与意向
+	> * 列表展示
+### 实现技术 vue+vue-router+vuex+axios+scss+elementUI
+### 技术要求
+##### 1.单页面项目用户的认证思路，使用jwt身份验证,结合vuex和本地存储,设置axios的header，router.beforeEach进行路由meta判断进行路由保护
+##### 2.头像上传+表单，当图片 file.size / 1024 / 1024 < 0.5时作为base64存储减少发送一次请求， 其他情况上传图片利用头像成功的id提交表单
+##### 3.多张多图片上传及预览，点击大图预览，删除
+##### 4.音频文件上传，限制大小
+##### 5.模糊搜索，手指抬起时自动搜索
+##### 6.vue 地区选择联动利用elementUI的自定义el-cascader
+##### 7.分页功能抽象mixin
+##### 8.多音频文件处理播放暂停时音乐没有声音问题（注意不是replay()的问题）30延时处理
