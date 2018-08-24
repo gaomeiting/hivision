@@ -1,21 +1,25 @@
 <template>
 	<scroll class="page" ref="scroll">
 		<div class="home">
-
+			
 			<div class="contain">
+				<div class="down-loaded-wrap" v-show="name">
+					<down-loaded></down-loaded>
+				</div>
+				<div class="con-wrap">
 				<div class="logos">
 					<ul>
 						<li>主办机构</li>
 						<li>
 							<div>
 								<figure>
-									<img src="~/assets/images/logo1.png">
+									<img src="../../assets/images/logo1.png">
 								</figure>
 								<p>中国版权协会</p>
 							</div>
 							<!-- <div>
 								<figure>
-									<img src="~/assets/images/logo2.png">
+									<img src="../../assets/images/logo2.png">
 								</figure>
 								<p>中国移动咪咕文化科技集团</p>
 							</div> -->
@@ -26,13 +30,13 @@
 						<li>
 							<div>
 								<figure>
-									<img src="~/assets/images/logo4.png">
+									<img src="../../assets/images/logo4.png">
 								</figure>
 								<p>咪咕数字传媒</p>
 							</div>
 							<div>
 								<figure>
-									<img src="~/assets/images/logo3.png">
+									<img src="../../assets/images/logo3.png">
 								</figure>
 								<p>叮当配</p>
 							</div>
@@ -42,6 +46,7 @@
 				<p v-if="!isWx" class="share-icon" @click.stop.prevent="toggleShare">
 					<i class="iconfont icon-fenxiang"></i>
 				</p>
+				</div>
 			</div>
 			
 			<div class="info" ref="info_0">
@@ -65,7 +70,7 @@
 					<strong>万</strong>元奖金/神秘礼包等你拿签约声咖 <br> 常年持续录制
 				</h2>
 				<figure>
-					<img src="~/assets/images/bg1.jpg">
+					<img src="../../assets/images/bg1.jpg">
 				</figure>
 				<p style="text-align: center">
 					与一线明星同台演播，同框宣传。<br>
@@ -180,34 +185,32 @@
 					官方微信公共号
 				</h4>
 				<figure>
-					<img src="~/assets/images/code.jpg" alt="">
+					<img src="../../assets/images/code.jpg" alt="">
 				</figure>
 			</div>
 
 		</div>
-		<div class="btns">
+		<!-- <div class="btns">
 			<a href="javascript:;" class="btn" @click.stop="regist">立即报名</a>
 			<i class="iconfont icon-gengduo" @click="settingMenu"></i>
-		</div>
+		</div> -->
 		<div class="menu-wrap">
 			<menu-list ref="menu" @selectMenu="selectMenu"></menu-list>
 		</div>
 		<div class="share-icons-wrap">
 			<share-icons ref="share" @cancle="cancle" @selectShare="selectSharehome"></share-icons>
 		</div>
-		<div class="down-loaded-wrap" v-show="name">
-			<down-loaded></down-loaded>
-		</div>
+		
 		<error-tip :error="error" @hide="errHide" ref="errorTip"></error-tip>
 	</scroll>
 </template>
 <script type="text/ecmascript-6">
-import Scroll from '~/components/scroll/scroll'
-import MenuList from '~/components/menu/menu'
-import ShareIcons from '~/components/share-icons/share-icons'
-import DownLoaded from '~/components/down-loaded/down-loaded'
-import ErrorTip from '~/components/error-tip/error-tip'
-import { share, loadBtn, wxShare, commonWxConfig } from '~/assets/js/mixin'
+import Scroll from 'base/scroll/scroll'
+import MenuList from 'base/menu/menu'
+import ShareIcons from 'base/share-icons/share-icons'
+import DownLoaded from 'base/down-loaded/down-loaded'
+import ErrorTip from 'base/error-tip/error-tip'
+import { share, loadBtn, wxShare, commonWxConfig } from 'assets/js/mixin'
 	export default {
 		mixins: [ share, loadBtn, wxShare, commonWxConfig ],
 		data() {
@@ -234,8 +237,6 @@ import { share, loadBtn, wxShare, commonWxConfig } from '~/assets/js/mixin'
 				else {
 					this.$refs.menu.hide()
 				}
-
-				console.log(this.flag)
 			},
 			selectMenu(index, flag) {
 				this.flag = !flag;
@@ -257,9 +258,7 @@ import { share, loadBtn, wxShare, commonWxConfig } from '~/assets/js/mixin'
 <style scoped lang="scss">
 @import "~assets/scss/variable";
 @import "~assets/scss/mixin";
-.share-icons-wrap {
 
-}
 .menu-wrap {
 	position: fixed;
 	bottom: 44px;
@@ -267,10 +266,8 @@ import { share, loadBtn, wxShare, commonWxConfig } from '~/assets/js/mixin'
 	z-index: 999;
 }
 .share-icon {
-	position: absolute;
-	top: 0;
-	right: 0;
-	padding: 16px;
+	text-align: right;
+	padding-right: 10px;
 	
 	
 }
@@ -281,14 +278,16 @@ import { share, loadBtn, wxShare, commonWxConfig } from '~/assets/js/mixin'
 	width: 100%;
 	height: 44px;
 	line-height: 44px;
-	background-color: $color-highlight-background;
+	/* background-color: $color-highlight-background; */
 	display: flex;
 	font-size: $font-size-large;
 	.btn {
 		color: $color-background-d;
 		flex: 1;
 		text-align: center;
-		background: linear-gradient(left, $color-theme-d, $color-theme);
+		//background: linear-gradient(left, $color-theme-d, $color-theme);
+		background-color: $color-theme;
+		background: linear-gradient(to right, $color-theme-d, $color-theme);
 	}
 	i {
 		padding: 0 16px;
@@ -417,9 +416,10 @@ import { share, loadBtn, wxShare, commonWxConfig } from '~/assets/js/mixin'
 	> .contain {
 		width: 100%;
 		min-height: 100vh;
-		padding-bottom: 44px;
-		&:first-child {
-			background-image: url('/bg.jpg');
+		.con-wrap {
+			width: 100%;
+			min-height: 100vh;
+			background-image: url('/st/bg.jpg');
 			background-size: cover;
 			background-position:  center top;
 			background-repeat: no-repeat;

@@ -36,7 +36,7 @@ methods: {
 	z-index: 900;
 	left: 0;
 	top: 0;
-	background-image: url('/static/share-tip.png');
+	background-image: url('/st/share-tip.png');
 	background-size: cover;
 	background-position: center center;
 	background-repeat: no-repeat;

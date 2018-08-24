@@ -4,7 +4,7 @@
 			<div class="contain">
 				<div class="main">
 					<figure>
-						<img  src="/static/code.jpg" alt="">
+						<img  src="./code.jpg" alt="">
 					</figure>
 					<h2>用爱发声、用心陪伴</h2>
 					<p v-if="user.nickname">我是{{user.nickname}}</p>
@@ -69,9 +69,7 @@ import { getData } from 'api/api'
 				});
 			},
 			convertCanvasToBase64(canvas){
-			     /*var image = new Image();
-			     image.src = canvas.toDataURL("image/jpg");
-				 return image;*/
+			    
 			     return canvas.toDataURL("image/jpg");
 			},
 			_normalizeData(res) {
@@ -141,7 +139,7 @@ import { getData } from 'api/api'
 		padding-bottom: 44px;
 
 		&:first-child {
-			background-image: url('/static/share_bg.jpg');
+			background-image: url('./share_bg.jpg');
 			background-size: cover;
 			background-position: center top;
 			background-repeat: no-repeat;
@@ -150,7 +148,7 @@ import { getData } from 'api/api'
 			.main {
 				width: 100%;
 				position: absolute;
-				top: 44%;
+				top: 48%;
 				figure {
 					width: 120px;
 					height: 120px;

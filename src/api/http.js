@@ -1,9 +1,6 @@
-/**
- * Created by superman on 17/2/16.
- * http配置
- */
-
 import axios from 'axios'
+import store from '../store'
+import router from '../router'
 import {
     Loading
 } from 'element-ui';
@@ -51,6 +48,9 @@ axios.interceptors.request.use(
         if (config.showLoading) {
             showFullScreenLoading()
         }
+        if (store.state.token) {
+            config.headers.Authorization = `${store.state.token}`;
+        }
         return config;
     },
     err => {
@@ -64,6 +64,7 @@ axios.interceptors.response.use(
         if (response.config.showLoading) {
             tryHideFullScreenLoading()
         }
+
         return response;
     },
     error => {

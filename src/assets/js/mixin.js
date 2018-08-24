@@ -2,7 +2,6 @@ import {
 	getData,
 	getDataHide
 } from 'api/api'
-import lx from '../../../static/ilingxi-1.0.0'
 import wx from 'weixin-js-sdk'
 export const share = {
 	data() {
@@ -15,7 +14,6 @@ export const share = {
 	beforeMount() {
 		this.$nextTick(() => {
 			this.isWx = this.versions()
-			console.log(this.isWx, "isWx")
 		})
 	},
 
@@ -98,11 +96,10 @@ export const loadBtn = {
 		}
 	},
 	created() {
-
-		if (this.$route.query.name) {
-			this.$nextTick(() => {
-				this.name = this.$route.query.name
-			})
+		let hasQuery = window.location.href.split("?")[1];
+		if (hasQuery) {
+			let lingxi = window.location.href.split("?")[1].indexOf('name=lingxi') != -1
+			this.name = lingxi
 		}
 	}
 };
@@ -221,7 +218,7 @@ export const wxShare = {
 			})
 		},
 		_getShareConfig(url, isShow, title = '', desc = '') {
-			/*let arrHref = ['http://mglx.hvkid.com/me/', 'http://mglx.hvkid.com/']
+			let arrHref = ['http://mglx.hvkid.com/#/me', 'http://mglx.hvkid.com/', 'http://mglx.hvkid.com/#/vote']
 			if (this._findIndex(arrHref, window.location.href) != -1) {
 				this.setUrl();
 			}
@@ -229,8 +226,8 @@ export const wxShare = {
 			let urlParams = this.getUrl();
 			params = this.hasIos() ? {
 				url: urlParams
-			} : {}*/
-			getDataHide('/api/wechat/sdkconfig.json').then(res => {
+			} : {}
+			getDataHide('/api/wechat/sdkconfig.json', params).then(res => {
 				let config = res;
 				if (!isShow) {
 					this.wxS(config, url, title, desc)
@@ -253,17 +250,25 @@ export const commonWxConfig = {
 		_getCurrentInfoWx(id, nickname) {
 			if (!this.versions()) return;
 			if (id && nickname) {
-				let url = `http://mglx.hvkid.com/singer/?${id}`
+				let url = `http://mglx.hvkid.com/#/singer/?id=${id}`
 				let title = `我是${nickname}，我参加了“嗨未来”与声俱来·声咖大赛，快来支持我吧！`
 				this._getShareConfig(url, '', title)
 				return;
 			}
-			getDataHide(`/api/contestant/current`).then(res => {
+			getDataHide(`/api/user/current`).then(res => {
 				if (res.status == 200) {
 					let id = res.data.id
-					let url = `http://mglx.hvkid.com/singer/?${id}`
-					let title = `我是${res.data.nickname}，我参加了“嗨未来”与声俱来·声咖大赛，快来支持我吧！`
-					this._getShareConfig(url, '', title)
+					if (id === 0) {
+						let url = `http://mglx.hvkid.com/`
+						let title = `我参加了“嗨未来”与声俱来·声咖大赛，快来支持我吧！`
+						this._getShareConfig(url, '', title)
+					} else {
+						let url = `http://mglx.hvkid.com/#/singer/?id=${id}`
+						let title = `我是${res.data.nickname}，我参加了“嗨未来”与声俱来·声咖大赛，快来支持我吧！`
+						this._getShareConfig(url, '', title)
+					}
+
+
 				} else {
 					let url = 'http://mglx.hvkid.com/'
 					this._getShareConfig(url)

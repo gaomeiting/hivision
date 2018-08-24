@@ -135,12 +135,6 @@ import Confirm from 'base/confirm/confirm'
 		  },
 		  getUserAndStartRecord() {
 		  	this._getCurrentInfo()
-		  	/*getData('/api/contestant/current').then(res => {
-		  		this.startRecord()
-			}).catch(err => {
-				this.text = `${err.status}${err.error}${err.message}`
-				this.$refs.confirm.show()
-			})*/
 		  },
 		  _startRecord () {
 		  	let _this = this
@@ -273,7 +267,7 @@ import Confirm from 'base/confirm/confirm'
 				text-align: center;
 			}
 			&.btn-pause {
-				background-image: url('/audio.gif');
+				background-image: url('/st/audio.gif');
 				background-size: 112px 32px;
 				background-position: center center;
 				background-repeat: no-repeat;

@@ -1,6 +1,9 @@
 <template>
 <scroll class="page" ref="scroll" :data="list" :pullUp="pullUp" @scrollEnd="hasMoreData" :beforeScroll="beforeScroll">
 <div class="vote-wrap" ref="vote">
+	<div class="down-loaded-wrap" v-show="name">
+		<down-loaded></down-loaded>
+	</div>
 	<div v-if="slider.length" class="slider-wrapper" ref="slider">
 		<slider>
 			<div v-for="(item, index) in slider" :key="index" @click.stop="goByNav(index)">
@@ -25,6 +28,7 @@
 	<div class="vote-list">
 		<vote-list :more="more" :list="list" :load = "load" @goByName="goByName"></vote-list>
 	</div>
+	
 	<error-tip ref="errorTip" :error="error"></error-tip>
 </div>
 </scroll>
@@ -35,18 +39,19 @@ import Slider from "base/slider/slider"
 import Scroll from 'base/scroll/scroll'
 import Switches from 'base/switches/switches'
 import VoteList from 'base/singer-list/singer-list'
+import DownLoaded from 'base/down-loaded/down-loaded'
 import ErrorTip from 'base/error-tip/error-tip'
-import { wxShare, commonWxConfig } from 'assets/js/mixin'
+import { wxShare, commonWxConfig, loadBtn } from 'assets/js/mixin'
 import { getData } from 'api/init'
 export default {
-	mixins: [wxShare, commonWxConfig],
+	mixins: [wxShare, commonWxConfig, loadBtn],
 	data() {
 		return {
 			
 			error: '',
 			slider: [ {
-				picUrl: '/static/home_bg.png',
-				url : '/profile'
+				picUrl: '/st/home_bg.png',
+				url : '/enroll'
 			}],
 			switches: [{ name: '最佳人气选手' }, { name: '最新参赛选手' }],
 			currentPage: 0,
@@ -148,8 +153,11 @@ export default {
 			})
 		},
 		_getSingerList(url, params) {
+			console.log('_getSingerList');
 			this.load = true;
+			console.log(url, params)
 			getData(url, params).then(res => {
+				console.log('getData成功')
 				this.load = false;
 				if(res.status===200) {
 					this.list= [...this.list, ...res.data]
@@ -174,7 +182,8 @@ export default {
 		ErrorTip,
 		Slider,
 		Switches,
-		VoteList
+		VoteList,
+		DownLoaded
 	}
 }
 </script>
@@ -201,6 +210,7 @@ export default {
 			margin-right: 6px;
 			width: 64px;
 			height: 94px;
+			overflow: hidden;
 			img {
 				width: 100%;
 				min-height: 100%;

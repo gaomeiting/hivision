@@ -6,8 +6,8 @@
 			<p v-if="!isWx">我们会在3个工作日内审核您的参赛资料，关注“嗨未来”微信公众号，及时获取比赛通知。长按识别二维码 关注“嗨未来”微信公共号</p>
 			<p v-else>长按识别下方二维码，添加“嗨未来”大赛官方客服微信号，如有问题，客服会第一时间为您解答。</p>
 			<figure>
-				<img v-if="!isWx" src="/code.jpg">
-				<img v-else src="/code_2.jpg">
+				<img v-if="!isWx" src="/st/code.jpg">
+				<img v-else src="/st/code_2.jpg">
 			</figure>
 			<a v-if="!isWx" href="javascript:;" class="btn" @click.stop="toggleShare">生成分享页面炫一下</a>
 			<a v-else href="javascript:;" class="btn" @click.stop="goNext">继续录制您的海选音频</a>
@@ -18,9 +18,9 @@
 	</scroll>
 </template>
 <script type="text/ecmascript-6">
-import Scroll from '~/components/scroll/scroll'
-import ShareIcons from '~/components/share-icons/share-icons'
-import { share, wxShare } from '~/assets/js/mixin'
+import Scroll from 'base/scroll/scroll'
+import ShareIcons from 'base/share-icons/share-icons'
+import { share, wxShare } from 'assets/js/mixin'
 	export default {
 		mixins: [share, wxShare],
 		data() {
@@ -28,11 +28,8 @@ import { share, wxShare } from '~/assets/js/mixin'
 				
 			}
 		},
-		beforeMount() {
-			let id = this.$route.query.id;
-			
-			//this._getShareConfig(`http://mgt.hvkid.com/share/?id=${id}`)
-			this._getShareConfig(`http://mglx.hvkid.com/share/?id=${id}`)
+		created() {
+			this._getCurrentInfoWx()
 		},
 
 		methods: {

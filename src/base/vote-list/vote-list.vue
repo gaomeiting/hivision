@@ -127,7 +127,7 @@ export default {
 				text-align: center;
 				color: $color-theme;
 				&.active {
-					background-image: url('/loading.gif');
+					background-image: url('/st/loading.gif');
 					background-size: 28px 28px;
 					 background-repeat: no-repeat;
 					  background-position: center center;

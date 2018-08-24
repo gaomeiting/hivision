@@ -112,7 +112,7 @@ methods: {
 						flex: 1;
 						i {
 							font-size: $font-size-large-xx;
-							color: $color-theme-d;
+							color: #2ba245;
 						}
 					}
 				}

@@ -6,7 +6,7 @@
 		  		
 		  	</div>
 		  	<div class="text">
-		  		<h3>{{item.nickname}} <strong v-if="item.popularNum">{{item.popularNum}} <small>人气</small></strong></h3>
+		  		<h3>{{item.nickname}} <strong v-if="item.popularNum">{{item.popularNum}} <small>票</small></strong></h3>
 		  		<p>{{item.slogan}}</p>
 		  	</div>
 		  	<div class="icon">
@@ -105,7 +105,7 @@ export default {
 				text-align: center;
 				color: $color-theme;
 				&.active {
-					background-image: url('/loading.gif');
+					background-image: url('/st/loading.gif');
 					background-size: 28px 28px;
 					 background-repeat: no-repeat;
 					  background-position: center center;

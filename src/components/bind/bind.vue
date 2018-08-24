@@ -11,7 +11,7 @@
 					<a class="btn" href="javascript:;" @click.stop="getCode">{{tip}}</a>
 				</p>
 				<p class="item">
-					<a class="btn btn-all" href="javascript:;" @click.stop.prevent="handleSubmit" >下一步</a>
+					<a class="btn btn-all" href="javascript:;" @click.stop.prevent="handleSubmit" >确定</a>
 				</p>
 			</div>
 			<part title="重要提示" paragraph="请输入您报名参赛时候的手机号码，确认身份后即可进入个人中心，维护管理您的个人资料。"></part>
@@ -19,10 +19,10 @@
 		</div>
 </template>
 <script type="text/ecmascript-6">
-import SubTitle from '~/components/htitle/htitle'
-import Part from '~/components/part/part'
+import SubTitle from 'base/htitle/htitle'
+import Part from 'base/part/part'
 import { Message } from 'element-ui'
-import { postData } from '~/api/api'
+import { postData } from 'api/api'
 	export default {
 		data() {
 			return {
@@ -104,7 +104,8 @@ import { postData } from '~/api/api'
 	        _handlerError(err) {
 	        	if(err && err.data) {
 	        		if(err.data.status == 404) {
-	        			this.$router.push('/profile')
+	        			this.$router.back()
+	        			//this.$router.push('/profile')
 	        		}
             		Message({
 			          message: `${err.data.message}`,

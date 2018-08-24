@@ -9,14 +9,14 @@ import VueLazyload from 'vue-lazyload'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import 'assets/scss/index.scss';
-
+/*import axios from 'axios';*/
 
 Vue.use(VueLazyload, {
 	loading: require('assets/images/default.png')
 })
-Vue.use(ElementUI);
+/*Vue.use(ElementUI);*/
 //设置打包请求地址
-/*axios.defaults.baseURL='http://bkdy.tunnel.qydev.com/bkdy'*/
+/*axios.defaults.baseURL = '/api'*/
 //Vue.prototype.axios = axios;
 Vue.config.productionTip = false
 

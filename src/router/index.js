@@ -1,6 +1,17 @@
 import Vue from 'vue'
 import store from '../store'
 import Router from 'vue-router'
+import {
+    wxFnVer,
+    lingxiFn
+} from 'assets/js/version'
+import {
+    login
+} from 'assets/js/lingxi'
+import {
+    getData
+} from 'api/api'
+import axios from 'axios'
 const Vote = resolve => {
     import ('components/vote/vote').then(module => {
         resolve(module)
@@ -8,6 +19,11 @@ const Vote = resolve => {
 };
 const Profile = resolve => {
     import ('components/profile/profile').then(module => {
+        resolve(module)
+    })
+};
+const Success = resolve => {
+    import ('components/success/success').then(module => {
         resolve(module)
     })
 };
@@ -51,6 +67,16 @@ const CardDetail = resolve => {
         resolve(module)
     })
 };
+const Bind = resolve => {
+    import ('components/bind/bind').then(module => {
+        resolve(module)
+    })
+};
+const Enroll = resolve => {
+    import ('components/enroll/enroll').then(module => {
+        resolve(module)
+    })
+};
 Vue.use(Router)
 
 
@@ -58,13 +84,19 @@ const routes = [
 
     {
         path: '/',
-        redirect: '/vote'
+        component: Vote
     }, {
         path: '/vote',
         component: Vote
+    }, , {
+        path: '/enroll',
+        component: Enroll
     }, {
         path: '/profile',
         component: Profile
+    }, {
+        path: '/success',
+        component: Success
     }, {
         path: '/singer',
         component: Singer
@@ -89,12 +121,51 @@ const routes = [
     }, {
         path: '/card',
         component: CardDetail,
+    }, {
+        path: '/bind',
+        component: Bind,
     }
 
 ]
 
+
 const router = new Router({
     routes: routes
+})
+// 页面刷新时，重新赋值token
+if (window.sessionStorage.getItem('token')) {
+    store.commit('SET_LOGIN', window.sessionStorage.getItem('token'))
+}
+router.afterEach((to, from) => {
+
+
+    if (store.state.token) {
+        return;
+    } else {
+        let lingxi = lingxiFn()
+        let wxV = wxFnVer()
+        if (!wxV && !lingxi) return;
+        getData('/api/user/token').then(res => {
+            if (res.status === 200) {
+                store.commit('SET_LOGIN', res.data)
+            } else if (res.status === 302) {
+                if (res.data && wxV) {
+                    //微信
+                    let statu = `#${to.fullPath}`
+                    let url = res.data.replace('{STATE}', encodeURIComponent(statu))
+                    window.location.href = url;
+                } else if (!res.data && lingxi) {
+                    //灵犀
+                    login();
+                }
+            }
+        }).catch(err => {
+            if (err.data) {
+                //let error = err.data.message || err.data.error;
+                window.alert(err)
+            }
+        })
+    }
 })
 
 

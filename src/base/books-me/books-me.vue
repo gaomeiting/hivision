@@ -131,7 +131,7 @@ export default {
 				color: $color-background;
 				margin-right: 6px;
 				&.active {
-					background-image: url('/loading.gif');
+					background-image: url('/st/loading.gif');
 					background-size: 20px 20px;
 					background-repeat: no-repeat;
 					background-position: center center;
