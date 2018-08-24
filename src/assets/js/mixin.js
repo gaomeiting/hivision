@@ -133,13 +133,6 @@ export const wxShare = {
 				wx.hideMenuItems({
 					menuList: ["menuItem:share:appMessage", "menuItem:share:timeline", "menuItem:share:qq", "menuItem:share:QZone", "menuItem:share:facebook"]
 				});
-				/*wx.onVoiceRecordEnd({
-					// 录音时间超过一分钟没有停止的时候会执行 complete 回调
-					complete: function(res) {
-						_this.localId = res.localId;
-						console.log("12345")
-					}
-				});*/
 			})
 			wx.error(function(res) {
 				alert(res.errMsg);

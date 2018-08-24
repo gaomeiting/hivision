@@ -412,7 +412,7 @@ import { share, loadBtn, wxShare, commonWxConfig } from 'assets/js/mixin'
 			width: 100%;
 			min-height: 100vh;
 			background-image: url('/st/bg.jpg');
-			background-size: cover;
+			background-size: 100% 100%;
 			background-position:  center top;
 			background-repeat: no-repeat;
 			position: relative;
