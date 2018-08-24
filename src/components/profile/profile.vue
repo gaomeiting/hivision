@@ -42,7 +42,7 @@
 				</p>
 				
 				<p class="item">
-					<a class="btn btn-all" href="javascript:;" @click="submitHandler">确认报名</a>
+					<a class="btn btn-all" href="javascript:;" @click="submitHandler">确认</a>
 				</p>
 			</div>
 			<top-tip ref="topTip">
@@ -63,16 +63,7 @@ import { share, loadBtn, wxShare } from 'assets/js/mixin'
 		mixins: [ wxShare ],
 		data() {
 			return {
-				/*form: {
-					title: '上海',
-					name: '高山',
-					identity: '130833199401230664',
-					tel: '18201491299',
-					email: '1959151877@qq.com',
-					info: '16岁（含）以上配音员以及声音条件良好的配',
-					declaration: '16岁（含）以上配音员以及声音条',
-					avatarId: ''
-				},*/
+				
 				form: {
 					title: '',
 					name: '',
@@ -90,13 +81,9 @@ import { share, loadBtn, wxShare } from 'assets/js/mixin'
 				
 			}
 		},
-		created() {
-			this._getShareConfig('', true)
-		},
 		
 		methods: {
 			handleAvatarSuccess(res, file) {
-				//console.log(res, file)
 				this.form.avatarId = file.response.url;
 			    this.imageUrl = URL.createObjectURL(file.raw);
 			    console.log(file, res)

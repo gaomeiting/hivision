@@ -65,13 +65,8 @@ export default {
 			stories: []
 		}
 	},
-	head() {
-		return {
-			title: '与声俱来·声咖大赛'
-		}
-	},
+	
 	created() {
-		this._getCurrentInfoWx()
 		this._getSingerList('/api/contestant', {page: this.currentPage, size: this.size, sort: this.sort})
 		this._getStoriesData();
 	},

@@ -5,10 +5,10 @@
 			<div class="info">
 				<div class="img" :style="'background-image: url('+singer.avatar+');'"> </div>
 				<h3>{{ singer.nickname }}</h3>
-				<p> {{ singer.title }} </p>
+				<p v-if="singer.id"> {{ singer.title }} </p>
 			</div>
 			
-			<ul>
+			<ul v-if="singer.id">
 				<li>
 					<p>{{ singer.id }}</p>
 					<p>参赛编号</p>
@@ -23,7 +23,7 @@
 				</li>
 			</ul>
 		</div>
-		<div class="handler-wrap">
+		<div class="handler-wrap" v-if="singer.id">
 			<ul>
 				<li @click.stop="goDome">
 					<i class="iconfont icon-guanli"></i>
@@ -79,10 +79,6 @@ export default {
 	created() {
 		this._getCurrentInfo()
 	},
-	mounted() {
-		
-	},
-	
 	computed: {
 		disableCls() {
 			return this.songReady ? '' : 'disable'
@@ -111,14 +107,7 @@ export default {
 				return;
 			}
 			this.$refs.audio.currentTime = percent*this.currentSong.duration
-			/*if(!flag) {
-				this.playing = flag
-			}
-			else{
-				if(this.playing) {
-					this.togglePlaying()
-				}
-			}*/
+			
 		},
 		ready() {
 			this.songReady= true;
@@ -161,7 +150,7 @@ export default {
 			return `${m}:${padS}`
 		},
 		_getCurrentInfo() {
-			getData('/api/contestant/current').then(res => {
+			getData('/api/user/current').then(res => {
 				this._hasStatus(res)
 			}).catch(err => {
 				if(err && err.data) {

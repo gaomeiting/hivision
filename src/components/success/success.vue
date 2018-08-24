@@ -28,10 +28,7 @@ import { share, wxShare } from 'assets/js/mixin'
 				
 			}
 		},
-		created() {
-			this._getCurrentInfoWx()
-		},
-
+		
 		methods: {
 			goNext() {
 				this.$router.push('/selectbook')

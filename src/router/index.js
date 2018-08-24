@@ -8,6 +8,7 @@ import {
 import {
     login
 } from 'assets/js/lingxi'
+
 import {
     getData
 } from 'api/api'
@@ -137,8 +138,6 @@ if (window.sessionStorage.getItem('token')) {
     store.commit('SET_LOGIN', window.sessionStorage.getItem('token'))
 }
 router.afterEach((to, from) => {
-
-
     if (store.state.token) {
         return;
     } else {

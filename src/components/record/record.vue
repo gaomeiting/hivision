@@ -40,7 +40,6 @@ export default {
 		}
 	},
 	created() {
-		this._getCurrentInfoWx()
 		let id = this.$route.query.id;
 		this.id = id;
 		this._getSingerDetails(id);

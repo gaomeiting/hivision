@@ -85,12 +85,8 @@ export default {
 		}
 	},
 	created() {
-		/*this._getCurrentInfo()*/
+		this._getCurrentInfo()
 	},
-	beforeMount() {
-		this._getShareConfig('', true)
-	},
-	
 	computed: {
 		disableCls() {
 			return this.songReady ? '' : 'disable'

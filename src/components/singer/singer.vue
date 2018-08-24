@@ -43,7 +43,7 @@ import Scroll from 'base/scroll/scroll'
 import ErrorTip from 'base/error-tip/error-tip'
 import VoteList from 'base/song-list/song-list'
 import ShareTip from 'base/share-tip/share-tip'
-import { wxShare } from 'assets/js/mixin'
+import { wxShare, commonWxConfig } from 'assets/js/mixin'
 import { getData, putData } from 'api/api'
 export default {
 	mixins: [wxShare],
@@ -71,15 +71,11 @@ export default {
 		}
 	},
 	created() {
-		console.log(124)
 		let url = this.$route.fullPath
 		let id = this.$route.query.id
 		this.hasWxVer=this.versions();
 		this._getInfo(id)
 	},
-	
-	
-	
 	methods: {
 		decideByBallot(item, index) {
 			putData(`/api/contestant/updatelikenum/${item.id}/`).then(res => {
@@ -111,6 +107,7 @@ export default {
 					let url = this.$route.fullPath
 					let title = `我是${this.singer.nickname}，我参加了“嗨未来”与声俱来·声咖大赛，快来支持我吧！`
 					this._getShareConfig(url, '', title)
+					//this._getCurrentInfoWx(res.data.id, ${this.singer.nickname})
 				}
 			}).catch(err => {
 				//console.log(1123343)
@@ -142,8 +139,9 @@ export default {
 }
 .share-wrap {
 	position: fixed;
-	right: 10px;
+	right: 0;
 	top: 10px;
+	padding: 0 10px;
 	z-index: 800;
 	i {
 		color: $color-background-d;

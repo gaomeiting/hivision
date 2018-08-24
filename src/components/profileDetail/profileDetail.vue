@@ -82,7 +82,6 @@ import { putData, getData } from 'api/api'
 			this._getProfile();
 		},
 		
-
 		methods: {
 			handleAvatarSuccess(res, file) {
 				//console.log(res, file)

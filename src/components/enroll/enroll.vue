@@ -7,7 +7,7 @@
 					<down-loaded></down-loaded>
 				</div>
 				<div class="con-wrap">
-				<div class="logos">
+				<!-- <div class="logos">
 					<ul>
 						<li>主办机构</li>
 						<li>
@@ -17,12 +17,6 @@
 								</figure>
 								<p>中国版权协会</p>
 							</div>
-							<!-- <div>
-								<figure>
-									<img src="../../assets/images/logo2.png">
-								</figure>
-								<p>中国移动咪咕文化科技集团</p>
-							</div> -->
 						</li>
 					</ul>
 					<ul>
@@ -42,7 +36,7 @@
 							</div>
 						</li>
 					</ul>
-				</div>
+				</div> -->
 				<p v-if="!isWx" class="share-icon" @click.stop.prevent="toggleShare">
 					<i class="iconfont icon-fenxiang"></i>
 				</p>
@@ -219,9 +213,7 @@ import { share, loadBtn, wxShare, commonWxConfig } from 'assets/js/mixin'
 				error: ''
 			}
 		},
-		beforeMount() {
-			this._getCurrentInfoWx()
-		},
+		
 		methods: {
 			errHide() {
 				this.error = ''

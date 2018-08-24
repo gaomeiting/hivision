@@ -9,10 +9,16 @@
 </template>
 
 <script>
-
+import {
+    wxShare,
+    commonWxConfig
+} from 'assets/js/mixin'
 
 export default {
-	
+	mixins: [wxShare, commonWxConfig],
+	created() {
+		this._getShareConfig()
+	}
 }
 </script>
 

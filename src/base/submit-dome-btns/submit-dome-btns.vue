@@ -139,12 +139,12 @@ import Confirm from 'base/confirm/confirm'
 		  _startRecord () {
 		  	let _this = this
 		  	if(this.timer) clearInterval(this.timer)
-			this._timer()
 		  	wx.startRecord({
 			      cancel: function () {
 			        alert('用户拒绝授权录音');
 			      },
 			      success: function(res) {
+			      	_this._timer()
 			      	_this.flag = false
 			      },
 			      fail: function(res) {
@@ -157,7 +157,7 @@ import Confirm from 'base/confirm/confirm'
 			    });
 		  },
 		  _getCurrentInfo() {
-				getData('/api/contestant/current').then(res => {
+				getData('/api/user/current').then(res => {
 					this._hasStatus(res)
 				}).catch(err => {
 					if(err && err.data) {
@@ -182,7 +182,12 @@ import Confirm from 'base/confirm/confirm'
 					this.$router.push('/bind')
 				}
 				else if(res.status == 200) {
-					this._startRecord();
+					if(!res.data.id) {
+						this.error = '您不是选手不能录制音频'
+						this.$refs.confirm.show()
+					} else {
+						this._startRecord();
+					}
 				}
 			},
 		  

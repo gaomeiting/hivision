@@ -42,10 +42,8 @@ import { getData } from 'api/api'
 			}
 		},
 		created() {
-			
 			getData('/api/contestant/current').then(res => {
 				this._hasStatus(res)
-				
 			}).catch(err => {
 				if(err && err.data) {
 					this.error = `${err.data.error}`;

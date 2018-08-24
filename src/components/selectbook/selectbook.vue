@@ -25,7 +25,6 @@ export default {
 	},
 	
 	created() {
-		this._getCurrentInfoWx()
 		let url = '/api/audition_story/';
 		this._getStoriesData(url);
 	},

@@ -35,16 +35,9 @@ export default {
 			currentIndex: 0
 		}
 	},
-	head() {
-		return {
-			title: '与声俱来·声咖大赛'
-		}
-	},
+	
 	created() {
 		this._getCurrentInfo()
-	},
-	beforeMount() {
-		this._getCurrentInfoWx()
 	},
 	methods: {
 		confirm() {

@@ -35,12 +35,6 @@ import { postData } from 'api/api'
 	            flag: true,
 			}
 		},
-		head() {
-			return {
-				title: '与声俱来·声咖大赛'
-			}
-		},
-		
 		methods: {
 			handleSubmit () {
 	            if(/^1[34578]\d{9}$/.test(this.form.tel) == false){
@@ -63,7 +57,6 @@ import { postData } from 'api/api'
   						vcode: this.form.code
 	                }).then(res => {
 	                	this.$router.back()
-	                    //this._switchPage(res)
 	                }).catch(err => {
 	                	this._handlerError(err);
 	                    
@@ -104,8 +97,14 @@ import { postData } from 'api/api'
 	        _handlerError(err) {
 	        	if(err && err.data) {
 	        		if(err.data.status == 404) {
-	        			this.$router.back()
-	        			//this.$router.push('/profile')
+	        			/*if(this.$refs.errorTip) {
+	        				this.error = "您不是声咖选手没有权限"
+	        				this.$refs.errorTip.show()
+	        			}
+	        			else {
+	        				window.alert("您不是声咖选手没有权限")
+	        			}*/
+	        			this.$router.push('/profile')
 	        		}
             		Message({
 			          message: `${err.data.message}`,

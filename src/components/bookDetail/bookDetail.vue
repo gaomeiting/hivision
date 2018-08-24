@@ -60,22 +60,15 @@ export default {
 			switchFlag: false
 		}
 	},
-	head() {
-		return {
-			title: '与声俱来·声咖大赛'
-		}
-	},
+	
 	created() {
 		this.$nextTick(() => {
 			this.hasWx =  this.versions()
 		})
 	},
-	
 	beforeMount() {
-		this._getCurrentInfoWx()
 		let id = this.$route.params.id;
 		this._getSingerDetails(id)
-		
 	},
 	watch: {
 		switchIndex(newVal, oldVal) {
