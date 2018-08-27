@@ -56,7 +56,7 @@
 <script type="text/ecmascript-6">
 import TopTip from 'base/top-tip/top-tip'
 import Error from 'base/error/error'
-import { Message } from 'element-ui'
+import { Message, Upload } from 'element-ui'
 import { putData, getData } from 'api/api'
 	export default {
 		data() {
@@ -90,7 +90,6 @@ import { putData, getData } from 'api/api'
 			    console.log(file, res)
 			},
 			beforeAvatarUpload(file) {
-				console.log(file)
 				const isJPG = file.type === 'image/jpeg' || 'image/png';
 				const isLt5M = file.size / 1024 / 1024 < 5;
 				if (!isJPG) {

@@ -29,8 +29,19 @@
 		<vote-list :more="more" :list="list" :load = "load" @goByName="goByName"></vote-list>
 	</div>
 	
-	<error-tip ref="errorTip" :error="error"></error-tip>
 </div>
+<div class="search-wrap">
+	<div class="header" @click.stop="goByAvatar" :style="'background-image:url('+avatar+')'"></div>
+	<div class="search-box" @click.stop.prevent="goSearchSingers">输入选手昵称/编号搜索</div>
+	<div class="icon-wrap" v-if="shareIcon" @click.stop="settingShare">
+		<i class="iconfont icon-fenxiang"></i>
+	</div>
+</div>
+<div class="share-icons-wrap">
+	<share-icons ref="share" @cancle="cancle" @selectShare="selectSharehome"></share-icons>
+</div>
+<error-tip ref="errorTip" :error="error"></error-tip>
+<share-tip ref="shareTip"></share-tip>
 </scroll>
 </template>
 <script type="text/ecmascript-6">
@@ -40,11 +51,15 @@ import Scroll from 'base/scroll/scroll'
 import Switches from 'base/switches/switches'
 import VoteList from 'base/singer-list/singer-list'
 import DownLoaded from 'base/down-loaded/down-loaded'
+import ShareIcons from 'base/share-icons/share-icons'
 import ErrorTip from 'base/error-tip/error-tip'
-import { wxShare, commonWxConfig, loadBtn } from 'assets/js/mixin'
+import ShareTip from 'base/share-tip/share-tip'
+import { share, wxShare, commonWxConfig, loadBtn } from 'assets/js/mixin'
+import { wxFnVer, lingxiFn } from 'assets/js/version'
 import { getData } from 'api/init'
+import { mapGetters } from 'vuex'
 export default {
-	mixins: [wxShare, commonWxConfig, loadBtn],
+	mixins: [share, wxShare, commonWxConfig, loadBtn],
 	data() {
 		return {
 			
@@ -62,13 +77,20 @@ export default {
 			beforeScroll: true,
 			switchIndex: 0,
 			list: [],
-			stories: []
+			stories: [],
+			shareIcon: '',
+			avatar: 'http://st.ddpei.cn/hv/mglx/img/hvlogo.jpg'
 		}
 	},
 	
 	created() {
+		this.shareIcon = wxFnVer() || lingxiFn()
 		this._getSingerList('/api/contestant', {page: this.currentPage, size: this.size, sort: this.sort})
 		this._getStoriesData();
+		if(this.token) {
+			console.log("获取token")
+			this._getCurrentInfo()
+		}
 	},
 	
 	watch: {
@@ -77,19 +99,41 @@ export default {
 			this.more = true;
 			this.list = []
 			this._getSingerList('/api/contestant', {page: this.currentPage, size: this.size, sort: this.sort})
+		},
+		token() {
+			console.log("获取token")
+			this._getCurrentInfo()
 		}
 	},
 	computed: {
 		sort() {
 			return this.switchIndex ? 'createOn,desc' : 'popularNum,desc'
-		}
+		},
+		...mapGetters(['token'])
 	},
 	methods: {
+		settingShare() {
+			if(lingxiFn()) {
+				this.toggleShare()
+			}
+			if(wxFnVer()) {
+				this.showShareTip()
+			}
+		},
+		showShareTip() {
+			this.$refs.shareTip.show()
+		},
+		goSearchSingers() {
+			this.$router.push('/searchSingers')
+		},
 		imgLoad() {
 			if(!this.imgChecked) {
 				this.$refs.scroll.refresh()
 				this.imgChecked=true;
 			}
+		},
+		goByAvatar() {
+			this.$router.push('/me')
 		},
 		goByNav(index) {
 			this.$router.push(this.slider[index].url)
@@ -170,7 +214,22 @@ export default {
 			this.more = (this.currentPage+1) * this.size < total
 		},
 		
-		
+		_getCurrentInfo() {
+			getData('/api/user/current').then(res => {
+				console.log(res, "得到值")
+				if(res.status === 200) {
+					this.avatar = res.data.avatar
+				}
+			}).catch(err => {
+				if(err && err.data) {
+					this.error = `${err.data.message}`
+				}
+				else {
+					this.error = '接口调试中'
+				}
+				this.$refs.errorTip.show()
+			})
+		}
 	},
 	components: {
 		Scroll,
@@ -178,7 +237,9 @@ export default {
 		Slider,
 		Switches,
 		VoteList,
-		DownLoaded
+		DownLoaded,
+		ShareIcons,
+		ShareTip
 	}
 }
 </script>
@@ -186,6 +247,7 @@ export default {
 <style scoped lang="scss">
 @import "~assets/scss/variable";
 @import "~assets/scss/mixin";
+
 .slider-wrapper {
 	position: relative;
 	width: 100%;
@@ -193,6 +255,9 @@ export default {
 }
 .row-wrap {
 	padding: 16px 16px 0;
+}
+.page {
+	top: 72px;
 }
  .pic-wrapper{
 	width: 100%;
@@ -217,9 +282,40 @@ export default {
         }
   	}
  }
+ .search-wrap {
+		display: flex;
+		align-items: center;
+		padding: 16px;
+		background-color: $color-background-d;
+		width: 100%;
+		position: fixed;
+		top: 0;
+		.search-box {
+			flex: 1;
+			border: 1px solid $color-background;
+			line-height: 2.5;
+			border-radius: 6px;
+			text-indent: 1em;
+		}
+		.header {
+			width: 32px;
+			height: 32px;
+			overflow: hidden;
+			border-radius: 50%;
+			background-size: cover;
+			background-repeat: no-repeat;
+			background-position: center center;
+			margin-right: 10px;
+		}
+		.icon-wrap {
+			padding-left: 16px;
+		}
+	}
 .vote-wrap {
 	min-height: 100vh;
 	background: $color-background-d;
+
+	
 	.switches-wrap {
 		padding-top: 16px;
 	}

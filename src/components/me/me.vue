@@ -6,6 +6,7 @@
 				<div class="img" :style="'background-image: url('+singer.avatar+');'"> </div>
 				<h3>{{ singer.nickname }}</h3>
 				<p v-if="singer.id"> {{ singer.title }} </p>
+				<p @click.stop="goBind" v-if="!singer.id" class="bind"> 我是参赛选手,去绑定&gt;&gt; </p>
 			</div>
 			
 			<ul v-if="singer.id">
@@ -42,6 +43,20 @@
 				</li>
 			</ul>
 		</div>
+		<div class="handler-wrap" v-else>
+			<ul>
+				<li @click.stop="goMyVoteDetail">
+					<i class="iconfont icon-guanli"></i>
+					<p>我的投票记录</p>
+					<i class="iconfont icon-jiantouyou"></i>
+				</li>
+				<li @click.stop="goMyFavouriteSingers">
+					<i class="iconfont icon-setup"></i>
+					<p>我关注的选手</p>
+					<i class="iconfont icon-jiantouyou"></i>
+				</li>
+			</ul>
+		</div>
 		<audio :src="currentSong.url" ref="audio" @play="ready" @error="errorSong" @timeupdate="updateTime" @ended="end"></audio>
 		<error-tip ref="errorTip" :error="error"></error-tip>
 	</div>
@@ -53,6 +68,7 @@ import ProgressBar from 'base/progress-bar/progress-bar';
 import ErrorTip from 'base/error-tip/error-tip';
 import { wxShare, commonWxConfig } from 'assets/js/mixin'
 import { getData } from 'api/api'
+import { mapGetters } from 'vuex'
 export default {
 	mixins: [wxShare, commonWxConfig],
 	data() {
@@ -77,7 +93,14 @@ export default {
 		}
 	},
 	created() {
-		this._getCurrentInfo()
+		if(this.token) {
+			this._getCurrentInfo()
+		}
+	},
+	watch: {
+		token() {
+			this._getCurrentInfo()
+		}
 	},
 	computed: {
 		disableCls() {
@@ -85,10 +108,20 @@ export default {
 		},
 		playIcon() {
 			return this.playing ? 'icon-bofang' : 'icon-pause'
-		}
+		},
+		...mapGetters(['token'])
 	},
 	
 	methods: {
+		goMyVoteDetail() {
+			this.$router.push('/myVoteDetail')
+		},
+		goMyFavouriteSingers() {
+			this.$router.push('/myFavouriteSingers')
+		},
+		goBind() {
+			this.$router.push('/bind')
+		},
 		goDome() {
 			this.$router.push('/dome')
 		},
@@ -269,6 +302,10 @@ export default {
 			background-position: center center;
 			background-repeat: no-repeat;
 			color: $color-background-d;
+			.bind {
+				color: $color-background;
+
+			}
 			> .img {
 				width: 78px;
 				height: 78px;

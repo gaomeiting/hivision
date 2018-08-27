@@ -183,7 +183,8 @@ import Confirm from 'base/confirm/confirm'
 				}
 				else if(res.status == 200) {
 					if(!res.data.id) {
-						this.error = '您不是选手不能录制音频'
+						this.text = '您不是选手不能录制音频'
+						this.type = 1;
 						this.$refs.confirm.show()
 					} else {
 						this._startRecord();

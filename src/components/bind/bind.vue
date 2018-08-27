@@ -97,14 +97,12 @@ import { postData } from 'api/api'
 	        _handlerError(err) {
 	        	if(err && err.data) {
 	        		if(err.data.status == 404) {
-	        			/*if(this.$refs.errorTip) {
-	        				this.error = "您不是声咖选手没有权限"
-	        				this.$refs.errorTip.show()
-	        			}
-	        			else {
-	        				window.alert("您不是声咖选手没有权限")
-	        			}*/
-	        			this.$router.push('/profile')
+	        			Message({
+				          message: "您不是声咖选手",
+				          type: 'error'
+				        });
+	        			this.$router.back()
+	        			//this.$router.push('/profile')
 	        		}
             		Message({
 			          message: `${err.data.message}`,

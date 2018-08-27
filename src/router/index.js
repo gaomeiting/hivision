@@ -78,6 +78,21 @@ const Enroll = resolve => {
         resolve(module)
     })
 };
+const MyFavouriteSingers = resolve => {
+    import ('components/myFavouriteSingers/myFavouriteSingers').then(module => {
+        resolve(module)
+    })
+};
+const SearchSingers = resolve => {
+    import ('components/searchSingers/searchSingers').then(module => {
+        resolve(module)
+    })
+};
+const MyVoteDetail = resolve => {
+    import ('components/myVoteDetail/myVoteDetail').then(module => {
+        resolve(module)
+    })
+};
 Vue.use(Router)
 
 
@@ -125,6 +140,15 @@ const routes = [
     }, {
         path: '/bind',
         component: Bind,
+    }, {
+        path: '/myFavouriteSingers',
+        component: MyFavouriteSingers,
+    }, {
+        path: '/myVoteDetail',
+        component: MyVoteDetail,
+    }, {
+        path: '/searchSingers',
+        component: SearchSingers,
     }
 
 ]

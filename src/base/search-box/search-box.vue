@@ -7,12 +7,12 @@
 </template>
 
 <script type="text/ecmascript-6">
-import { debounce } from "common/js/until";
+import { debounce } from "assets/js/until";
 export default {
 	props: {
 		placeholder: {
 			type: String,
-			default: '搜索声咖'
+			default: '输入选手昵称/编号搜索'
 		}
 	},
 	data() {

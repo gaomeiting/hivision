@@ -14,7 +14,7 @@ import 'assets/scss/index.scss';
 Vue.use(VueLazyload, {
 	loading: require('assets/images/default.png')
 })
-/*Vue.use(ElementUI);*/
+Vue.use(ElementUI);
 //设置打包请求地址
 /*axios.defaults.baseURL = '/api'*/
 //Vue.prototype.axios = axios;

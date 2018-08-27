@@ -56,7 +56,7 @@
 <script type="text/ecmascript-6">
 import TopTip from 'base/top-tip/top-tip'
 import Error from 'base/error/error'
-import { Message } from 'element-ui'
+import { Message, Upload } from 'element-ui'
 import { postData } from 'api/api'
 import { share, loadBtn, wxShare } from 'assets/js/mixin'
 	export default {

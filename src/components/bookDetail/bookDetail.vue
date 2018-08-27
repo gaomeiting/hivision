@@ -88,7 +88,6 @@ export default {
 	methods: {
 		decideByBallot(item, index) {
 			//点赞排序
-			
 			putData(`/api/contestant/updatelikenum/${item.id}/`).then(res => {
 				if(res.status === 200) {
 					if(this.voteCurrentIndexs.indexOf(index) === -1) {
