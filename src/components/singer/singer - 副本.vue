@@ -23,9 +23,6 @@
 				</li>
 			</ul>
 		</div>
-		<div class="battle-current-wrap" v-if="pkList.length>0">
-			<battle-item :item="pkList[0]" :list="audioList" :currentIndex="currentIndex" @goByName="goByName" @decideByLove="decideByLove" ></battle-item>
-		</div>
 		<div class="music-wrap">
 			<h2>参赛作品</h2>
 			<div class="vote-list">
@@ -46,7 +43,6 @@ import Scroll from 'base/scroll/scroll'
 import ErrorTip from 'base/error-tip/error-tip'
 import VoteList from 'base/song-list/song-list'
 import ShareTip from 'base/share-tip/share-tip'
-import BattleItem from 'base/battle-item/battle-item'
 import { wxShare, commonWxConfig } from 'assets/js/mixin'
 import { getData, putData } from 'api/api'
 export default {
@@ -66,11 +62,7 @@ export default {
 			singer: {},
 			hasWxVer: false,
 			list: [],
-			voteCurrentIndexs: [],
-			book: {},
-			currentIndex: -1,
-			audioList: [],
-			pkList: []
+			voteCurrentIndexs: []
 		}
 	},
 	head() {
@@ -85,37 +77,6 @@ export default {
 		this._getInfo(id)
 	},
 	methods: {
-		goByName(item) {
-			this.$router.push({
-				path: '/singer',
-				query: {
-					id: item.id
-				}
-			})
-		},
-		decideByLove(item, index) {
-			//点赞排序
-			console.log(item)
-			let groupid = item.pkGroupId;
-			let player = index ? 'blue' : 'red';
-			let bPlayer = `${player}Player`
-
-			patchData(`/api/user/${groupid}/${player}/vote`).then(res => {
-				if(res.status === 200) {
-					this.currentIndex = index;
-					item[bPlayer].likenum = res.data
-					this.list[0] = item;
-				}
-			}).catch(err => {
-				if(err && err.data) {
-					this.error = `${err.data.message}`
-				}
-				else {
-					this.error = '接口调试中'
-				}
-				this.$refs.errorTip.show()
-			})
-		},
 		decideByBallot(item, index) {
 			putData(`/api/contestant/updatelikenum/${item.id}/`).then(res => {
 				if(res.status === 200) {
@@ -137,53 +98,6 @@ export default {
 		},
 		showShareTip() {
 			this.$refs.shareTip.show()
-		},
-		_getBookDetailsPK(id, storyId) {
-			this.load = true;
-			postData(`/api/pk/${id}/${storyId}`).then(res=> {
-				if(res.status===200) {
-					this.load= false
-					let result = this._normalizeData(res.data);
-					this.pkList = result.list;
-					this.audioList.push(result.list[0].redPlayer) 
-					this.audioList.push(result.list[0].bluePlayer) 
-					this.book = result.book
-					
-				}
-			}).catch(err => {
-				if(err.data) {
-					this.error = `${err.data.message}`
-					this.$refs.errorTip.show()
-				}
-			})
-		},
-		_normalizeData(data) {
-			let res = []
-			let list = data.pkGroup
-			let id = data.id
-			let name = data.title
-			let content = data.content
-			let cover = data.coverImage
-			let buyLink = data.buyLink
-			let book = CreateBook({
-				id,
-				name,
-				content,
-				cover,
-				buyLink
-			})
-			list.forEach(item => {
-				let bookId = data.id;
-				let bookName = data.title;
-				let pkGroupId = item.id;
-				let redPlayer = item.redPlayer;
-				let bluePlayer = item.bluePlayer;
-				res.push(CreatePKgroup({bookId, bookName, pkGroupId, redPlayer, bluePlayer}))
-			})
-			return {
-				book,
-				list: res
-			}
 		},
 		_getInfo(id) {
 			getData(`/api/contestant/${id}`).then(res => {
@@ -212,8 +126,7 @@ export default {
 		Scroll,
 		ErrorTip,
 		VoteList,
-		ShareTip,
-		BattleItem
+		ShareTip
 	}
 }
 </script>

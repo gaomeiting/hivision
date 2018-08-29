@@ -53,6 +53,11 @@ const BookDetail = resolve => {
         resolve(module)
     })
 };
+const BookDetailPK = resolve => {
+    import ('components/bookDetailPK/bookDetailPK').then(module => {
+        resolve(module)
+    })
+};
 const Record = resolve => {
     import ('components/Record/Record').then(module => {
         resolve(module)
@@ -93,6 +98,11 @@ const MyVoteDetail = resolve => {
         resolve(module)
     })
 };
+const Battle = resolve => {
+    import ('components/battle/battle').then(module => {
+        resolve(module)
+    })
+};
 Vue.use(Router)
 
 
@@ -124,7 +134,7 @@ const routes = [
         component: SelectBook
     }, {
         path: '/selectbook/:id',
-        component: BookDetail,
+        component: BookDetailPK,
     }, {
         path: '/record',
         component: Record,
@@ -149,6 +159,9 @@ const routes = [
     }, {
         path: '/searchSingers',
         component: SearchSingers,
+    }, {
+        path: '/battle',
+        component: Battle,
     }
 
 ]

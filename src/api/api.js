@@ -63,3 +63,13 @@ export function putData(url, params, config = {
 		return Promise.reject(err)
 	});
 }
+
+export function patchData(url, params, config = {
+	showLoading: true
+}) {
+	return axios.patch(url, params, config).then(res => {
+		return Promise.resolve(res.data)
+	}).catch(err => {
+		return Promise.reject(err)
+	});
+}

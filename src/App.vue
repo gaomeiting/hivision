@@ -18,6 +18,7 @@ export default {
 	mixins: [wxShare, commonWxConfig],
 	created() {
 		this._getShareConfig()
+		//this._getCurrentInfoWx()
 	}
 }
 </script>

@@ -112,7 +112,7 @@ export const wxShare = {
 		wxHide(response) {
 			let _this = this;
 			wx.config({
-				debug: false,
+				debug: true,
 				appId: response.appId,
 				timestamp: response.timestamp,
 				nonceStr: response.nonceStr,
@@ -141,7 +141,7 @@ export const wxShare = {
 
 		wxS(response, url, title, desc) {
 			wx.config({
-				debug: false,
+				debug: true,
 				appId: response.appId,
 				timestamp: response.timestamp,
 				nonceStr: response.nonceStr,
@@ -170,7 +170,8 @@ export const wxShare = {
 					title: title || '嗨未来 儿童有声阅读计划 声咖大赛用爱发声 用心陪伴 与一线明星同台演播',
 					desc: desc || '万元奖金/神秘大礼包等你拿有声俱来声咖大赛 用爱为孩子们发声',
 					success: function(res) {
-						alert('已分享');
+						window.alert(res)
+						//alert('已分享');
 					},
 					fail: function(res) {
 						alert('分享失败');
@@ -250,6 +251,7 @@ export const commonWxConfig = {
 			}
 			getDataHide(`/api/user/current`).then(res => {
 				if (res.status == 200) {
+					window.alert("获取用户信息成功")
 					let id = res.data.id
 					if (id === 0) {
 						let url = `http://mglx.hvkid.com/`
