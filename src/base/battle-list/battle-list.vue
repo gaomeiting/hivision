@@ -6,7 +6,7 @@
 				<p class="bar" :style="'width: '+percent(item)+ '%'">
 					{{item.redPlayer.likenum}}票&nbsp;&nbsp;
 				</p>
-				<p>&nbsp;&nbsp;{{item.bluePlayer.likenum}}票</p>
+				<p v-if="item.bluePlayer.likenum || !item.bluePlayer.likenum&&!item.redPlayer.likenum">&nbsp;&nbsp;{{item.bluePlayer.likenum}}票</p>
 		  	</div>
 		  	<div class="pk-wrap">
 		  		<div @click.stop="goByName(item.redPlayer)">
@@ -24,7 +24,7 @@
 		  			<figure>
 			  			<img :src="item.bluePlayer.avatar">
 			  		</figure>
-			  		<p>{{item.bluePlayer.nickname}}</p>
+			  		<p v-if="item.redPlayer.likenum || !item.bluePlayer.likenum&&!item.redPlayer.likenum">{{item.bluePlayer.nickname}}</p>
 		  		</div>
 			</div>
 			<p class="title" @click.stop="goByBook(item.bookId, item.pkGroupId)">{{item.bookName}}</p>
@@ -72,13 +72,13 @@ export default {
 			this.$emit('goByBook', bookId, pkGroupId)
 		},
 		total(item) {
-			return item.redPlayer.likeNum*1+item.bluePlayer.likeNum*1
+			return item.redPlayer.likenum*1+item.bluePlayer.likenum*1
 		},
 		percent(item) {
-			if(item.redPlayer.likeNum === item.bluePlayer.likeNum) {
+			if(item.redPlayer.likenum === item.bluePlayer.likenum) {
 				return 50;
 			}
-			return Math.round(item.redPlayer.likeNum / this.total(item) * 100)
+			return Math.round(item.redPlayer.likenum / this.total(item) * 100)
 		}
 		
 	},
@@ -128,6 +128,7 @@ export default {
 			color: $color-background-d;
 			border-radius: 6px;
 			overflow: hidden;
+			white-space: nowrap;
 			&:first-child {
 				text-align: right;
 			}

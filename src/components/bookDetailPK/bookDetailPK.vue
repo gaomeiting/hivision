@@ -121,7 +121,11 @@ export default {
 					this.audioList.push(result.list[0].redPlayer) 
 					this.audioList.push(result.list[0].bluePlayer) 
 					this.book = result.book
-					
+					//设置书籍分享页
+					let title = `嗨未来 儿童有声阅读计划 声咖大赛选手PK火热进行中 快来围观吧`
+					let url = window.location.href;
+					this._getShareConfig(url, '', title)
+					//this._getCurrentInfoWx(id, this.singer.nickname)
 				}
 			}).catch(err => {
 				if(err.data) {

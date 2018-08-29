@@ -48,7 +48,7 @@ export const share = {
 					this.shareWX(link, type, title);
 					break;
 			}
-			
+
 		},
 		selectSharehome(index, title, desc) {
 			let type, link;
@@ -245,28 +245,28 @@ export const commonWxConfig = {
 		_getCurrentInfoWx(id, nickname) {
 			if (!this.versions()) return;
 			if (id && nickname) {
-				let url = `http://mglx.hvkid.com/#/singer/?id=${id}`
+				let url = `http://mgt.hvkid.cn:9000/#/singer/?id=${id}`
 				let title = `我是${nickname}，我参加了“嗨未来”与声俱来·声咖大赛，快来支持我吧！`
 				this._getShareConfig(url, '', title)
 				return;
 			}
 			getDataHide(`/api/user/current`).then(res => {
 				if (res.status == 200) {
-					window.alert("获取用户信息成功")
+					//console.log(res.data.id)
 					let id = res.data.id
 					if (id === 0) {
-						let url = `http://mglx.hvkid.com/`
+						let url = `http://mgt.hvkid.cn:9000/#/`
 						let title = `我参加了“嗨未来”与声俱来·声咖大赛，快来支持我吧！`
 						this._getShareConfig(url, '', title)
 					} else {
-						let url = `http://mglx.hvkid.com/#/singer/?id=${id}`
+						let url = `http://mgt.hvkid.cn:9000/#/singer/?id=${id}`
 						let title = `我是${res.data.nickname}，我参加了“嗨未来”与声俱来·声咖大赛，快来支持我吧！`
 						this._getShareConfig(url, '', title)
 					}
 
 
 				} else {
-					let url = 'http://mglx.hvkid.com/'
+					let url = 'http://mgt.hvkid.cn:9000/#/'
 					this._getShareConfig(url)
 				}
 			}).catch(err => {

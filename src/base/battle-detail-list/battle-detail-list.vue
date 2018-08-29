@@ -36,7 +36,7 @@
 		</div>
 </div>
 </div>
-<h2 class="title">参赛作品</h2>
+<h2 class="title">海选作品</h2>
 <div class="list-wrap">
 	<ul class="vote">
 		<li class="vote-item" v-for="(item, index) in list " :key="index" v-if="index > 1 &&  item.story">
