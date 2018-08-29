@@ -165,7 +165,7 @@ export default {
 					let url = this.$route.fullPath
 					let title = `我是${this.singer.nickname}，我参加了“嗨未来”与声俱来·声咖大赛，快来支持我吧！`
 					//this._getShareConfig(url, '', title)
-					this._getCurrentInfoWx(id, this.singer.nickname)
+					this._getCurrentInfoWx(id, this.singer.nickname, this.singer.avatar)
 					//this._getCurrentInfoWx(res.data.id, ${this.singer.nickname})
 				}
 			}).catch(err => {

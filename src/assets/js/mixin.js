@@ -212,7 +212,7 @@ export const wxShare = {
 				return val == item
 			})
 		},
-		_getShareConfig(url, isShow, title = '', desc = '') {
+		_getShareConfig(url, isShow, title = '', desc = '', avatar = 'http://st.ddpei.cn/hv/mglx/img/hvlogo.jpg') {
 			let arrHref = ['http://mglx.hvkid.com/#/me', 'http://mglx.hvkid.com/', 'http://mglx.hvkid.com/#/vote']
 			if (this._findIndex(arrHref, window.location.href) != -1) {
 				this.setUrl();
@@ -242,12 +242,12 @@ export const wxShare = {
 };
 export const commonWxConfig = {
 	methods: {
-		_getCurrentInfoWx(id, nickname) {
+		_getCurrentInfoWx(id, nickname, avatar) {
 			if (!this.versions()) return;
 			if (id && nickname) {
 				let url = `http://mgt.hvkid.cn:9000/#/singer/?id=${id}`
 				let title = `我是${nickname}，我参加了“嗨未来”与声俱来·声咖大赛，快来支持我吧！`
-				this._getShareConfig(url, '', title)
+				this._getShareConfig(url, '', title, '', avatar)
 				return;
 			}
 			getDataHide(`/api/user/current`).then(res => {
@@ -257,11 +257,13 @@ export const commonWxConfig = {
 					if (id === 0) {
 						let url = `http://mgt.hvkid.cn:9000/#/`
 						let title = `我参加了“嗨未来”与声俱来·声咖大赛，快来支持我吧！`
-						this._getShareConfig(url, '', title)
+						let avatar = res.data.avatar;
+						this._getShareConfig(url, '', title, '', avatar)
 					} else {
 						let url = `http://mgt.hvkid.cn:9000/#/singer/?id=${id}`
 						let title = `我是${res.data.nickname}，我参加了“嗨未来”与声俱来·声咖大赛，快来支持我吧！`
-						this._getShareConfig(url, '', title)
+						let avatar = res.data.avatar;
+						this._getShareConfig(url, '', title, '', avatar)
 					}
 
 

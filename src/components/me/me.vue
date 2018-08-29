@@ -197,7 +197,7 @@ export default {
 		},
 		_normalizeData(res) {
 			this.singer = res.data
-			this._getCurrentInfoWx(res.data.id, res.data.nickname)
+			this._getCurrentInfoWx(res.data.id, res.data.nickname, res.data.avatar)
 		},
 		_hasStatus(res) {
 			if(res.status == 406) {
