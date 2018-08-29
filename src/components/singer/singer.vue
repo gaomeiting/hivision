@@ -23,15 +23,17 @@
 				</li>
 			</ul>
 		</div>
-		<div class="battle-current-wrap" v-if="pkList.length>0">
-			<battle-item :item="pkList[0]" :list="audioList" :currentIndex="currentIndex" @goByName="goByName" @decideByLove="decideByLove" ></battle-item>
+		<battle-list :item="pkGroup" :list="totalList" :currentIndex="currentIndex" @goByName="goByName" @decideByLove="decideByLove" @decideByBallot="decideByBallot" :currentIndexs="voteCurrentIndexs"></battle-list>
+		<!-- <h2 class="title">PK赛</h2>
+		<div class="battle-current-wrap">
+			<battle-item :item="pkGroup" :list="audioList" :currentIndex="currentIndex" @goByName="goByName" @decideByLove="decideByLove" ></battle-item>
 		</div>
 		<div class="music-wrap">
 			<h2>参赛作品</h2>
 			<div class="vote-list">
 				<vote-list :list="list" @decideByBallot="decideByBallot" :currentIndexs="voteCurrentIndexs"></vote-list>
 			</div>
-		</div>
+		</div> -->
 		
 	</div>
 	<p class="share-wrap" v-if="hasWxVer">
@@ -47,8 +49,10 @@ import ErrorTip from 'base/error-tip/error-tip'
 import VoteList from 'base/song-list/song-list'
 import ShareTip from 'base/share-tip/share-tip'
 import BattleItem from 'base/battle-item/battle-item'
+import BattleList from 'base/battle-detail-list/battle-detail-list'
+import { CreatePKgroup } from 'assets/js/pkGroup'
 import { wxShare, commonWxConfig } from 'assets/js/mixin'
-import { getData, putData } from 'api/api'
+import { getData, putData, patchData, postData } from 'api/api'
 export default {
 	mixins: [wxShare],
 	data() {
@@ -70,7 +74,8 @@ export default {
 			book: {},
 			currentIndex: -1,
 			audioList: [],
-			pkList: []
+			pkGroup: {},
+			totalList: []
 		}
 	},
 	head() {
@@ -122,7 +127,8 @@ export default {
 					if(this.voteCurrentIndexs.indexOf(index) === -1) {
 						this.voteCurrentIndexs.push(index);
 					}
-					this.list[index].likeNum = res.data
+					console.log(this.totalList[index].likeNum, res.data)
+					this.totalList[index].likeNum = res.data
 					//console.log(this.list[index].likeNum)
 				}
 			}).catch(err => {
@@ -138,61 +144,29 @@ export default {
 		showShareTip() {
 			this.$refs.shareTip.show()
 		},
-		_getBookDetailsPK(id, storyId) {
-			this.load = true;
-			postData(`/api/pk/${id}/${storyId}`).then(res=> {
-				if(res.status===200) {
-					this.load= false
-					let result = this._normalizeData(res.data);
-					this.pkList = result.list;
-					this.audioList.push(result.list[0].redPlayer) 
-					this.audioList.push(result.list[0].bluePlayer) 
-					this.book = result.book
-					
-				}
-			}).catch(err => {
-				if(err.data) {
-					this.error = `${err.data.message}`
-					this.$refs.errorTip.show()
-				}
-			})
-		},
-		_normalizeData(data) {
-			let res = []
-			let list = data.pkGroup
-			let id = data.id
-			let name = data.title
-			let content = data.content
-			let cover = data.coverImage
-			let buyLink = data.buyLink
-			let book = CreateBook({
-				id,
-				name,
-				content,
-				cover,
-				buyLink
-			})
-			list.forEach(item => {
-				let bookId = data.id;
-				let bookName = data.title;
-				let pkGroupId = item.id;
-				let redPlayer = item.redPlayer;
-				let bluePlayer = item.bluePlayer;
-				res.push(CreatePKgroup({bookId, bookName, pkGroupId, redPlayer, bluePlayer}))
-			})
-			return {
-				book,
-				list: res
-			}
+		
+		_normalizeData(pkGroup) {
+			let pkGroupId =pkGroup.id;
+			let redPlayer =pkGroup.redPlayer;
+			let bluePlayer =pkGroup.bluePlayer;
+			return CreatePKgroup({ pkGroupId, redPlayer, bluePlayer})
 		},
 		_getInfo(id) {
-			getData(`/api/contestant/${id}`).then(res => {
+			postData(`/api/pk/${id}`).then(res => {
 				if(res.status == 200) {
-					this.singer = res.data;
-					this.list = res.data.entryWorks;
+					this.singer = res.data.basic;
+					this.list = res.data.basic.entryWorks;
+					let result = this._normalizeData(res.data.pkGroup);
+					this.pkGroup = result;
+					this.audioList.push(result.redPlayer) 
+					this.audioList.push(result.bluePlayer) 
+					this.totalList = this.audioList.concat(this.list)
+					console.log(this.totalList)
 					let url = this.$route.fullPath
 					let title = `我是${this.singer.nickname}，我参加了“嗨未来”与声俱来·声咖大赛，快来支持我吧！`
-					this._getShareConfig(url, '', title)
+					//this._getShareConfig(url, '', title)
+					//console.log(id, this.singer.nickname)
+					//this._getCurrentInfoWx(id, this.singer.nickname)
 					//this._getCurrentInfoWx(res.data.id, ${this.singer.nickname})
 				}
 			}).catch(err => {
@@ -213,7 +187,8 @@ export default {
 		ErrorTip,
 		VoteList,
 		ShareTip,
-		BattleItem
+		BattleItem,
+		BattleList
 	}
 }
 </script>
@@ -234,10 +209,19 @@ export default {
 		color: $color-background-d;
 	}
 }
+.battle-current-wrap {
+	padding: 16px;
+}
 .me-wrap {
 	min-height: 100vh;
 	background: $color-background-d;
-	
+	.title {
+		font-size: $font-size-medium-x;
+		color: $color-theme;
+		padding-left: 16px;
+		line-height: 44px;
+		@include border-1px($color-background)
+	}
 	.top {
 		border-bottom: 8px solid $color-background;
 		> .info {

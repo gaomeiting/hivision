@@ -1,7 +1,7 @@
 <template>
 <div class="pk-wrap">
-		<div>
-			<figure @click.stop="settingCurrentSong(0)">
+		<div v-if="item.redPlayer">
+			<figure @click.stop="settingCurrentSong(0, 1)">
 	  			<img :src="item.redPlayer.avatar">
 	  			<p class="voice-icon-wrap" :class="song && 0 === currentSongIndex && flag ? 'active' : ''">
 	  				<i class="iconfont" v-if="0 != currentSongIndex || 0 === currentSongIndex && !song " :class="0 === currentSongIndex && flag ? 'icon-bofangqi-zanting' : 'icon-bofangqi-bofang'"></i>
@@ -19,8 +19,8 @@
 	  			<img src="./pk_icon.jpg">
 	  		</figure>
 		</div>
-		<div @click.stop="goByName(item.bluePlayer)">
-			<figure @click.stop="settingCurrentSong(1)">
+		<div @click.stop="goByName(item.bluePlayer)" v-if="item.bluePlayer">
+			<figure @click.stop="settingCurrentSong(1, 1)">
 	  			<img :src="item.bluePlayer.avatar">
 	  			<p class="voice-icon-wrap" :class="song && 1 === currentSongIndex && flag ? 'active' : ''">
 	  				<i class="iconfont" v-if="1 != currentSongIndex || 1 === currentSongIndex && !song " :class="1 === currentSongIndex && flag ? 'icon-bofangqi-zanting' : 'icon-bofangqi-bofang'"></i>
@@ -58,6 +58,9 @@ export default {
 				return []
 			}
 		}
+	},
+	created() {
+		console.log(this.list)
 	},
 	methods: {
 		goByName(item) {

@@ -3,6 +3,8 @@ import {
 	getDataHide
 } from 'api/api'
 import wx from 'weixin-js-sdk'
+//http://mglx.hvkid.com/share
+//http://mgt.hvkid.cn:9000/
 export const share = {
 	data() {
 		return {
@@ -46,8 +48,7 @@ export const share = {
 					this.shareWX(link, type, title);
 					break;
 			}
-			//http://mglx.hvkid.com/share
-			//http://mgt.hvkid.cn:9000/
+			
 		},
 		selectSharehome(index, title, desc) {
 			let type, link;
@@ -112,7 +113,7 @@ export const wxShare = {
 		wxHide(response) {
 			let _this = this;
 			wx.config({
-				debug: true,
+				debug: false,
 				appId: response.appId,
 				timestamp: response.timestamp,
 				nonceStr: response.nonceStr,
@@ -141,7 +142,7 @@ export const wxShare = {
 
 		wxS(response, url, title, desc) {
 			wx.config({
-				debug: true,
+				debug: false,
 				appId: response.appId,
 				timestamp: response.timestamp,
 				nonceStr: response.nonceStr,
@@ -170,7 +171,7 @@ export const wxShare = {
 					title: title || '嗨未来 儿童有声阅读计划 声咖大赛用爱发声 用心陪伴 与一线明星同台演播',
 					desc: desc || '万元奖金/神秘大礼包等你拿有声俱来声咖大赛 用爱为孩子们发声',
 					success: function(res) {
-						window.alert(res)
+						//window.alert(res)
 						//alert('已分享');
 					},
 					fail: function(res) {

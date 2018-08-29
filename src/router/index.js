@@ -110,7 +110,7 @@ const routes = [
 
     {
         path: '/',
-        component: Vote
+        component: Battle
     }, {
         path: '/vote',
         component: Vote
