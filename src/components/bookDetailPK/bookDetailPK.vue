@@ -28,7 +28,7 @@
 <p class="share-wrap" v-if="hasWx">
 	<i @click.stop="showShareTip" class="iconfont icon-fenxiang"></i>
 </p>
-<a :href="book.buyLink" class="btn">音频太短？点击这里听全本</a>
+<a v-if="book.buyLink" :href="book.buyLink" class="btn">音频太短？点击这里听全本</a>
 <share-tip ref="shareTip"></share-tip>
 <error-tip ref="errorTip" :error="error"></error-tip>
 </scroll>
@@ -242,6 +242,7 @@ export default {
 			color: $color-text-d;
 			font-size: $font-size-medium-x;
 			padding-bottom: 16px;
+			margin-top: -12px;
 			@include border-1px($color-background)
 		}
 		p {

@@ -31,6 +31,11 @@
 					<p>参赛作品管理</p>
 					<i class="iconfont icon-jiantouyou"></i>
 				</li>
+				<li @click.stop="goPKDome">
+					<i class="iconfont icon-guanli"></i>
+					<p>我的复赛状态</p>
+					<i class="iconfont icon-jiantouyou"></i>
+				</li>
 				<li @click.stop="goPutProfile">
 					<i class="iconfont icon-setup"></i>
 					<p>参赛报名信息</p>
@@ -113,6 +118,14 @@ export default {
 	},
 	
 	methods: {
+		goPKDome() {
+			this.$router.push({
+				path: '/pkDome',
+				query: {
+					id: this.singer.id
+				}
+			})
+		},
 		goMyVoteDetail() {
 			this.$router.push('/myVoteDetail')
 		},

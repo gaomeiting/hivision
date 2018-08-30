@@ -4,15 +4,15 @@
 		<li class="vote-item" v-for="(item, index) in list " :key="index">
 		  	<div class="head" v-if="item.story"> <img :src="item.story.coverImg" alt=""></div>
 		  	<div class="text">
-		  		<h3 v-if="item.story">{{item.story.title}}<!-- <strong>20人录制</strong> --></h3>
+		  		<h3 v-if="item.story"><span>{{item.story.title}}</span> <strong>票数: {{item.likeNum}}</strong></h3>
 		  		<div class="icon-wrap">
 		  			<p class="icon" :class="song && index === currentSongIndex && flag ? 'active' : ''" @click.stop="settingCurrentSong(index)">
 		  				<span v-if="index != currentSongIndex || index === currentSongIndex && !song ">
 				  			{{ index === currentSongIndex && flag ? '暂停' : '播放' }}
 				  		</span>
 				  	</p>
-				  	<p class="icon" @click.stop="record(item)">重录</p>
-				  	<p class="icon" @click.stop="deleteOne(item, index)">删除</p>
+				  	<!-- <p class="icon" @click.stop="record(item)">重录</p>
+				  	<p class="icon" @click.stop="deleteOne(item, index)">删除</p> -->
 		  		</div>
 		  	</div>
 		  	
@@ -105,11 +105,14 @@ export default {
 		.text {
 			flex: 1;
 			h3 {
+				display: flex;
 				line-height: 1.5;
 				padding-bottom: 16px;
+				span {
+					flex: 1;
+				}
 				strong {
 					color: $color-theme;
-					padding-left: 1em;
 				}
 			}
 			p {

@@ -140,7 +140,7 @@ export const wxShare = {
 			});
 		},
 
-		wxS(response, url, title, desc) {
+		wxS(response, url, title, desc, avatar) {
 			wx.config({
 				debug: false,
 				appId: response.appId,
@@ -166,7 +166,7 @@ export const wxShare = {
 			});
 			wx.ready(function() {
 				let shareData = {
-					imgUrl: 'http://st.ddpei.cn/hv/mglx/img/hvlogo.jpg', //图片地址
+					imgUrl: avatar || 'http://st.ddpei.cn/hv/mglx/img/hvlogo.jpg', //图片地址
 					link: url,
 					title: title || '嗨未来 儿童有声阅读计划 声咖大赛用爱发声 用心陪伴 与一线明星同台演播',
 					desc: desc || '万元奖金/神秘大礼包等你拿有声俱来声咖大赛 用爱为孩子们发声',
@@ -225,7 +225,7 @@ export const wxShare = {
 			getDataHide('/api/wechat/sdkconfig.json', params).then(res => {
 				let config = res;
 				if (!isShow) {
-					this.wxS(config, url, title, desc)
+					this.wxS(config, url, title, desc, avatar)
 				} else {
 					this.wxHide(config)
 				}

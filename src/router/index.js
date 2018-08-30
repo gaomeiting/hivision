@@ -43,6 +43,11 @@ const Dome = resolve => {
         resolve(module)
     })
 };
+const PKDome = resolve => {
+    import ('components/pkDome/pkDome').then(module => {
+        resolve(module)
+    })
+};
 const SelectBook = resolve => {
     import ('components/selectbook/selectbook').then(module => {
         resolve(module)
@@ -103,6 +108,7 @@ const Battle = resolve => {
         resolve(module)
     })
 };
+
 Vue.use(Router)
 
 
@@ -129,6 +135,9 @@ const routes = [
     }, {
         path: '/dome',
         component: Dome
+    }, {
+        path: '/pkDome',
+        component: PKDome
     }, {
         path: '/selectbook',
         component: SelectBook

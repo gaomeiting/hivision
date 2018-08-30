@@ -4,10 +4,10 @@
 	<div class="title">我的故事</div>
 	<div class="vote-list">
 		<book-list :list="list" @deleteOne="deleteOne" @record="record"></book-list>
-		<div class="result-wrapper" @click.stop="goSelectBook">
+		<!-- <div class="result-wrapper" @click.stop="goSelectBook">
 			<p ref="javascript:;" v-if="!more && list.length>0">继续录制其他故事></p>
 			<p class="btn" v-else-if="list.length == 0">选择书目录制</p>
-		</div>
+		</div> -->
 	</div>
 </div>
 <error-tip ref="errorTip" :error="error"></error-tip>
@@ -21,7 +21,6 @@ import ErrorTip from 'base/error-tip/error-tip'
 import Confirm from 'base/confirm/confirm'
 import { wxShare, commonWxConfig } from 'assets/js/mixin'
 import { getData, deleteData } from 'api/api'
-
 export default {
 	mixins: [wxShare, commonWxConfig],
 	data() {

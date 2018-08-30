@@ -1,7 +1,7 @@
 <template>
 <div class="list-wrap">
 	<ul class="vote" v-if="list.length > 0">
-		<li class="vote-item" v-for="(item, index) in list " :key="index">
+		<li class="vote-item" v-for="(item, index) in list " :key="index" @click.stop="goByBook(item.bookId, item.pkGroupId)">
 		  	<div class="bar-wrap">
 				<p class="bar" :style="'width: '+percent(item)+ '%'">
 					{{item.redPlayer.likenum}}票&nbsp;&nbsp;
