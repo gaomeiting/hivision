@@ -104,7 +104,7 @@ export default {
 		.pk-wrap {
 			width: 100%;
 			display: flex;
-			align-items: center;
+			/* align-items: center; */
 			justify-content: space-between;
 			> div {
 				flex: 1;
@@ -116,7 +116,7 @@ export default {
 						width: 56px;
 						height: 56px;
 						overflow: hidden;
-						margin-top: -22px;
+						/* margin-top: -22px; */
 						img {
 							width: 100%;
 							min-height: 100%;
@@ -137,6 +137,7 @@ export default {
 					p {
 						padding-top: 8px;
 						line-height: 1.5;
+						@include ellipsis(2)
 					}
 				}
 			}

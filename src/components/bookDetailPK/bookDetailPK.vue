@@ -2,7 +2,7 @@
 <scroll class="page" ref="scroll" :data="list">
 <div class="vote-wrap" ref="vote">
 	<div class="battle-current-wrap" v-if="list.length>0">
-		<battle-item :item="list[0]" :list="audioList" :currentIndex="currentIndex" @goByName="goByName" @decideByLove="decideByLove" ></battle-item>
+		<battle-item :item="list[0]" :list="audioList" :currentIndexs="currentIndexs" @goByName="goByName" @decideByLove="decideByLove" ></battle-item>
 	</div>
 	<div class="top-wrap" v-if="book">
 		<div class="img-wrap">
@@ -54,7 +54,7 @@ export default {
 			url: '',
 			hasWx: false,
 			book: {},
-			currentIndex: -1,
+			currentIndexs: [],
 			audioList: []
 		}
 	},
@@ -81,7 +81,9 @@ export default {
 
 			patchData(`/api/user/${groupid}/${player}/vote`).then(res => {
 				if(res.status === 200) {
-					this.currentIndex = index;
+					if(this.currentIndexs.indexOf(index) === -1) {
+						this.currentIndexs.push(index)
+					} 
 					item[bPlayer].likenum = res.data
 					this.list[0] = item;
 				}

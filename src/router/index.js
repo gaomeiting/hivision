@@ -64,7 +64,7 @@ const BookDetailPK = resolve => {
     })
 };
 const Record = resolve => {
-    import ('components/Record/Record').then(module => {
+    import ('components/record/record').then(module => {
         resolve(module)
     })
 };

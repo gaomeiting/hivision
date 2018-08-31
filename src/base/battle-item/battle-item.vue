@@ -10,7 +10,7 @@
 		  			</p>
 		  		</figure>
 		  		<!-- <p>{{item.redPlayer.nickname}}</p> -->
-		  		<div class="zan-wrap" :class="{'active-red' : currentIndex === 0}" @click.stop="decideByLove(item, 0)">
+		  		<div class="zan-wrap" :class="{'active-red' : currentIndexs.indexOf(0) != -1}" @click.stop="decideByLove(item, 0)">
 		  			<p><i class="iconfont icon-zan"></i></p>
 		  			<p>为{{item.redPlayer.nickname}}点赞</p>
 		  		</div>
@@ -28,7 +28,7 @@
 		  			</p>
 		  		</figure>
 		  		<!-- <p>{{item.bluePlayer.nickname}}</p> -->
-		  		<div class="zan-wrap" :class="{'active-blue' : currentIndex === 1}" @click.stop="decideByLove(item, 1)">
+		  		<div class="zan-wrap" :class="{'active-blue' : currentIndexs.indexOf(1) != -1}" @click.stop="decideByLove(item, 1)">
 		  			<p><i class="iconfont icon-zan"></i></p>
 		  			<p>为{{item.bluePlayer.nickname}}点赞</p>
 		  		</div>
@@ -50,9 +50,11 @@ import { audioHandler } from 'assets/js/mixin'
 export default {
 	mixins: [audioHandler],
 	props: {
-		currentIndex: {
-			type: Number,
-			default: -1
+		currentIndexs: {
+			type: Array,
+			default() {
+				return []
+			}
 		},
 		item: {
 			type: Object,
@@ -128,7 +130,7 @@ export default {
 	justify-content: space-between;
 	
 	> div {
-		flex: 1;
+		flex: 0 0 33.33%;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -181,6 +183,10 @@ export default {
 				}
 				.icon-zan {
 					font-size: $font-size-large-x;
+				}
+				p:last-child {
+					height: 1em;
+					
 				}
 			}
 

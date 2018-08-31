@@ -20,11 +20,11 @@
 			<div>{{ item.date }}</div>
 			<div>
 				<p>{{ item.contestant }}</p>
-				<p>总投递选手</p>
+				<p>总投选手</p>
 			</div>
 			<div>
 				<p>{{ item.total }}</p>
-				<p>当天总投票数</p>
+				<p>总投票数</p>
 			</div>
 		</li>
 	</ul>

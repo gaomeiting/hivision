@@ -23,7 +23,7 @@
 				</li>
 			</ul>
 		</div>
-		<battle-list :item="pkGroup" :list="totalList" :currentIndex="currentIndex" @goByName="goByName" @decideByLove="decideByLove" @decideByBallot="decideByBallot" :currentIndexs="voteCurrentIndexs"></battle-list>
+		<battle-list :item="pkGroup" :list="totalList" :pkcurrentIndexs="pkcurrentIndexs" @goByName="goByName" @decideByLove="decideByLove" @decideByBallot="decideByBallot" :currentIndexs="voteCurrentIndexs"></battle-list>
 		<!-- <h2 class="title">PK赛</h2>
 		<div class="battle-current-wrap">
 			<battle-item :item="pkGroup" :list="audioList" :currentIndex="currentIndex" @goByName="goByName" @decideByLove="decideByLove" ></battle-item>
@@ -72,7 +72,7 @@ export default {
 			list: [],
 			voteCurrentIndexs: [],
 			book: {},
-			currentIndex: -1,
+			pkcurrentIndexs: [],
 			audioList: [],
 			pkGroup: {},
 			totalList: []
@@ -100,14 +100,16 @@ export default {
 		},
 		decideByLove(item, index) {
 			//点赞排序
-			console.log(item)
+			
 			let groupid = item.pkGroupId;
 			let player = index ? 'blue' : 'red';
 			let bPlayer = `${player}Player`
 
 			patchData(`/api/user/${groupid}/${player}/vote`).then(res => {
 				if(res.status === 200) {
-					this.currentIndex = index;
+					if(this.pkcurrentIndexs.indexOf(index) === -1) {
+						this.pkcurrentIndexs.push(index)
+					}
 					item[bPlayer].likenum = res.data
 					this.list[0] = item;
 				}
