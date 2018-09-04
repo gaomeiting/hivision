@@ -1,32 +1,13 @@
-// The Vue build version to load with the `import` command
-// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
-import 'babel-polyfill'
 import Vue from 'vue'
-import App from './App'
+import App from './App.vue'
 import router from './router'
 import store from './store'
-import VueLazyload from 'vue-lazyload'
-import ElementUI from 'element-ui';
-import 'element-ui/lib/theme-chalk/index.css';
+import './plugins/element.js'
 import 'assets/scss/index.scss';
-/*import axios from 'axios';*/
-
-Vue.use(VueLazyload, {
-	loading: require('assets/images/default.png')
-})
-Vue.use(ElementUI);
-//设置打包请求地址
-/*axios.defaults.baseURL = '/api'*/
-//Vue.prototype.axios = axios;
 Vue.config.productionTip = false
 
-/* eslint-disable no-new */
 new Vue({
-	el: '#app',
 	router,
 	store,
-	template: '<App/>',
-	components: {
-		App
-	}
-})
+	render: h => h(App)
+}).$mount('#app')

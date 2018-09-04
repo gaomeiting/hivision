@@ -8,10 +8,9 @@
 
 // 不换行
 @mixin no-wrap() {
-  white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
-  
+  white-space: nowrap;
 }
 //多行超出省略；
 @mixin ellipsis($line) {

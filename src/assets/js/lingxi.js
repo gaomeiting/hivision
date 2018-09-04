@@ -1,6 +1,5 @@
 import {
-	postData,
-	postDataQs
+	postData
 } from 'api/api';
 import axios from 'axios'
 import store from '../../store'

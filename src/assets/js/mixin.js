@@ -90,6 +90,9 @@ export const share = {
 		}
 	}
 };
+export const ceshi = {
+
+};
 export const loadBtn = {
 	data() {
 		return {
@@ -213,6 +216,7 @@ export const wxShare = {
 			})
 		},
 		_getShareConfig(url, isShow, title = '', desc = '', avatar = 'http://st.ddpei.cn/hv/mglx/img/hvlogo.jpg') {
+			if (!this.versions()) return;
 			let arrHref = ['http://mglx.hvkid.com/#/me', 'http://mglx.hvkid.com/', 'http://mglx.hvkid.com/#/vote']
 			if (this._findIndex(arrHref, window.location.href) != -1) {
 				this.setUrl();
@@ -222,7 +226,7 @@ export const wxShare = {
 			params = this.hasIos() ? {
 				url: urlParams
 			} : {}
-			getDataHide('/api/wechat/sdkconfig.json', params).then(res => {
+			getDataHide('/api/wechat/sdkconfig.js n', params).then(res => {
 				let config = res;
 				if (!isShow) {
 					this.wxS(config, url, title, desc, avatar)
