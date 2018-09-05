@@ -69,6 +69,7 @@ export default {
 	},
 	
 	created() {
+		console.log("battle 12345")
 		this.shareIcon = wxFnVer() || lingxiFn()
 		this._getSingerList('/api/pk/?page=0&size=60&sort=top,desc')
 		if(this.token) {

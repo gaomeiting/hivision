@@ -320,7 +320,7 @@ export const audioHandler = {
 		},
 		updateTime(e) {
 			let currentTime = e.target.currentTime | 0;
-			let totalTime = this.$refs.audio.duration | 0;
+			let totalTime = this.$refs.audio && this.$refs.audio.duration | 0;
 			let diff = totalTime * 1 - currentTime * 1
 			this.currentTime = "- " + this.format(diff);
 			//console.log(this.percent, e.target.currentTime, totalTime, "updateTime")
